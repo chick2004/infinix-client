@@ -1,0 +1,63 @@
+.page {
+    width: 100%;
+    background-image: url('/images/auth_background.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid var(--card-stroke-default);
+    background-color: var(--solid-background-tertiary);
+    box-shadow: 0px 2px 4px 0px var(--shadow-card-rest);
+}
+
+.form > div {
+    width: 100%;
+}
+
+.form > div:last-child {
+    justify-items: flex-end;
+}
+
+.form > div:first-child {
+    text-align: center;
+}
+
+
+.form_title {
+    color: var(--text-primary);
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: 0%;
+    font-weight: 400;
+}
+
+.register_link {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 400;
+}
+
+.form_description {
+    color: var(--text-tertiary);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 400;
+}

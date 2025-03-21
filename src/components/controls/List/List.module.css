@@ -1,0 +1,13 @@
+.list {
+    background-color: var(--acrylic-background-default);
+    backdrop-filter: blur(60px);
+    border-radius: 0px 0px 7px 7px;
+    border: 1px inset var(--control-stroke-default);
+    border-top: unset;
+    padding: 5px 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 1;
+    list-style: none;
+}

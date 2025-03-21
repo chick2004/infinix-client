@@ -1,0 +1,77 @@
+.section {
+    background-color: var(--layer-default);
+    border: 1px solid var(--card-stroke-default);
+    border-radius: 8px;
+    padding: 10px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.section > * {
+    width: 100%;
+}
+
+.title_bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 5px;
+}
+
+.title_bar > p {
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 600;
+}
+
+.see_all {
+    
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 400;
+}
+
+.group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    border-radius: 4px;
+    background-color: var(--subtle-transparent);
+    border: 1px inset var(--subtle-transparent);
+}
+
+.group:hover {
+    background-color: var(--subtle-secondary);
+    border-color: var(--subtle-secondary);
+}
+
+.group_image img {
+    border-radius: 50%;
+    border: 1px solid var(--card-stroke-default-solid);
+}
+
+.group_info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.group_info .group_name {
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 400;
+}
+
+.group_info .member_count {
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0%;
+    font-weight: 400;
+}

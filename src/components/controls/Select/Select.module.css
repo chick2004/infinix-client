@@ -1,0 +1,93 @@
+.select {
+    min-width: 128px;
+    width: fit-content;
+    height: 32px;
+    display: flex;
+    flex-direction: column;
+}
+
+.list {
+    margin-top: 8px;
+    background-color: var(--acrylic-background-default);
+    backdrop-filter: blur(60px);
+    box-shadow: 0px 8px 16px 0px var(--shadow-flyout);
+    border-radius: 7px;
+    padding: 5px 5px;
+    border: 1px inset var(--control-stroke-default);
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    list-style: none;
+}
+
+.select_group {
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--control-default);
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 400;
+    outline: none;
+    border: none;
+    box-shadow:
+        inset 0px -1px 0px var(--control-stroke-secondary),
+        inset 0px 1px 0px var(--control-stroke-default),
+        inset -1px 0px 0px var(--control-stroke-default),
+        inset 1px 0px 0px var(--control-stroke-default);
+
+    min-width: 98px;
+    max-width: 100%;
+    width: fit-content;
+    height: 32px;
+    padding: 5px 11px 7px 11px;
+    gap: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.select_button {
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: unset;
+    border: none;
+    outline: none;
+    color: var(--text-secondary);
+}
+
+.list_item {
+    background-color: var(--subtle-transparent);
+    padding: 7px 11px;
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    color: var(--text-primary);
+}
+
+.list_item:hover {
+    background-color: var(--subtle-secondary);
+    box-shadow: inset 0px 0px 1px var(--subtle-secondary);
+}
+
+.list_item.disabled {
+    background-color: var(--subtle-disabled);
+    color: var(--text-disabled);
+}
+.list_item.active::before {
+    content: "";
+    width: 4px;
+    height: 16px;
+    border-radius: 100px;
+    background-color: var(--accent-default);
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+

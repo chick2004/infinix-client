@@ -1,0 +1,57 @@
+.section {
+    display: flex;
+    align-items: flex-end;
+    height: fit-content;
+    gap: 5px;
+    width: 100%;
+}
+
+.section.own {
+    flex-direction: row-reverse;
+}
+
+.avatar_container {
+    display: flex;
+}
+
+.avatar_container img {
+    border-radius: 50%;
+    border: 1px inset var(--card-stroke-default);
+}
+
+.content_container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.content_container .user_displayname {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 600;
+    color: var(--text-primary);
+    width: 100%;
+}
+
+.own .user_displayname {
+    text-align: right;
+}
+
+.messages_container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.own .messages_container {
+    align-items: flex-end;
+}
+
+/* .messages_container .time {
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0%;
+    font-weight: 400;
+    color: var(--text-secondary);
+} */
