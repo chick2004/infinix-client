@@ -2,7 +2,7 @@ export default interface InputProps {
 
     type?: "text" | "password" | "number" | "search";
 
-    value?: string | number;
+    value?: string;
 
     name?: string;
 
@@ -18,10 +18,10 @@ export default interface InputProps {
 
     onClick?: () => void;
 
-    onChange?: (value: string | number) => void;
+    onChange?: (value: string) => void;
 
     onKeyDown?: (key: string) => void;
 
-    onSearch?: (value: string | number) => void;
+    onSearch?: (value: string) => void;
 
 }

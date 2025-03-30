@@ -9,5 +9,7 @@ export { default as Textarea } from './controls/Textarea/Textarea';
 export { default as Icon } from './utilities/Icon/Icon';
 export { default as Spinner } from './utilities/Spinner/Spinner';
 
+export { default as Chatbox } from './sections/Chatbox/Chatbox';
+export { default as EmojiPicker } from './sections/EmojiPicker/EmojiPicker';
 export { default as Message } from './sections/Message/Message';
 export { default as MessageGroup } from './sections/MessageGroup/MessageGroup';

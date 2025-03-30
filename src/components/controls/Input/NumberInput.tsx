@@ -7,9 +7,9 @@ import { Icon } from "@/components";
 import InputProps from "./Input.types";
 import styles from "./Input.module.css";
 
-export function NumberInput({ value = 0, name, disabled, placeholder, min, max, step = 1, onChange }: InputProps) {
+export function NumberInput({ value = "0", name, disabled, placeholder, min, max, step = 1, onChange }: InputProps) {
     
-    const [internalValue, setInternalValue] = useState<number>(Number(value));
+    const [internalValue, setInternalValue] = useState<number>(value === "" ? 0 : Number(value));
 
     const clamp = (val: number) => {
         if (max !== undefined) val = Math.min(val, max);
@@ -20,13 +20,13 @@ export function NumberInput({ value = 0, name, disabled, placeholder, min, max, 
     const handleChange =(e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = clamp(Number(e.target.value));
         setInternalValue(newValue);
-        onChange?.(newValue);
+        onChange?.(String(newValue));
     }
 
     const handleIncrement = () => {
         setInternalValue((prev) => {
             const newValue = clamp(prev + step);
-            onChange?.(newValue);
+            onChange?.(String(newValue));
             return clamp(newValue);
         });
     }
@@ -34,7 +34,7 @@ export function NumberInput({ value = 0, name, disabled, placeholder, min, max, 
     const handleDecrement = () => {
         setInternalValue((prev) => {
             const newValue = clamp(prev - step);
-            onChange?.(newValue);
+            onChange?.(String(newValue));
             return clamp(newValue);
         });
     }

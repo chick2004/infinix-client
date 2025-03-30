@@ -55,7 +55,7 @@ export default function EmojiPicker({ onEmojiSelect }: EmojiPickerProps) {
                 ))}
             </div>
 
-            <Input onChange={() => handleChangeSearch} placeholder="Tìm emoji..." />
+            <Input onChange={handleChangeSearch} placeholder="Tìm emoji..." />
 
             <div className={styles.emoji_container}>
                 {Object.entries(filteredEmojiList).map(([group, emojis]) => (
