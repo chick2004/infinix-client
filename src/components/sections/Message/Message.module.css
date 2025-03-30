@@ -1,0 +1,82 @@
+.section {
+    position: relative;
+    border-radius: 4px;
+    background-color: var(--card-background-default);
+    border: 1px inset var(--card-stroke-default);
+    display: flex;
+    width: fit-content;
+}
+
+.section.own {
+    background-color: var(--accent-default);
+}
+
+.content {
+    width: fit-content;
+    max-width: 200px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 400;
+    color: var(--text-primary);
+    padding: 10px;
+}
+
+.own .content {
+    color: var(--text-on-accent-primary);
+}
+
+.section:hover .flyout_container, .flyout_container:hover {
+    display: block;
+}
+
+.flyout_container {
+    position: absolute;
+    z-index: 1;
+    top: -1px;
+    left: 100%;
+    padding-left: 10px;
+    display: none;
+}
+
+.own .flyout_container {
+    left: auto;
+    right: 100%;
+    padding-left: 0px;
+    padding-right: 10px;
+    color: var(--text-primary);
+}
+
+.flyout {
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px;
+    background-color: var(--acrylic-background-default);
+    box-shadow: 0px 8px 16px 0px var(--shadow-flyout);
+    backdrop-filter: blur(60px);
+    border-radius: 8px;
+    border: 1px inset var(--card-stroke-default);
+    width: 200px;
+}
+
+.flyout_button {
+    display: flex;
+    gap: 10px;
+    padding: 7px 11px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 400;
+    border: 1px inset var(--subtle-transparent);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.flyout_button:hover {
+    background-color: var(--subtle-secondary);
+    border-color: var(--subtle-secondary);
+}
+
+.flyout_button i {
+    color: var(--accent-default);
+}

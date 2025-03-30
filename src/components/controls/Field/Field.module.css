@@ -1,0 +1,47 @@
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.label {
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 400;
+}
+
+.validation_message {
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0%;
+    font-weight: 400;
+    display: flex;
+    width: 100%;
+    gap: 5px;
+    align-items: center;
+}
+
+.validation_message span {
+    flex: 1;
+    min-width: 0px;
+    width: 100%;
+    overflow-wrap: break-word;
+}
+
+.success_color {
+    color: var(--system-success);
+}
+
+.warning_color {
+    color: var(--system-caution);
+}
+
+.error_color {
+    color: var(--system-critical);
+}
+
+.info_color {
+    color: var(--system-attention);
+}
