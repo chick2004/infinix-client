@@ -6,9 +6,9 @@ import { Icon, Button } from "@/components";
 
 import styles from "./TrendingTagsCard.module.css";
 
-export function TrendingTagsCard() {
+export default function TrendingTagsCard() {
 
-    const handleClick = (event) => {
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault();
     }
 
@@ -29,7 +29,7 @@ export function TrendingTagsCard() {
                                 <p className={styles.tag_name}>{tag.name}</p>
                                 <p className={styles.post_count}>{tag.post_count} posts</p>
                             </div>
-                            <Button appearance="subtle" onClick={(event) => handleClick(event)}>
+                            <Button appearance="subtle" onClick={() => handleClick}>
                                 <Icon name="more_horizontal" size={16}></Icon>
                             </Button>
                         </Link>

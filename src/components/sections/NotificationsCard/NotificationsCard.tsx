@@ -7,9 +7,16 @@ import Link from "next/link";
 import { Button, Icon } from "@/components";
 import styles from "./NotificationsCard.module.css";
 
+interface Notification {
+    image: string;
+    name: string;
+    content: string;
+    time: string;
+}
+
 export function NotificationsCard() {
 
-    const notifications = [
+    const notifications: Array<Notification> = [
         {image: "/images/avatar.png", name: "John Doe", content: "started following you", time: "2 hours ago"},
         {image: "/images/avatar.png", name: "Jane Doe", content: "liked your post", time: "3 hours ago"},
         {image: "/images/avatar.png", name: "John Doe", content: "started following you", time: "2 hours ago"},

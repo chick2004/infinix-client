@@ -1,23 +1,24 @@
 "use client";
-import { useMemo, useEffect, useState, useRef } from "react";
-import { useFetch, AuthContext } from "@/hooks";
+import { useEffect, useState} from "react";
+import { useRequest, AuthContext } from "@/hooks";
 import { useRouter, usePathname  } from "next/navigation";
 import { LoadingPage } from "@/components";
+ 
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
 
     const [user, setUser] = useState(null);
     const router = useRouter();
     const pathname = usePathname();
-    
-    useFetch(process.env.NEXT_PUBLIC_COOKIE_URL, useMemo(() => ({
-        method: "GET",
-        credentials: "include"
-    }), []), true);
 
-    const { data, loading, status } = useFetch(process.env.NEXT_PUBLIC_API_URL + "/user", useMemo(() => ({
-        method: "GET",
-    }), []), true);
+    const {execute: executeGetCookie} = useRequest(process.env.NEXT_PUBLIC_COOKIE_URL + "/user", "GET");
+    const { data, loading, status, execute: executeGetUser } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/user", "GET");
+
+    useEffect(() => {
+        executeGetCookie().then(() => {
+            executeGetUser();
+        });
+    });
 
     useEffect(() => {
         if (status === 200) {
@@ -28,7 +29,9 @@ export const AuthProvider = ({ children }) => {
     }, [status]);
 
     if (!user && !["/login", "/register"].includes(pathname)) {
-        return <LoadingPage/>;
+        return (
+            <LoadingPage/>
+        );
     }
 
     return (

@@ -8,9 +8,15 @@ import { Button, Icon } from "@/components";
 
 import styles from "./SuggestionUsersCard.module.css";
 
-export function SuggestionUsersCard() {
+interface User {
+    display_name: string;
+    username: string;
+    profile_image: string;
+}
 
-    const users = [
+export default function SuggestionUsersCard() {
+
+    const users: Array<User> = [
         {display_name: "John Doe", username: "@johndoe", profile_image: "/images/avatar.png"},
         {display_name: "John Doe", username: "@johndoe", profile_image: "/images/avatar.png"},
         {display_name: "John Doe", username: "@johndoe", profile_image: "/images/avatar.png"},

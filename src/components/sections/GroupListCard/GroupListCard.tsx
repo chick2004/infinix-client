@@ -7,9 +7,15 @@ import { useState } from "react";
 import { Button, Icon } from "@/components";
 import styles from './GroupListCard.module.css';
 
-export function GroupListCard() {
+interface Group {
+    group_name: string;
+    member_count: number;
+    group_image: string;
+}
 
-    const groups = [
+export default function GroupListCard() {
+
+    const groups: Array<Group> = [
         {group_name: "John Doe", member_count: 10, group_image: "/images/avatar.png"},
         {group_name: "John Doe", member_count: 10, group_image: "/images/avatar.png"},
         {group_name: "John Doe", member_count: 10, group_image: "/images/avatar.png"},

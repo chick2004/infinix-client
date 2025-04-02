@@ -1,11 +1,11 @@
 "use client";
-import Image from 'next/image';
 
+import Image from 'next/image';
 
 import { Spinner } from "@/components";
 import styles from './LoadingPage.module.css';
 
-export function LoadingPage() {
+export default function LoadingPage({}) {
     return (
         <div className={styles.page}>
             <div className={styles.container}>

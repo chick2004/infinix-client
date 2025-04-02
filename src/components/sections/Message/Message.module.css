@@ -20,6 +20,7 @@
     font-weight: 400;
     color: var(--text-primary);
     padding: 10px;
+    word-wrap: break-word;
 }
 
 .own .content {

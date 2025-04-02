@@ -2,14 +2,15 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import clsx from "clsx";
 
 import { Icon, Button, Textarea } from "@/components";
+
+import PostCardProps from "./PostCard.types";
 import styles from "./PostCard.module.css";
 
-export function PostCard({ media = [] }) {
+export default function PostCard({ medias = [] }: PostCardProps) {
     
-    const [imageCount, setImageCount] = useState(media.length);
+    const [imageCount, setImageCount] = useState(medias.length);
     const [isOpenGallery, setIsOpenGallery] = useState(false);
     const extraMediaCount = imageCount > 5 ? imageCount - 5 : 0;
 
@@ -24,8 +25,8 @@ export function PostCard({ media = [] }) {
     };
 
     useEffect(() => {
-        setImageCount(media.length);
-    }, [media]);
+        setImageCount(medias.length);
+    }, [medias]);
 
     const mediaGalleryClassName = () => {
         let subClassName = "";
@@ -49,7 +50,7 @@ export function PostCard({ media = [] }) {
                 subClassName = styles.more_images;
                 break;
         }
-        return clsx(styles.media_gallery, subClassName);
+        return `${styles.media_gallery} ${subClassName}`;
     };
 
     return (
@@ -74,9 +75,9 @@ export function PostCard({ media = [] }) {
                 <div className={styles.content}>
                     <p>Lorem ipsum dolor sit amet consectetur. Id suscipit pharetra sagittis amet sed elementum nibh consequat. Mattis morbi congue donec mattis tortor porta dignissim.</p>
                 </div>
-                {media.length > 0 && (
+                {medias.length > 0 && (
                     <div className={mediaGalleryClassName()} onClick={() => setIsOpenGallery(true)}>
-                        {media.slice(0, 5).map((src, index) => (
+                        {medias.slice(0, 5).map((src, index) => (
                             <div key={index} className={styles.media_item}>
                                 <Image src={src} alt={`media-${index}`} fill />
                                 {index === 4 && extraMediaCount > 0 && (
@@ -115,7 +116,7 @@ export function PostCard({ media = [] }) {
                         <div className={styles.gallery_carousel}>
                             <div className={styles.list}>
                                 <div className={styles.item}>
-                                    <Image src={media[currentIndex]} alt={`media-${currentIndex}`} fill />
+                                    <Image src={medias[currentIndex]} alt={`media-${currentIndex}`} fill />
                                 </div>
                             </div>
                             <Button appearance={"standard"} className={styles.prev} onClick={prevSlide}>

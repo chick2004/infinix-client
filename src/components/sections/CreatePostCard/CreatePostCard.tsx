@@ -12,7 +12,7 @@ interface MediaFile {
     file: File;
 }
 
-export function CreatePostCard() {
+export default function CreatePostCard() {
     // Content handler
     const [postContent, setPostContent] = useState<string>("");
 
