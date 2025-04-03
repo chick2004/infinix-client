@@ -18,6 +18,7 @@ export { default as GroupListCard } from './sections/GroupListCard/GroupListCard
 export { default as LoadingPage } from './sections/LoadingPage/LoadingPage';
 export { default as Message } from './sections/Message/Message';
 export { default as MessageGroup } from './sections/MessageGroup/MessageGroup';
+export { default as NotificationsCard } from './sections/NotificationsCard/NotificationsCard';
 export { default as PostCard } from './sections/PostCard/PostCard';
 export { default as SuggestionUsersCard } from './sections/SuggestionUsersCard/SuggestionUsersCard';
 export { default as TrendingTagsCard } from './sections/TrendingTagsCard/TrendingTagsCard';

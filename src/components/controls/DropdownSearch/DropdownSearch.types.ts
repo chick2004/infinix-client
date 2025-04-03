@@ -1,6 +1,6 @@
 export default interface DropdownSearchProps {
 
-    value: string;
+    value?: string;
 
     suggestions: string[];
 

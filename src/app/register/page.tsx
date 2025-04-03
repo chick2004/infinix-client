@@ -9,6 +9,7 @@ import { useAuth, useRequest } from "@/hooks";
 
 import { Field, Input, Button, Spinner } from "@/components";
 import styles from "./page.module.css";
+import { E } from "vitest/dist/chunks/reporters.d.CqBhtcTq.js";
 
 interface StepProps {
     formData: any;
@@ -88,7 +89,7 @@ const EmailStep = ({formData, setFormData, onNextStep, onPreviousStep}: StepProp
             return;
         }
         setFormError({});
-        execute();
+        execute({email: formData.email});
     }
 
     useEffect(() => {
@@ -159,7 +160,7 @@ const VerifyCodeStep = ({formData, setFormData, onNextStep, onPreviousStep}: Ste
             return;
         }
         setFormError({});
-        execute();
+        execute({code: formData.code, email: formData.email});
     }
 
     useEffect(() => {
@@ -241,13 +242,13 @@ const SetPasswordStep = ({formData, setFormData}: StepProps) => {
             return;
         }
         setFormError({});
-        execute();
+        execute({email: formData.email, password: formData.password});
     }
 
     useEffect(() => {
         if (status === 200) {
-            setUser(data.user);
-            router.push("/home");
+            console.log(data);
+            //router.push("/home");
         }
 
         if (status === 400 || status === 500) {
@@ -301,12 +302,6 @@ const SetPasswordStep = ({formData, setFormData}: StepProps) => {
 export default function Page() {
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({ display_name: "", email: "", password: "", code: "", confirm: "" });
-
-    const { execute } = useRequest(process.env.NEXT_PUBLIC_COOKIE_URL + "", "GET");
-
-    useEffect(() => {
-        execute();
-    }, []);
     
     const handleNextStep = () => {
         setStep(prev => prev + 1);

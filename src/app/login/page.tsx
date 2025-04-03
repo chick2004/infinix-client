@@ -39,8 +39,9 @@ export default function Page() {
 
     useEffect(() => {
         if (status === 200) {
-            setUser(data.user);
-            router.push("/home");
+            console.log(data);
+            //setUser(data.user);
+            //router.push("/home");
         }
 
         if (status === 400 || status === 401) {

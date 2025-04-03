@@ -11,14 +11,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
     const router = useRouter();
     const pathname = usePathname();
 
-    const {execute: executeGetCookie} = useRequest(process.env.NEXT_PUBLIC_COOKIE_URL + "/user", "GET");
+    const {execute: executeGetCookie} = useRequest(process.env.NEXT_PUBLIC_COOKIE_URL + "");
     const { data, loading, status, execute: executeGetUser } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/user", "GET");
 
     useEffect(() => {
         executeGetCookie().then(() => {
             executeGetUser();
         });
-    });
+    }, []);
 
     useEffect(() => {
         if (status === 200) {

@@ -14,7 +14,7 @@ interface Notification {
     time: string;
 }
 
-export function NotificationsCard() {
+export default function NotificationsCard() {
 
     const notifications: Array<Notification> = [
         {image: "/images/avatar.png", name: "John Doe", content: "started following you", time: "2 hours ago"},

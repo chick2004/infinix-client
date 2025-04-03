@@ -26,7 +26,9 @@ const objectToFormData = (obj: Record<string, any>, formData: FormData = new For
     return formData;
 };
 
+
 export const useRequest = <T = any>(url: string, method: "GET" | "POST" | "PUT" | "DELETE" = "GET") => {
+
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -38,11 +40,9 @@ export const useRequest = <T = any>(url: string, method: "GET" | "POST" | "PUT" 
         setError(null);
         setStatus(null);
 
-        const token = decodeURIComponent(document.cookie.split("; ").find(row => row.startsWith("XSRF-TOKEN="))?.split("=")[1] || "");
-
         let body: BodyInit | null = null;
         const headers: HeadersInit = {
-            "X-XSRF-TOKEN": token,
+            "X-XSRF-TOKEN": decodeURIComponent(document.cookie.split("; ").find(row => row.startsWith("XSRF-TOKEN="))?.split("=")[1] || ""),
         };
 
         if (payload) {
@@ -57,6 +57,8 @@ export const useRequest = <T = any>(url: string, method: "GET" | "POST" | "PUT" 
         }
 
         try {
+            console.log("Request URL:", url, "\nMethod:", method, "\nBody:", body, "\nHeaders:", headers);
+
             const response = await fetch(url, {
                 method,
                 body: method !== "GET" ? body : null,
@@ -74,8 +76,8 @@ export const useRequest = <T = any>(url: string, method: "GET" | "POST" | "PUT" 
                 setError(errorMessage || "An error occurred");
                 return;
             }
-
             const json = await response.json().catch(() => null);
+            console.log("Response:", json);
             setData(json);
         } catch (error: any) {
             setError(error.message || "An error occurred");
