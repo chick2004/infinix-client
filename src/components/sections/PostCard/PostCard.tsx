@@ -1,70 +1,56 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, memo } from "react";
 
-import { Icon, Button, Textarea } from "@/components";
+import { Icon, Button, Textarea, Video } from "@/components";
 
 import PostCardProps from "./PostCard.types";
 import styles from "./PostCard.module.css";
 
-export default function PostCard({ medias = [] }: PostCardProps) {
-    
-    const [imageCount, setImageCount] = useState(medias.length);
-    const [isOpenGallery, setIsOpenGallery] = useState(false);
-    const extraMediaCount = imageCount > 5 ? imageCount - 5 : 0;
+export default memo(function PostCard({ content = "", time = "2025-04-04 11:40:28", visibility = "public", medias = [], likes_count = 0, comments_count = 0, shares_count = 0, user_id = "", user_display_name = "", user_profile_photo = "/images/avatar.png" }: PostCardProps) {
 
+    const [isOpenGallery, setIsOpenGallery] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
+    
+    const extraMediaCount = medias.length > 5 ? medias.length - 5 : 0;
 
     const nextSlide = () => {
-        setCurrentIndex((prev) => (prev + 1) % imageCount);
+        setCurrentIndex((prev) => (prev + 1) % medias.length);
     };
 
     const prevSlide = () => {
-        setCurrentIndex((prev) => (prev - 1 + imageCount) % imageCount);
+        setCurrentIndex((prev) => (prev - 1 + medias.length) % medias.length);
     };
-
-    useEffect(() => {
-        setImageCount(medias.length);
-    }, [medias]);
 
     const mediaGalleryClassName = () => {
-        let subClassName = "";
-        switch (imageCount) {
-            case 1:
-                subClassName = styles.one_image;
-                break;
-            case 2:
-                subClassName = styles.two_images;
-                break;
-            case 3:
-                subClassName = styles.three_images;
-                break;
-            case 4:
-                subClassName = styles.four_images;
-                break;
-            case 5:
-                subClassName = styles.five_images;
-                break;
-            default:
-                subClassName = styles.more_images;
-                break;
+        const subClassName = () => {
+            switch (medias.length) {
+                case 1: return styles.one_image;
+                case 2: return styles.two_images;
+                case 3: return styles.three_images;
+                case 4: return styles.four_images;
+                case 5: return styles.five_images;
+                default: return styles.more_images;
+            }
         }
-        return `${styles.media_gallery} ${subClassName}`;
+        return `${styles.media_gallery} ${subClassName()}`;
     };
+
+    const date = new Date(time.replace(" ", "T"));
 
     return (
         <>
             <div className={styles.section}>
                 <div className={styles.header}>
                     <div className={styles.avatar_container}>
-                        <Image src="/images/avatar.png" width={40} height={40} alt="Avatar" />
+                        <Image src={user_profile_photo || "/images/avatar.png"} width={40} height={40} alt="Avatar" />
                     </div>
                     <div className={styles.info}>
-                        <div className={styles.display_name}>Châu Thành Cường</div>
+                        <div className={styles.display_name}>{user_display_name}</div>
                         <div className={styles.post_info_container}>
-                            <p className={styles.date}>19/2/2025</p>
-                            <p className={styles.time}>11:58 PM</p>
+                            <p className={styles.date}>{date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                            <p className={styles.time}>{date.toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' })}</p>
                             <Icon name={"earth"} size={16} />
                         </div>
                     </div>
@@ -73,13 +59,17 @@ export default function PostCard({ medias = [] }: PostCardProps) {
                     </Button>
                 </div>
                 <div className={styles.content}>
-                    <p>Lorem ipsum dolor sit amet consectetur. Id suscipit pharetra sagittis amet sed elementum nibh consequat. Mattis morbi congue donec mattis tortor porta dignissim.</p>
+                    <p>{content}</p>
                 </div>
                 {medias.length > 0 && (
-                    <div className={mediaGalleryClassName()} onClick={() => setIsOpenGallery(true)}>
-                        {medias.slice(0, 5).map((src, index) => (
+                    <div className={mediaGalleryClassName()} onClick={(e) => {e.preventDefault(); setIsOpenGallery(true); }}>
+                        {medias.slice(0, 5).map((media, index) => (
                             <div key={index} className={styles.media_item}>
-                                <Image src={src} alt={`media-${index}`} fill />
+                                {media.type.startsWith("video/") ? (
+                                    <Video src={process.env.NEXT_PUBLIC_API_URL + "/media"+ media.path} controls autoPlay muted loop playsInline/>
+                                ) : (
+                                    <Image src={process.env.NEXT_PUBLIC_API_URL + "/media" + media.path} alt={`media-${index}`} fill />
+                                )}
                                 {index === 4 && extraMediaCount > 0 && (
                                     <div className={styles.overlay}>+{extraMediaCount}</div>
                                 )}
@@ -110,21 +100,29 @@ export default function PostCard({ medias = [] }: PostCardProps) {
                 </div>
             </div>
 
-            {isOpenGallery && (
+            {isOpenGallery && Array.isArray(medias) && medias.length > 0  && (
                 <div className={styles.dialog}>
                     <div className={styles.detail_post}>
                         <div className={styles.gallery_carousel}>
                             <div className={styles.list}>
                                 <div className={styles.item}>
-                                    <Image src={medias[currentIndex]} alt={`media-${currentIndex}`} fill />
+                                    {medias[currentIndex].type.startsWith("video/") ? (
+                                        <Video className={styles.media} src={process.env.NEXT_PUBLIC_API_URL + "/media" + medias[currentIndex].path} controls autoPlay muted loop playsInline/>
+                                    ) : (
+                                        <Image src={process.env.NEXT_PUBLIC_API_URL + "/media" + medias[currentIndex].path} alt={`media-${currentIndex}`} fill />
+                                    )}
                                 </div>
                             </div>
-                            <Button appearance={"standard"} className={styles.prev} onClick={prevSlide}>
-                                <Icon name={"chevron_left"}></Icon>
-                            </Button>
-                            <Button appearance={"standard"} className={styles.next} onClick={nextSlide}>
-                                <Icon name={"chevron_right"}></Icon>
-                            </Button>
+                            {medias.length > 1 && (
+                                <>
+                                    <Button appearance={"standard"} className={styles.prev} onClick={prevSlide}>
+                                        <Icon name={"chevron_left"}></Icon>
+                                    </Button>
+                                    <Button appearance={"standard"} className={styles.next} onClick={nextSlide}>
+                                        <Icon name={"chevron_right"}></Icon>
+                                    </Button>
+                                </>
+                            )}
                             <Button appearance={"standard"} className={styles.close} onClick={() => setIsOpenGallery(false)}>
                                 <Icon name={"dismiss"}></Icon>
                             </Button>
@@ -268,4 +266,4 @@ export default function PostCard({ medias = [] }: PostCardProps) {
             )}
         </>
     );
-}
+});

@@ -40,7 +40,7 @@
     gap: 10px;
 }
 
-.actions_left>button, .actions_left>.emoji_picker_container>button {
+.actions_left>button, .actions_left>.emoji_picker_container>button, .actions_left>.visibility_dropdown>button {
     padding: 4px;
     border-radius: 4px;
     background-color: var(--subtle-transparent);
@@ -53,7 +53,7 @@
     gap: 5px;
 }
 
-.actions_left>button i, .actions_left>.emoji_picker_container>button i {
+.actions_left>button i, .actions_left>.emoji_picker_container>button i, .actions_left>.visibility_dropdown>button i {
     color: var(--accent-default);
 }
 
@@ -67,7 +67,64 @@
     top: 100%;
     left: 0;
     z-index: 1;
+    display: none;
 }
+
+.emoji_picker_container:hover .emoji_picker {
+    display: flex;
+}
+
+.visibility_dropdown {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.visibility_list {
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 0;
+    width: fit-content;
+    background-color: var(--solid-background-senary);
+    border-radius: 8px;
+    border: 1px solid var(--card-stroke-default);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px;
+    box-shadow: 0px 8px 16px 0px var(--shadow-flyout);
+    display: none;
+}
+
+.visibility_dropdown.active .visibility_list {
+    display: flex;
+}
+
+.visibility_item {
+    padding: 5px;
+    border-radius: 4px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border: 1px solid var(--subtle-transparent);
+    cursor: pointer;
+    user-select: none;
+
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 400;
+}
+
+.visibility_item:hover {
+    background-color: var(--subtle-secondary);
+    border-color: var(--subtle-secondary);
+}
+
+
 
 .media_gallery {
     display: flex;

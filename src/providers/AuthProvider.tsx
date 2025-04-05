@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
         } else if (status === 401 && !["/login", "/register", "/"].includes(pathname)) {
             router.push("/login");
         }
-    }, [status]);
+    }, [loading]);
 
     if (!user && !["/login", "/register"].includes(pathname)) {
         return (

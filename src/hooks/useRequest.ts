@@ -29,13 +29,17 @@ const objectToFormData = (obj: Record<string, any>, formData: FormData = new For
 
 export const useRequest = <T = any>(url: string, method: "GET" | "POST" | "PUT" | "DELETE" = "GET") => {
 
-    const [data, setData] = useState<T | null>(null);
+    const [data, setData] = useState<T>(() => ({} as T));
+    const [message, setMessage] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<number | null>(null);
+
     const router = useRouter();
 
     const execute = useCallback(async (payload: Record<string, any> | null = null) => {
+
+        setMessage("");
         setLoading(true);
         setError(null);
         setStatus(null);
@@ -43,22 +47,14 @@ export const useRequest = <T = any>(url: string, method: "GET" | "POST" | "PUT" 
         let body: BodyInit | null = null;
         const headers: HeadersInit = {
             "X-XSRF-TOKEN": decodeURIComponent(document.cookie.split("; ").find(row => row.startsWith("XSRF-TOKEN="))?.split("=")[1] || ""),
+            "Accept": "application/json"
         };
 
         if (payload) {
-            if (payload instanceof FormData) {
-                body = payload;
-            } else if (Object.values(payload).some(value => value instanceof File)) {
-                body = objectToFormData(payload);
-            } else {
-                body = JSON.stringify(payload);
-                headers["Content-Type"] = "application/json";
-            }
+            body = objectToFormData(payload);
         }
 
         try {
-            console.log("Request URL:", url, "\nMethod:", method, "\nBody:", body, "\nHeaders:", headers);
-
             const response = await fetch(url, {
                 method,
                 body: method !== "GET" ? body : null,
@@ -76,9 +72,11 @@ export const useRequest = <T = any>(url: string, method: "GET" | "POST" | "PUT" 
                 setError(errorMessage || "An error occurred");
                 return;
             }
+            
             const json = await response.json().catch(() => null);
-            console.log("Response:", json);
-            setData(json);
+            setData(json.data);
+            setMessage(json.message || "");
+
         } catch (error: any) {
             setError(error.message || "An error occurred");
         } finally {

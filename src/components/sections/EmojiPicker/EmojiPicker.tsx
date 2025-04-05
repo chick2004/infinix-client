@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, memo } from "react";
 import emoji_list from "./emoji.json";
 import { Icon, Input } from "@/components";
 
@@ -8,7 +8,7 @@ import EmojiPickerProps from "./EmojiPicker.types";
 import EmojiType from "./Emoji.types";
 import styles from "./EmojiPicker.module.css";
 
-export default function EmojiPicker({ onEmojiSelect }: EmojiPickerProps) {
+export default memo(function EmojiPicker({ onEmojiSelect }: EmojiPickerProps) {
     const [search, setSearch] = useState<string>("");
     const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
@@ -83,7 +83,7 @@ export default function EmojiPicker({ onEmojiSelect }: EmojiPickerProps) {
             </div>
         </div>
     );
-}
+});
 
 // Hàm lấy icon phù hợp với từng nhóm
 const getIconName = (group: string): string => {

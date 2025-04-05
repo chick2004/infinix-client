@@ -247,14 +247,14 @@ const SetPasswordStep = ({formData, setFormData}: StepProps) => {
 
     useEffect(() => {
         if (status === 200) {
-            console.log(data);
-            //router.push("/home");
+            setUser(data);
+            router.push("/home");
         }
 
         if (status === 400 || status === 500) {
             setFormError({ password: "An error occurred. Please try again" });
         }
-    }, [status]);
+    }, [loading]);
 
     return (
         <div className={styles.form}>

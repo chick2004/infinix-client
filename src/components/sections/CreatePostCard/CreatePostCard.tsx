@@ -1,30 +1,30 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, memo } from "react";
 
-import { Button, Icon, Input, Textarea, Select, EmojiPicker } from "@/components";
-import { useFetch } from "@/hooks";
+import { Button, Icon, Input, Textarea, Spinner, EmojiPicker } from "@/components";
+import { useRequest } from "@/hooks";
 import styles from "./CreatePostCard.module.css";
+import { exec } from "child_process";
 
-interface MediaFile {
-    url: string;
-    file: File;
-}
+export default memo(function CreatePostCard() {
 
-export default function CreatePostCard() {
-    // Content handler
     const [postContent, setPostContent] = useState<string>("");
-
     const handlePostContentChange = (value: string) => {
         setPostContent(value);
     };
 
-    // Media handler
-    const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
+    const [visibility, setVisibility] = useState<string>("public");
+    const [isVisibilityOpen, setIsVisibilityOpen] = useState<boolean>(false);
+    const handleVisibilityChange = (value: string) => {
+        setVisibility(value);
+        setIsVisibilityOpen(false);
+    };
+
+    const [mediaFiles, setMediaFiles] = useState<{url: string, file: File}[]>([]);
     const scrollRef = useRef<HTMLDivElement | null>(null);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(event.target.files || []);
         const newMedia = files.map((file) => ({
@@ -36,14 +36,12 @@ export default function CreatePostCard() {
             fileInputRef.current.value = "";
         }
     };
-
     const handleRemoveMedia = (index: number) => {
         setMediaFiles((prev) => prev.filter((_, i) => i !== index));
         if (fileInputRef.current) {
             fileInputRef.current.value = "";
         }
     };
-
     useEffect(() => {
         const handleWheel = (event: WheelEvent) => {
             if (scrollRef.current) {
@@ -64,20 +62,23 @@ export default function CreatePostCard() {
         };
     }, [mediaFiles]);
 
-    // Emoji picker handler
     const [emojiPickerOpen, setEmojiPickerOpen] = useState<boolean>(false);
-
     const handleToggleEmojiPicker = () => {
         setEmojiPickerOpen((prev) => !prev);
     };
-
-    const handleEmojiSelect = (emoji: { character: string }) => {
+    const handleEmojiSelect = useCallback((emoji: { character: string }) => {
         setPostContent((prev) => prev + emoji.character);
-    };
+    }, []);
 
-    // Formdata handler
+
+    const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/posts", "POST");
     const handleSubmit = () => {
-        // Handle form submission logic
+        if (postContent.trim() === "" && mediaFiles.length === 0) {
+            return;
+        }
+        execute({ content: postContent, medias: mediaFiles.map((media) => media.file), visibility: visibility });
+        setPostContent("");
+        setMediaFiles([]);
     };
 
     return (
@@ -114,34 +115,61 @@ export default function CreatePostCard() {
                             <button onClick={handleToggleEmojiPicker}>
                                 <Icon name={"emoji"} size={20} type={"regular"}></Icon>
                             </button>
-                            {emojiPickerOpen && (
-                                <div className={styles.emoji_picker}>
-                                    <EmojiPicker onEmojiSelect={handleEmojiSelect} />
-                                </div>
-                            )}
+                            <div className={styles.emoji_picker}>
+                                <EmojiPicker onEmojiSelect={handleEmojiSelect} />
+                            </div>
                         </div>
                         <button>
                             <Icon name={"mic"} size={20} type={"regular"}></Icon>
                         </button>
-                        <button>
+                        {/* <button>
                             <Icon name={"attach"} size={20} type={"regular"}></Icon>
-                        </button>
+                        </button> */}
                         <button>
                             <Icon name={"data_histogram"} size={20} type={"regular"}></Icon>
                         </button>
-                        <button>
-                            <Icon name={"earth"} size={20} type={"regular"}></Icon>
-                            <Icon name={"caret_down"} size={16} type={"filled"}></Icon>
-                        </button>
+                        <div className={`${styles.visibility_dropdown} ${isVisibilityOpen ? styles.active : ""}`}>
+                            <button onClick={() => setIsVisibilityOpen((prev) => !prev)}>
+                                {visibility === "public" ? (
+                                    <Icon name={"earth"} size={20} type={"regular"}></Icon>
+                                ) : visibility === "private" ? (
+                                    <Icon name={"lock_closed"} size={20} type={"regular"}></Icon>
+                                ) : (
+                                    <Icon name={"person"} size={20} type={"regular"}></Icon>
+                                )}
+                                <Icon name={"caret_down"} size={16} type={"filled"}></Icon>
+                            </button>
+                            <div className={styles.visibility_list}>
+                                <div className={styles.visibility_item} onClick={() => handleVisibilityChange("public")}>
+                                    <Icon name={"earth"} size={16} type={"regular"}></Icon>
+                                    <span>Public</span>
+                                </div>
+                                <div className={styles.visibility_item} onClick={() => handleVisibilityChange("private")}>
+                                    <Icon name={"lock_closed"} size={16} type={"regular"}></Icon>
+                                    <span>Private</span>
+                                </div>
+                                <div className={styles.visibility_item} onClick={() => handleVisibilityChange("friends")}>
+                                    <Icon name={"person"} size={16} type={"regular"}></Icon>
+                                    <span>Friends</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <Button appearance={"accent"} onClick={handleSubmit}>
-                        Post
-                        <Icon name={"send"} size={20}></Icon>
-                    </Button>
+                    {loading ? (
+                        <Button appearance={"accent"} onClick={handleSubmit} disabled={loading}>
+                            Submitting...    
+                            <Spinner size={"small"}/> 
+                        </Button>
+                    ) : (
+                        <Button appearance={"accent"} onClick={handleSubmit} disabled={loading}>
+                            Post
+                            <Icon name={"send"} size={20} type={"filled"}></Icon>
+                        </Button>
+                    )}
                 </div>
 
                 <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*,video/*" multiple onChange={handleFileChange} />
             </div>
         </div>
     );
-}
+})

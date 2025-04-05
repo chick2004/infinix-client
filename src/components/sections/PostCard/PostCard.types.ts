@@ -1,21 +1,31 @@
 export default interface PostCardProps {
 
-    id?: string;
+    id: string;
 
-    content?: string;
+    content: string;
 
-    medias?: Array<string>;
+    time: string;
 
-    likes?: number;
+    visibility: "public" | "friends" | "private";
 
-    comments?: number;
+    medias?: Array<any>;
 
-    shares?: number;
+    likes_count?: number;
+
+    comments_count?: number;
+
+    shares_count?: number;
 
     isLiked?: boolean;
 
     isBookmarked?: boolean;
 
-    isSaved?: boolean;
+    user_id: string;
+
+    user_display_name: string;
+
+    user_profile_photo: string;
+
+
 
 }

@@ -34,14 +34,13 @@ export default function Page() {
     }
 
     const handleSubmit = () => {
-        execute();
+        execute({email: formData.email, password: formData.password});
     }
 
     useEffect(() => {
         if (status === 200) {
-            console.log(data);
-            //setUser(data.user);
-            //router.push("/home");
+            setUser(data);
+            router.push("/home");
         }
 
         if (status === 400 || status === 401) {
@@ -51,7 +50,7 @@ export default function Page() {
         if (status === 500) {
             console.log("An error occurred. Please try again");
         }
-    }, [status]);
+    }, [loading]);
 
     return (
         <div className={styles.page}>
