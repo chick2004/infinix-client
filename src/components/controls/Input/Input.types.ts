@@ -1,6 +1,6 @@
 export default interface InputProps {
 
-    type?: "text" | "password" | "number" | "search";
+    type?: "text" | "password" | "number" | "search" | "date";
 
     value?: string;
 

@@ -1,0 +1,231 @@
+.page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.layout {
+    width: calc(75% + 20px);
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+}
+
+.left {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: 100%;
+    min-height: 0px;
+}
+
+.right {
+    padding-top: 20px;
+    height: 100%;
+    min-height: 0px;
+}
+
+.tab_card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+    background-color: var(--card-background-default);
+    border-radius: 8px;
+    border: 1px solid var(--card-stroke-default);
+}
+
+.tab_card > * {
+    width: 100%;
+}
+
+.setting_title {
+    color: var(--text-primary);
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: 0%;
+    font-weight: 400;
+}
+
+.settings_list {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.settings_list_item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    gap: 10px;
+    border-radius: 4px;
+    border: 1px solid var(--subtle-transparent);
+    cursor: pointer;
+    user-select: none;
+}
+
+.settings_list_item:hover {
+    background-color: var(--subtle-secondary);
+    border-color: var(--subtle-secondary);
+}
+
+.settings_list_item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    width: 3px;
+    height: 16px;
+    background-color: var(--accent-default);
+    border-radius: 999px;
+}
+
+.settings_list_item i {
+    color: var(--accent-default);
+}
+
+.tab_content_card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    padding-bottom: 20px;
+}
+
+.profile_preview {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+}
+
+.cover_photo {
+    width: 230px;
+    height: 130px;
+    border-radius: 8px;
+    border: 1px solid var(--card-stroke-default);
+    overflow: hidden;
+}
+
+.profile_photo {
+    width: 90px;
+    height: 90px;
+    border-radius: 999px;
+    border: 1px solid var(--card-stroke-default);
+    overflow: hidden;
+    margin-left: 25px;
+    margin-top: -45px;
+}
+
+.profile_photo img, .cover_photo img{
+    object-fit: cover;
+}
+
+.info_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.display_name {
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0%;
+    font-weight: 600;
+}
+
+.bio {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 400;
+}
+
+.setting_group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.setting_group_title {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 600;
+}
+
+.setting_group_item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    border: 1px solid var(--card-stroke-default);
+    background-color: var(--card-background-default);
+}
+
+.setting_item_content {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 15px 15px;
+    gap: 15px;
+}
+
+.setting_item_desc_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+}
+
+.setting_item_title {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 400;
+}
+
+.setting_item_desc {
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0%;
+    font-weight: 400;
+}
+
+.setting_item_dropdown {
+    border-top: 1px solid var(--card-stroke-default);
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    align-items: center;
+    justify-content: space-between;
+    animation: dropdown 0.2s ease-in-out;
+}
+
+@keyframes dropdown {
+    0% {
+        opacity: 0;
+        transform: translateY(-3px);
+    }
+    50% {
+        opacity: 0.8;
+        transform: translateY(-1px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}

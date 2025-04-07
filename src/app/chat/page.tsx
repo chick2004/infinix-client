@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image"; 
 
-import ClientLayout from "@/layouts/ClientLayout/ClientLayout";
+import { ClientLayout } from "@/layouts";
 
 import { DropdownSearch, Button, Icon, Textarea, Chatbox, Checkbox } from "@/components";
 import { useAuth } from "@/hooks";

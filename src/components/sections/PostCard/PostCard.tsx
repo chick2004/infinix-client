@@ -1,12 +1,23 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState, memo } from "react";
 
 import { Icon, Button, Textarea, Video } from "@/components";
 
 import PostCardProps from "./PostCard.types";
 import styles from "./PostCard.module.css";
+
+function renderWithTags(text: string) {
+    const parts = text.split(/(#\w+)/g);
+    return parts.map((part, index) => {
+    if (/^#\w+$/.test(part)) {
+        return <Link key={index} href={`/hashtag/${part.slice(1)}`} className={styles.tag}>{part}</Link>;
+    }
+      return <span key={index}>{part}</span>;
+    });
+}
 
 export default memo(function PostCard({ content = "", time = "2025-04-04 11:40:28", visibility = "public", medias = [], likes_count = 0, comments_count = 0, shares_count = 0, user_id = "", user_display_name = "", user_profile_photo = "/images/avatar.png" }: PostCardProps) {
 
@@ -51,7 +62,13 @@ export default memo(function PostCard({ content = "", time = "2025-04-04 11:40:2
                         <div className={styles.post_info_container}>
                             <p className={styles.date}>{date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                             <p className={styles.time}>{date.toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' })}</p>
-                            <Icon name={"earth"} size={16} />
+                            {visibility === "public" ? (
+                                <Icon name={"earth"} size={16} type={"regular"}></Icon>
+                            ) : visibility === "private" ? (
+                                <Icon name={"lock_closed"} size={16} type={"regular"}></Icon>
+                            ) : (
+                                <Icon name={"person"} size={16} type={"regular"}></Icon>
+                                )}
                         </div>
                     </div>
                     <Button appearance={"subtle"}> 
@@ -59,7 +76,7 @@ export default memo(function PostCard({ content = "", time = "2025-04-04 11:40:2
                     </Button>
                 </div>
                 <div className={styles.content}>
-                    <p>{content}</p>
+                    <p>{renderWithTags(content)}</p>
                 </div>
                 {medias.length > 0 && (
                     <div className={mediaGalleryClassName()} onClick={(e) => {e.preventDefault(); setIsOpenGallery(true); }}>

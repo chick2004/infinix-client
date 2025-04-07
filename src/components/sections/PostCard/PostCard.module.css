@@ -58,6 +58,13 @@
     color: var(--text-primary);
 }
 
+.tag {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 600;
+}
+
 .media_gallery {
     width: 100%;
     display: grid;

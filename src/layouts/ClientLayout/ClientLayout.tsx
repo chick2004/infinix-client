@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import { usePathname  } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,16 +8,15 @@ import Link from "next/link";
 import { DropdownSearch, Icon, NotificationsCard } from "@/components";
 
 import styles from "./ClientLayout.module.css";
+import Head from "next/head";
 
-export default function ClientLayout({children}: {children: React.ReactNode}) {
+const Header = memo(() => {
 
     const [showNotifications, setShowNotifications] = useState(false);
-
     const pathname = usePathname();
 
     return (
-        <div className={styles.layout}>
-            <header className={styles.header}>
+        <header className={styles.header}>
                 <div className={styles.header_left}>
                     <Image src="/images/logo.png" alt="" width={35} height={35}></Image>
                 </div>
@@ -46,11 +45,19 @@ export default function ClientLayout({children}: {children: React.ReactNode}) {
                         <Icon name="bookmark" size={24} type={pathname === "/bookmarks" ? "filled" : "regular"}/>
                     </Link>
 
-                    <Link href="/settings" className={pathname === "/settings" ? styles.active : ""} onClick={() => setShowNotifications(false)}>
-                        <Icon name="settings" size={24} type={pathname === "/settings" ? "filled" : "regular"}/>
+                    <Link href="/setting" className={pathname === "/setting" ? styles.active : ""} onClick={() => setShowNotifications(false)}>
+                        <Icon name="settings" size={24} type={pathname === "/setting" ? "filled" : "regular"}/>
                     </Link>
                 </div>
             </header>
+    )
+});
+
+export default function ClientLayout({children}: {children: React.ReactNode}) {
+
+    return (
+        <div className={styles.layout}>
+            <Header></Header>
             <div className={styles.main}> 
                 {children}
             </div>
