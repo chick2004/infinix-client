@@ -52,7 +52,7 @@
     border-color: var(--subtle-secondary);
 }
 
-.header_right > a.active, .header_right .notification_button > button.active {
+.header_right > a.active i, .header_right .notification_button > button.active i {
     color: var(--accent-default);
 }
 

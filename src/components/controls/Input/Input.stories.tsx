@@ -33,3 +33,9 @@ export const Number = (args: InputProps) => {
         <Input type={"number"} {...args}/>
     );
 }
+
+export const Date = (args: InputProps) => {
+    return (
+        <Input type={"date"} {...args}/>
+    );
+}

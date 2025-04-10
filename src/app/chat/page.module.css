@@ -143,8 +143,8 @@
     background-color: var(--card-background-default);
 }
 
-.conversation_container .header button {
-    color: var(--accent-default);
+.conversation_container .header button i {
+    color: var(--accent-default) !important;
 }
 
 .conversation_container .header .avatar {

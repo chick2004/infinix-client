@@ -3,12 +3,17 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
 import { Icon } from "@/components";
+import { useMotion, MotionName } from "@/hooks";
+
 import DropdownSearchProps from "./DropdownSearch.types";
 import styles from "./DropdownSearch.module.css";
 
-export default function DropdownSearch({ suggestions = [], value = "", disabled = false, placeholder, onChange, onSearch}: DropdownSearchProps) {
+export default function DropdownSearch({ suggestions = ["option1", "option2", "option3"], value = "", disabled = false, placeholder, onChange, onSearch}: DropdownSearchProps) {
     
     const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    const { shouldRender, animationStyle } = useMotion(isOpen, { appear: MotionName.SLIDE_DOWN_IN, disappear: MotionName.SLIDE_UP_OUT});
+
     const [internalValue, setInternalValue] = useState<string>(value);
     const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -64,8 +69,8 @@ export default function DropdownSearch({ suggestions = [], value = "", disabled 
                 </button>
             </div>
 
-            {isOpen && filteredSuggestions.length > 0 && (
-                <ul className={styles.list}>
+            {shouldRender && filteredSuggestions.length > 0 && (
+                <ul className={styles.list} style={animationStyle}>
                     {filteredSuggestions.map((item, index) => (
                         <li key={index} className={styles.list_item} onClick={() => handleSelect(item)}>
                             {item}

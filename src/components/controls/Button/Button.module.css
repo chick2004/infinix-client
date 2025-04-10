@@ -49,8 +49,16 @@
         inset 1px 0px 0px var(--control-stroke-on-accent-default);
 }
 
+.button-accent i {
+    color: var(--text-on-accent-primary);
+}
+
 .button-accent:hover {
     background-color: var(--accent-secondary);
+}
+
+.button-accent:hover i {
+    color: var(--text-on-accent-secondary);
 }
 
 .button-accent:active {
@@ -64,11 +72,20 @@
         inset 1px 0px 0px var(--control-stroke-on-accent-default);
 }
 
+.button-accent:active i {
+    color: var(--text-on-accent-secondary);
+}
+
 
 .button-accent:disabled {
     background-color: var(--accent-disabled);
     border: none;
     box-shadow: none;
+    color: var(--text-on-accent-disabled);
+    cursor: not-allowed;
+}
+
+.button-accent:disabled i {
     color: var(--text-on-accent-disabled);
 }
 
@@ -98,8 +115,16 @@
         inset 1px 0px 0px var(--control-stroke-default);
 }
 
+.button-standard i {
+    color: var(--text-primary);
+}
+
 .button-standard:hover {
     background-color: var(--control-secondary);
+}
+
+.button-standard:hover i {
+    color: var(--text-secondary);
 }
 
 .button-standard:active {
@@ -113,6 +138,10 @@
         inset 1px 0px 0px var(--control-stroke-default);
 }
 
+.button-standard:active i {
+    color: var(--text-secondary);
+}
+
 .button-standard:disabled {
     background-color: var(--control-disabled);
     color: var(--text-disabled);
@@ -122,6 +151,11 @@
         inset 0px 1px 0px var(--control-stroke-default),
         inset -1px 0px 0px var(--control-stroke-default),
         inset 1px 0px 0px var(--control-stroke-default);
+    cursor: not-allowed;
+}
+
+.button-standard:disabled i {
+    color: var(--text-disabled);
 }
 
 .button-subtle {
@@ -140,14 +174,37 @@
     border: none;
 }
 
+.button-subtle i {
+    color: var(--text-primary);
+}
+
 .button-subtle:hover {
     background-color: var(--subtle-secondary);
     box-shadow: inset 0px 0px 1px var(--subtle-secondary);
+}
+
+.button-subtle:hover i {
+    color: var(--text-secondary);
 }
 
 .button-subtle:active {
     background-color: var(--subtle-tertiary);
     color: var(--text-secondary);
     box-shadow: inset 0px 0px 1px var(--subtle-tertiary);
+}
+
+.button-subtle:active i {
+    color: var(--text-secondary);
+}
+
+.button-subtle:disabled {
+    background-color: var(--control-disabled);
+    color: var(--text-disabled);
+    border: none;
+    cursor: not-allowed;
+}
+
+.button-subtle:disabled i {
+    color: var(--text-disabled);
 }
 
