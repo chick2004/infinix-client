@@ -213,3 +213,23 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.theme_option_container {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+}
+
+.theme_option {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.theme_image_container {
+    width: 150px;
+    height: 120px;
+    border-radius: 4px;
+    border: 1px solid var(--card-stroke-default);
+    overflow: hidden;
+}

@@ -57,34 +57,20 @@ function clearAnimation(): React.CSSProperties {
 
 function createMotionStyle(name: MotionName, distance: MotionDistance = 10): Animation  {
     switch (name) {
-        case MotionName.FADE_IN:
-            return new Animation(fadeIn(), DURATION_1, EASING_FUNCTION_1);
-        case MotionName.FADE_OUT:
-            return new Animation(fadeOut(), DURATION_1, EASING_FUNCTION_1);
-        case MotionName.SCALE_UP_IN:
-            return new Animation(`${fadeIn()}, ${scaleUp103()}`, DURATION_3, EASING_FUNCTION_1);
-        case MotionName.SCALE_UP_OUT:
-            return new Animation(`${fadeOut()}, ${scaleUp100()}`, DURATION_1, EASING_FUNCTION_2);
-        case MotionName.SCALE_DOWN_IN:
-            return new Animation(`${fadeIn()}, ${scaleDown100()}`, DURATION_3, EASING_FUNCTION_1);
-        case MotionName.SCALE_DOWN_OUT:
-            return new Animation(`${fadeOut()}, ${scaleDown98()}`, DURATION_1, EASING_FUNCTION_2);
-        case MotionName.SLIDE_LEFT_IN:
-            return new Animation(`${fadeIn()}, ${slideLeftIn(distance)}`, DURATION_1, EASING_FUNCTION_1);
-        case MotionName.SLIDE_LEFT_OUT:
-            return new Animation(`${fadeOut()}, ${slideLeftOut(distance)}`, DURATION_1, EASING_FUNCTION_1);
-        case MotionName.SLIDE_RIGHT_IN:
-            return new Animation(`${fadeIn()}, ${slideRightIn(distance)}`, DURATION_1, EASING_FUNCTION_1);
-        case MotionName.SLIDE_RIGHT_OUT:
-            return new Animation(`${fadeOut()}, ${slideRightOut(distance)}`, DURATION_1, EASING_FUNCTION_1);
-        case MotionName.SLIDE_UP_IN:
-            return new Animation(`${fadeIn()}, ${slideUpIn(distance)}`, DURATION_1, EASING_FUNCTION_1);
-        case MotionName.SLIDE_UP_OUT:
-            return new Animation(`${fadeOut()}, ${slideUpOut(distance)}`, DURATION_1, EASING_FUNCTION_1);
-        case MotionName.SLIDE_DOWN_IN:
-            return new Animation(`${fadeIn()}, ${slideDownIn(distance)}`, DURATION_1, EASING_FUNCTION_1);
-        case MotionName.SLIDE_DOWN_OUT:
-            return new Animation(`${fadeOut()}, ${slideDownOut(distance)}`, DURATION_1, EASING_FUNCTION_1);
+        case MotionName.FADE_IN: return new Animation(fadeIn(), DURATION_1, EASING_FUNCTION_1);
+        case MotionName.FADE_OUT: return new Animation(fadeOut(), DURATION_1, EASING_FUNCTION_1);
+        case MotionName.SCALE_UP_IN: return new Animation(`${fadeIn()}, ${scaleUp103()}`, DURATION_3, EASING_FUNCTION_1);
+        case MotionName.SCALE_UP_OUT: return new Animation(`${fadeOut()}, ${scaleUp100()}`, DURATION_1, EASING_FUNCTION_2);
+        case MotionName.SCALE_DOWN_IN: return new Animation(`${fadeIn()}, ${scaleDown100()}`, DURATION_3, EASING_FUNCTION_1);
+        case MotionName.SCALE_DOWN_OUT: return new Animation(`${fadeOut()}, ${scaleDown98()}`, DURATION_1, EASING_FUNCTION_2);
+        case MotionName.SLIDE_LEFT_IN: return new Animation(`${fadeIn()}, ${slideLeftIn(distance)}`, DURATION_1, EASING_FUNCTION_1);
+        case MotionName.SLIDE_LEFT_OUT: return new Animation(`${fadeOut()}, ${slideLeftOut(distance)}`, DURATION_1, EASING_FUNCTION_1);
+        case MotionName.SLIDE_RIGHT_IN: return new Animation(`${fadeIn()}, ${slideRightIn(distance)}`, DURATION_1, EASING_FUNCTION_1);
+        case MotionName.SLIDE_RIGHT_OUT: return new Animation(`${fadeOut()}, ${slideRightOut(distance)}`, DURATION_1, EASING_FUNCTION_1);
+        case MotionName.SLIDE_UP_IN: return new Animation(`${fadeIn()}, ${slideUpIn(distance)}`, DURATION_1, EASING_FUNCTION_1);
+        case MotionName.SLIDE_UP_OUT: return new Animation(`${fadeOut()}, ${slideUpOut(distance)}`, DURATION_1, EASING_FUNCTION_1);
+        case MotionName.SLIDE_DOWN_IN: return new Animation(`${fadeIn()}, ${slideDownIn(distance)}`, DURATION_1, EASING_FUNCTION_1);
+        case MotionName.SLIDE_DOWN_OUT: return new Animation(`${fadeOut()}, ${slideDownOut(distance)}`, DURATION_1, EASING_FUNCTION_1);
     }
 }
 

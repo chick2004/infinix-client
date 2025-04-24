@@ -1,5 +1,5 @@
 .select {
-    min-width: 128px;
+    min-width: fit-content;
     width: fit-content;
     height: 32px;
     display: flex;
@@ -21,6 +21,7 @@
 }
 
 .select_group {
+    width: 128px;
     border-radius: 4px;
     display: flex;
     align-items: center;
@@ -40,9 +41,8 @@
         inset -1px 0px 0px var(--control-stroke-default),
         inset 1px 0px 0px var(--control-stroke-default);
 
-    min-width: 98px;
+    min-width: 128px;
     max-width: 100%;
-    width: fit-content;
     height: 32px;
     padding: 5px 11px 7px 11px;
     gap: 8px;

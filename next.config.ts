@@ -5,12 +5,21 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http', // Hoặc 'https' nếu bạn sử dụng https
+        protocol: 'http',
         hostname: 'localhost',
         port: '8000',
-        pathname: '/api/media/storage/uploads/**', // Đảm bảo đúng đường dẫn tới ảnh
+        pathname: '/api/media/storage/uploads/**'
       },
     ],
+  },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/home',
+        permanent: false
+      }
+    ];
   },
 };
 

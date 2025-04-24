@@ -10,17 +10,17 @@ export default function Video({ src, ...props }: React.VideoHTMLAttributes<HTMLV
         if (src) {
         fetch(src)
             .then((response) => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch video');
-            }
-            return response.blob();
+                if (!response.ok) {
+                    throw new Error('Failed to fetch video');
+                }
+                return response.blob();
             })
             .then((blob) => {
-            const url = URL.createObjectURL(blob);
-            setVideoUrl(url);
+                const url = URL.createObjectURL(blob);
+                setVideoUrl(url);
             })
             .catch((error) => {
-            console.error('Error fetching video:', error);
+                console.error('Error fetching video:', error);
             });
         }
     }, []);

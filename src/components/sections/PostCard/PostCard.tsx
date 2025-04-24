@@ -21,7 +21,8 @@ function renderWithTags(text: string) {
 
 export default memo(function PostCard({ content = "", time = "2025-04-04 11:40:28", visibility = "public", medias = [], likes_count = 0, comments_count = 0, shares_count = 0, user_id = "", user_display_name = "", user_profile_photo = "/images/avatar.png" }: PostCardProps) {
 
-    const [isOpenGallery, setIsOpenGallery] = useState(false);
+    const [isOpenDetail, setIsOpenDetail] = useState(false);
+    const [isOpenPostActions, setIsOpenPostActions] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     
     const extraMediaCount = medias.length > 5 ? medias.length - 5 : 0;
@@ -68,18 +69,32 @@ export default memo(function PostCard({ content = "", time = "2025-04-04 11:40:2
                                 <Icon name={"lock_closed"} size={16} type={"regular"}></Icon>
                             ) : (
                                 <Icon name={"person"} size={16} type={"regular"}></Icon>
-                                )}
+                            )}
                         </div>
                     </div>
-                    <Button appearance={"subtle"}> 
-                        <Icon name={"more_horizontal"} size={16}></Icon>
-                    </Button>
+                    <div className={styles.post_actions_container}>
+                        <Button appearance={"subtle"} onClick={() => setIsOpenPostActions(!isOpenPostActions)}>
+                            <Icon name={"more_horizontal"} size={16}></Icon>
+                        </Button>
+                        {isOpenPostActions && (
+                            <div className={styles.post_actions_list}>
+                                <div className={styles.post_actions_item}> 
+                                    <Icon name={"edit"} size={16}></Icon>
+                                    Edit this post
+                                </div>
+                                <div className={styles.post_actions_item}> 
+                                    <Icon name={"delete"} size={16}></Icon>
+                                    Delete this post
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <div className={styles.content}>
                     <p>{renderWithTags(content)}</p>
                 </div>
                 {medias.length > 0 && (
-                    <div className={mediaGalleryClassName()} onClick={(e) => {e.preventDefault(); setIsOpenGallery(true); }}>
+                    <div className={mediaGalleryClassName()} onClick={(e) => {e.preventDefault(); setIsOpenDetail(true); }}>
                         {medias.slice(0, 5).map((media, index) => (
                             <div key={index} className={styles.media_item}>
                                 {media.type.startsWith("video/") ? (
@@ -100,7 +115,7 @@ export default memo(function PostCard({ content = "", time = "2025-04-04 11:40:2
                             100
                             <Icon name={"heart"} size={20} type={"regular"}></Icon>
                         </Button>
-                        <Button appearance={"subtle"} onClick={() => setIsOpenGallery(true)}>
+                        <Button appearance={"subtle"} onClick={() => setIsOpenDetail(true)}>
                             100
                             <Icon name={"chat_empty"} size={20} type={"regular"}></Icon>
                         </Button>
@@ -117,33 +132,33 @@ export default memo(function PostCard({ content = "", time = "2025-04-04 11:40:2
                 </div>
             </div>
 
-            {isOpenGallery && Array.isArray(medias) && medias.length > 0  && (
+            {isOpenDetail && (
                 <div className={styles.dialog}>
-                    <div className={styles.detail_post}>
-                        <div className={styles.gallery_carousel}>
-                            <div className={styles.list}>
-                                <div className={styles.item}>
-                                    {medias[currentIndex].type.startsWith("video/") ? (
-                                        <Video className={styles.media} src={process.env.NEXT_PUBLIC_API_URL + "/media" + medias[currentIndex].path} controls autoPlay muted loop playsInline/>
-                                    ) : (
-                                        <Image src={process.env.NEXT_PUBLIC_API_URL + "/media" + medias[currentIndex].path} alt={`media-${currentIndex}`} fill />
-                                    )}
+                    <div className={`${styles.detail_post} ${Array.isArray(medias) && medias.length > 0 ? styles.detail_post_with_media : ""}`}>
+                        {Array.isArray(medias) && medias.length > 0 && (
+                            <div className={styles.gallery_carousel}>
+                                <div className={styles.list}>
+                                    <div className={styles.item}>
+                                        {medias[currentIndex].type.startsWith("video/") ? (
+                                            <Video className={styles.media} src={process.env.NEXT_PUBLIC_API_URL + "/media" + medias[currentIndex].path} controls autoPlay muted loop playsInline/>
+                                        ) : (
+                                            <Image src={process.env.NEXT_PUBLIC_API_URL + "/media" + medias[currentIndex].path} alt={`media-${currentIndex}`} fill />
+                                        )}
+                                    </div>
                                 </div>
+                                {medias.length > 1 && (
+                                    <>
+                                        <Button appearance={"standard"} className={styles.prev} onClick={prevSlide}>
+                                            <Icon name={"chevron_left"}></Icon>
+                                        </Button>
+                                        <Button appearance={"standard"} className={styles.next} onClick={nextSlide}>
+                                            <Icon name={"chevron_right"}></Icon>
+                                        </Button>
+                                    </>
+                                )}
                             </div>
-                            {medias.length > 1 && (
-                                <>
-                                    <Button appearance={"standard"} className={styles.prev} onClick={prevSlide}>
-                                        <Icon name={"chevron_left"}></Icon>
-                                    </Button>
-                                    <Button appearance={"standard"} className={styles.next} onClick={nextSlide}>
-                                        <Icon name={"chevron_right"}></Icon>
-                                    </Button>
-                                </>
-                            )}
-                            <Button appearance={"standard"} className={styles.close} onClick={() => setIsOpenGallery(false)}>
-                                <Icon name={"dismiss"}></Icon>
-                            </Button>
-                        </div>
+                        )}
+                        
                         <div className={styles.post_detail_info}>
                             <div className={styles.header}>
                                 <div className={styles.avatar_container}>
@@ -279,6 +294,9 @@ export default memo(function PostCard({ content = "", time = "2025-04-04 11:40:2
                             </div>
                         </div>
                     </div>
+                    <Button appearance={"standard"} className={styles.close} onClick={() => setIsOpenDetail(false)}>
+                        <Icon name={"dismiss"}></Icon>
+                    </Button>
                 </div>
             )}
         </>

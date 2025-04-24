@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
     useEffect(() => {
         if (status === 200) {
             setUser(data);
-        } else if (status === 401 && !["/login", "/register", "/"].includes(pathname)) {
+        } else if (status === 401 && !["/login", "/register"].includes(pathname)) {
             router.push("/login");
         }
     }, [loading]);

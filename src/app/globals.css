@@ -199,7 +199,8 @@
     position: relative;
     font-family: var(--font-family), 'Fluent Emoji Color';
 
-    
+    scrollbar-width: none;
+
     color: var(--text-primary);
     font-size: 14px;
     line-height: 20px;
