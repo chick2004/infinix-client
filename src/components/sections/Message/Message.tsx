@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Icon } from "@/components";
 
 import MessageProps from "./Message.types";
-import styles from "./Message.module.css";
+import styles from "./Message.module.scss";
 
 export default function Message({ content = "this is a message", time = new Date, is_own = true }: MessageProps) {
 

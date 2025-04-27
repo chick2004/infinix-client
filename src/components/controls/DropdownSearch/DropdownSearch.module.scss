@@ -1,5 +1,5 @@
 
-.dropdown_search_input {
+.dropdown_search {
     height: 32px;
     width: 200px;
 }
@@ -22,31 +22,31 @@
     overflow: hidden;
     outline: none;
     position: relative;
-}
 
-.input_group.opened {
-    border-bottom-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-}
+    &.opened {
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
 
+    &:hover {
+        background-color: var(--control-hover);
+    }
+    
+    &:focus-within{
+        background-color: var(--control-input-active);
+        border-bottom: 1px inset var(--accent-default);
+    }
+    
+    &.disabled {
+        background-color: var(--control-disabled);
+        border: 1px inset var(--control-stroke-default);
+        color: var(--text-disabled);
 
-.input_group:hover {
-    background-color: var(--control-hover);
-}
-
-.input_group:focus-within{
-    background-color: var(--control-input-active);
-    border-bottom: 1px inset var(--accent-default);
-}
-
-.input_group.disabled {
-    background-color: var(--control-disabled);
-    border: 1px inset var(--control-stroke-default);
-    color: var(--text-disabled);
-}
-
-.input_group.disabled > input {
-    color: var(--text-disabled);
+        
+        input {
+            color: var(--text-disabled);
+        }
+    }
 }
 
 .input {
@@ -65,12 +65,14 @@
     border: none;
     outline: none;
     color: var(--text-secondary);
+
+    &:hover {
+        background-color: var(--subtle-secondary);
+        box-shadow: inset 0px 0px 1px var(--subtle-secondary);
+    }
 }
 
-.input_button:hover {
-    background-color: var(--subtle-secondary);
-    box-shadow: inset 0px 0px 1px var(--subtle-secondary);
-}
+
 
 
 .list {
@@ -94,27 +96,28 @@
     cursor: pointer;
     position: relative;
     color: var(--text-primary);
-}
 
-.list_item:hover {
-    background-color: var(--subtle-secondary);
-    box-shadow: inset 0px 0px 1px var(--subtle-secondary);
-}
+    &:hover {
+        background-color: var(--subtle-secondary);
+        box-shadow: inset 0px 0px 1px var(--subtle-secondary);
+    }
+    
+    &.disabled {
+        background-color: var(--subtle-disabled);
+        color: var(--text-disabled);
+    }
 
-.list_item.disabled {
-    background-color: var(--subtle-disabled);
-    color: var(--text-disabled);
-}
-.list_item.active::before {
-    content: "";
-    width: 4px;
-    height: 16px;
-    border-radius: 100px;
-    background-color: var(--accent-default);
-    position: absolute;
-    left: 0px;
-    top: 50%;
-    transform: translateY(-50%);
+    &.active::before {
+        content: "";
+        width: 4px;
+        height: 16px;
+        border-radius: 100px;
+        background-color: var(--accent-default);
+        position: absolute;
+        left: 0px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 }
 
 

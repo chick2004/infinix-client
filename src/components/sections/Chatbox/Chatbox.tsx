@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Icon, Textarea, Button, MessageGroup } from "@/components";
 import MessageProps from "@/components/sections/Message/Message.types";
 import MessageGroupProps from "@/components/sections/MessageGroup/MessageGroup.types";
-import styles from "./Chatbox.module.css";
+import styles from "./Chatbox.module.scss";
 
 export default function Chatbox() {
 

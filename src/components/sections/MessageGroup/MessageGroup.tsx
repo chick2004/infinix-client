@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Message } from "@/components";
 
 import MessageGroupProps from "./MessageGroup.types";
-import styles from "./MessageGroup.module.css";
+import styles from "./MessageGroup.module.scss";
 
 export default function MessageGroup({ messages, avatar, user_displayname }: MessageGroupProps) {
 

@@ -10,7 +10,7 @@ const meta: Meta<typeof Icon> = {
 
 export default meta;
 
-export const Default = (args: IconProps) => {
+export const Docs = (args: IconProps) => {
     return (
         <Icon {...args} />
     );

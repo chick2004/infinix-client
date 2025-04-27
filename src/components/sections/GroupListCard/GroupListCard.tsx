@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { Button, Icon } from "@/components";
-import styles from './GroupListCard.module.css';
+import styles from './GroupListCard.module.scss';
 
 interface Group {
     group_name: string;

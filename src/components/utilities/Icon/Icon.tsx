@@ -1,5 +1,5 @@
 import IconProps from "./Icon.types";
-import styles from "./Icon.module.css";
+import styles from "./Icon.module.scss";
 
 export default function Icon({name = "radio_button", size = 24, type = "regular", className}: IconProps) {
 

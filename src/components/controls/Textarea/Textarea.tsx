@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 
 import TextareaProps from "./Textarea.types";
-import styles from "./Textarea.module.css";
+import styles from "./Textarea.module.scss";
 
 export default function Textarea({ value = "", rows, placeholder, disabled = false, onChange }: TextareaProps) {
 

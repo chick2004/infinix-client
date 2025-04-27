@@ -5,7 +5,7 @@ import { Icon } from "@/components";
 import { useMotion, MotionName } from "@/hooks";
 
 import SelectProps from "./Select.types";
-import styles from "./Select.module.css";
+import styles from "./Select.module.scss";
 
 export default function Select({ options=["option1", "option2", "option3"], disabled = false }: SelectProps) {
 

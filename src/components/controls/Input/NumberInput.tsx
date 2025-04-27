@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Icon } from "@/components";
 
 import InputProps from "./Input.types";
-import styles from "./Input.module.css";
+import styles from "./Input.module.scss";
 
 export function NumberInput({ value = "0", name, disabled, placeholder, min, max, step = 1, onChange }: InputProps) {
     

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 import RadioGroupProps from "./RadioGroup.types";
-import styles from "./RadioGroup.module.css";
+import styles from "./RadioGroup.module.scss";
 
 export default function RadioGroup({name = "", label, value, options, onChange} : RadioGroupProps) {
 

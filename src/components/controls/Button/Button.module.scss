@@ -1,0 +1,186 @@
+.button_base {
+    width: fit-content;
+    height: 32px;
+    cursor: pointer;
+    white-space: nowrap;
+    user-select: none;
+
+    &:disabled {
+        cursor: not-allowed;
+    }
+}
+
+.button_text_only {
+    @extend .button_base;
+    min-width: 98px;
+    max-width: 100%;
+    padding: 5px 12px 7px 12px;
+}
+
+.button_icon_only {
+    @extend .button_base;
+    min-width: 32px;
+    max-width: 100%;
+    padding: 8px;
+}
+
+.button_text_with_icon {
+    @extend .button_base;
+    min-width: 98px;
+    max-width: 100%;
+    padding: 5px 11px 7px 11px;
+    gap: 8px;
+}
+
+.button_accent {
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent-default);
+    color: var(--text-on-accent-primary);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 400;
+    border-width: 1px;
+    border-style: solid;
+    border-top-color: var(--control-stroke-on-accent-default);
+    border-right-color: var(--control-stroke-on-accent-default);
+    border-bottom-color: var(--control-stroke-on-accent-secondary);
+    border-left-color: var(--control-stroke-on-accent-default);
+
+    i {
+        color: var(--text-on-accent-primary);
+    }
+
+    &:hover {
+        background-color: var(--accent-secondary);
+
+        i {
+            color: var(--text-on-accent-secondary);
+        }
+    }
+
+    &:active {
+        background-color: var(--accent-tertiary);
+        color: var(--text-on-accent-secondary);
+        border-bottom-color: var(--control-stroke-on-accent-default);
+
+        i {
+            color: var(--text-on-accent-secondary);
+        }
+    }
+
+    &:disabled {
+        background-color: var(--accent-disabled);
+        border: none;
+        color: var(--text-on-accent-disabled);
+
+        i {
+            color: var(--text-on-accent-disabled);
+        }
+    }
+}
+
+.button_standard {
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--control-default);
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 400;
+    border-width: 1px;
+    border-style: solid;
+    border-top-color: var(--control-stroke-default);
+    border-right-color: var(--control-stroke-default);
+    border-bottom-color: var(--control-stroke-secondary);
+    border-left-color: var(--control-stroke-default);
+
+    i {
+        color: var(--text-primary);
+    }
+
+    &:hover {
+        background-color: var(--control-secondary);
+
+        i {
+            color: var(--text-secondary);
+        }
+    }
+
+    &:active {
+        background-color: var(--control-tertiary);
+        color: var(--text-secondary);
+        border-bottom-color: var(--control-stroke-default);
+
+        i {
+            color: var(--text-secondary);
+        }
+    }
+    &:disabled {
+        background-color: var(--control-disabled);
+        color: var(--text-disabled);
+        border-color: var(--control-stroke-default);
+    
+        i {
+            color: var(--text-disabled);
+        }        
+    }
+}
+
+.button_subtle {
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--subtle-transparent);
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 400;
+    
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--subtle-transparent);
+
+    i {
+        color: var(--text-primary);
+    }
+
+    &:hover {
+        background-color: var(--subtle-secondary);
+        border-color: var(--subtle-secondary);
+
+        i {
+            color: var(--text-secondary);
+        }
+    }
+
+    &:active {
+        background-color: var(--subtle-tertiary);
+        color: var(--text-secondary);
+        border-color: var(--subtle-tertiary);
+
+        i {
+            color: var(--text-secondary);
+        }
+    }
+
+    &:disabled {
+        background-color: var(--control-disabled);
+        color: var(--text-disabled);
+        border: none;
+
+        i {
+            color: var(--text-disabled);
+        }
+    }
+}

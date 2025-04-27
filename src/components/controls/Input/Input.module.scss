@@ -13,36 +13,35 @@
     border-left: 1px inset var(--control-stroke-default);
     border-top: 1px inset var(--control-stroke-default);
     border-right: 1px inset var(--control-stroke-default);
-    
     outline: none;
     position: relative;
-}
 
-.input_group:hover {
-    background-color: var(--control-hover);
-}
-
-.input_group:focus-within{
-    background-color: var(--control-input-active);
-    border-bottom: 1px inset var(--accent-default);
-}
-
-.input_group.disabled {
-    background-color: var(--control-disabled);
-    border: 1px inset var(--control-stroke-default);
-    color: var(--text-disabled);
-}
-
-.input_group.disabled > input {
-    color: var(--text-disabled);
-}
-
-.input_group > input {
-    width: 100%;
-    border: unset;
-    outline: unset;
-    background-color: unset;
-    color: var(--text-primary);
+    &:hover {
+        background-color: var(--control-hover);
+    }
+    
+    &:focus-within{
+        background-color: var(--control-input-active);
+        border-bottom: 1px inset var(--accent-default);
+    }
+    
+    &.disabled {
+        background-color: var(--control-disabled);
+        border: 1px inset var(--control-stroke-default);
+        color: var(--text-disabled);
+    }
+    
+    &.disabled > input {
+        color: var(--text-disabled);
+    }
+    
+    input {
+        width: 100%;
+        border: unset;
+        outline: unset;
+        background-color: unset;
+        color: var(--text-primary);
+    }
 }
 
 .input_button {
@@ -53,37 +52,27 @@
     border: none;
     outline: none;
     color: var(--text-secondary);
+
+    &:hover {
+        background-color: var(--subtle-secondary);
+        box-shadow: inset 0px 0px 1px var(--subtle-secondary);
+    }
 }
 
-.input_button:hover {
-    background-color: var(--subtle-secondary);
-    box-shadow: inset 0px 0px 1px var(--subtle-secondary);
-}
+.input_button
 
-.input_group > input::-ms-reveal, .input_group > input::-ms-clear {
+input::-ms-reveal, input::-ms-clear, input::-webkit-search-cancel-button, input::-webkit-calendar-picker-indicator {
     display: none;
 }
 
 .input_group input::-webkit-outer-spin-button, .input_group  input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.input_group input::-webkit-search-cancel-button {
-    display: none;
-}
-
-.input_group input::-webkit-calendar-picker-indicator {
-    display: none;
-    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
 }
 
 .input_date, .input_date input {
     cursor: pointer !important;
     user-select: none !important;
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
 }
 
 /* Date input styles */

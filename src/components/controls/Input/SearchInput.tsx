@@ -5,11 +5,11 @@ import { useState, useEffect } from "react";
 import { Icon } from "@/components";
 
 import InputProps from "./Input.types";
-import styles from "./Input.module.css";
+import styles from "./Input.module.scss";
 
 export function SearchInput({ value = "", name, disabled, placeholder, onChange, onSearch }: InputProps) {
 
-    const [internalValue, setInternalValue] = useState<string | number>(value);
+    const [internalValue, setInternalValue] = useState<string>(value);
 
     useEffect(() => {
         setInternalValue(value);

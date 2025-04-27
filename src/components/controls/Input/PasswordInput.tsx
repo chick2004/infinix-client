@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { Icon } from "@/components";
 
 import InputProps from "./Input.types";
-import styles from "./Input.module.css";
+import styles from "./Input.module.scss";
 
 export function PasswordInput({ value = "", name, disabled, placeholder, onChange }: InputProps) {
 

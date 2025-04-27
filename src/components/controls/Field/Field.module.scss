@@ -21,13 +21,13 @@
     width: 100%;
     gap: 5px;
     align-items: center;
-}
 
-.validation_message span {
-    flex: 1;
-    min-width: 0px;
-    width: 100%;
-    overflow-wrap: break-word;
+    span {
+        flex: 1;
+        min-width: 0px;
+        width: 100%;
+        overflow-wrap: break-word;
+    }
 }
 
 .success_color {

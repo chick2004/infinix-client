@@ -3,7 +3,7 @@ import React from "react";
 import { Icon } from "@/components";
 
 import FieldProps from "./Field.types";
-import styles from "./Field.module.css";
+import styles from "./Field.module.scss";
 
 export default function Field({children, label, validation_state = "info", validation_message}: FieldProps) {
 

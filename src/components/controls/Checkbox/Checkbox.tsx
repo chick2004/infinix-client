@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 import CheckboxProps from "./Checkbox.types";
-import styles from "./Checkbox.module.css";
+import styles from "./Checkbox.module.scss";
 
 export default function Checkbox({label = "", checked = false, onChange} : CheckboxProps) {
 

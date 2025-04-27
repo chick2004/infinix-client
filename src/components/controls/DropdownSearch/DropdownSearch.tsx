@@ -6,7 +6,7 @@ import { Icon } from "@/components";
 import { useMotion, MotionName } from "@/hooks";
 
 import DropdownSearchProps from "./DropdownSearch.types";
-import styles from "./DropdownSearch.module.css";
+import styles from "./DropdownSearch.module.scss";
 
 export default function DropdownSearch({ suggestions = ["option1", "option2", "option3"], value = "", disabled = false, placeholder, onChange, onSearch}: DropdownSearchProps) {
     
@@ -56,9 +56,9 @@ export default function DropdownSearch({ suggestions = ["option1", "option2", "o
     );
 
     return (
-        <div className={styles.dropdown_search_input} ref={containerRef}>
+        <div className={styles.dropdown_search} ref={containerRef}>
             <div className={`${styles.input_group} ${disabled ? styles.disabled : ""} ${isOpen ? styles.opened : ""}`}>
-                <input className={styles.input} type="search" disabled={disabled} placeholder={placeholder} value={internalValue} onChange={handleChange} onFocus={() => setIsOpen(filteredSuggestions.length > 0)}/>
+                <input className={styles.input} type="search" disabled={disabled} placeholder={placeholder} value={internalValue} onChange={handleChange} onClick={() => setIsOpen(filteredSuggestions.length > 0)}/>
                 {internalValue && (
                     <button type="button" className={styles.input_button} onClick={handleClear}>
                         <Icon name="dismiss" size={16} type="regular" />

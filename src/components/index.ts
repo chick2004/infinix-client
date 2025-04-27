@@ -11,6 +11,7 @@ export { default as ToggleSwitch } from './controls/ToggleSwitch/ToggleSwitch';
 
 export { default as Collapse } from './motions/Collapse/Collapse';
 
+export { default as Carousel } from './utilities/Carousel/Carousel';
 export { default as Icon } from './utilities/Icon/Icon';
 export { default as Spinner } from './utilities/Spinner/Spinner';
 export { default as Video } from './utilities/Video/Video';

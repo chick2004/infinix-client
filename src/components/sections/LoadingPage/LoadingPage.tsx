@@ -3,7 +3,7 @@
 import Image from 'next/image';
 
 import { Spinner } from "@/components";
-import styles from './LoadingPage.module.css';
+import styles from './LoadingPage.module.scss';
 
 export default function LoadingPage({}) {
     return (

@@ -5,8 +5,7 @@ import { useState, useEffect, useRef, useCallback, memo } from "react";
 
 import { Button, Icon, Input, Textarea, Spinner, EmojiPicker } from "@/components";
 import { useRequest } from "@/hooks";
-import styles from "./CreatePostCard.module.css";
-import { exec } from "child_process";
+import styles from "./CreatePostCard.module.scss";
 
 export default memo(function CreatePostCard() {
 

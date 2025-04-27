@@ -318,15 +318,6 @@
     left: 10;
 }
 
-.close {
-    position: fixed;
-    top: 20;
-    right: 20;
-    cursor: pointer;
-    z-index: 1;
-    background-color: var(--solid-background-base);
-}
-
 .post_detail_info {
     width: 650px;
     padding-top: 10px;
@@ -339,6 +330,13 @@
 .post_detail_info .header {
     padding: 0px 10px;
     margin-bottom: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.post_detail_info_buttons {
+    display: flex;
+    gap: 10px;
 }
 
 .post_detail_info .content {

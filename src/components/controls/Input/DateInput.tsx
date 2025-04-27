@@ -6,7 +6,7 @@ import { Icon, Button } from "@/components";
 import { useMotion, MotionName } from "@/hooks";
 
 import InputProps from "./Input.types";
-import styles from "./Input.module.css";
+import styles from "./Input.module.scss";
 
 const getDaysInMonth = (year: number, month: number) =>{
     const date = new Date(year, month + 1, 0);

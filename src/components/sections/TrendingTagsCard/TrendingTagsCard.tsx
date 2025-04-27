@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { Icon, Button } from "@/components";
 
-import styles from "./TrendingTagsCard.module.css";
+import styles from "./TrendingTagsCard.module.scss";
 
 export default function TrendingTagsCard() {
 

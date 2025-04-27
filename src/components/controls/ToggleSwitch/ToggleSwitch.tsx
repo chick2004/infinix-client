@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 
 import ToggleSwitchProps from "./ToggleSwitch.types";
-import styles from "./ToggleSwitch.module.css";
+import styles from "./ToggleSwitch.module.scss";
 
-export default function ToggleSwitch({ value, label, checked = false, onChange, disabled }: ToggleSwitchProps) {
+export default function ToggleSwitch({label, checked = false, onChange, disabled }: ToggleSwitchProps) {
 
     const [isChecked, setIsChecked] = useState<boolean>(checked);
 

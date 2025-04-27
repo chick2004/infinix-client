@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { Button, Icon } from "@/components";
-import styles from './FriendListCard.module.css';
+import styles from './FriendListCard.module.scss';
 
 interface User {
     display_name: string;

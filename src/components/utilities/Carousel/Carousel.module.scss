@@ -1,0 +1,69 @@
+.carousel {
+    width: 900px;
+    height: 300px;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+.slides {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+}
+
+.slide img {
+    object-fit: cover;
+}
+
+.indicators, .arrows {
+    position: absolute;
+    width: 100%;
+}
+
+.indicators {
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    bottom: 10px;
+}
+
+.indicator_button {
+    cursor: pointer;
+    padding: 5px;
+}
+
+.indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background-color: var(--text-tertiary);
+}
+
+.indicator.active {
+    width: 16px;
+    background-color: var(--text-primary);
+}
+
+.indicator.active:hover {
+    background-color: var(--text-secondary);
+}
+
+.indicator_button:hover .indicator {
+    background-color: var(--text-secondary);
+}
+
+.arrows {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0px 10px;
+}

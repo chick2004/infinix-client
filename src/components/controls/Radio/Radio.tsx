@@ -2,7 +2,7 @@
 
 import React from "react";
 import RadioProps from "./Radio.types";
-import styles from "./Radio.module.css";
+import styles from "./Radio.module.scss";
 
 export default function Radio({ name = "", label, value, checked, onChange }: RadioProps) {
     

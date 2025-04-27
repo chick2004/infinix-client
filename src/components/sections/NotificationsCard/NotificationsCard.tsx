@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Button, Icon } from "@/components";
-import styles from "./NotificationsCard.module.css";
+import styles from "./NotificationsCard.module.scss";
 
 interface Notification {
     image: string;

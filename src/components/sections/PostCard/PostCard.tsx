@@ -7,7 +7,7 @@ import { useState, memo } from "react";
 import { Icon, Button, Textarea, Video } from "@/components";
 
 import PostCardProps from "./PostCard.types";
-import styles from "./PostCard.module.css";
+import styles from "./PostCard.module.scss";
 
 function renderWithTags(text: string) {
     const parts = text.split(/(#\w+)/g);
@@ -172,9 +172,14 @@ export default memo(function PostCard({ content = "", time = "2025-04-04 11:40:2
                                         <Icon name={"earth"} size={16} />
                                     </div>
                                 </div>
-                                <Button appearance={"subtle"}> 
-                                    <Icon name={"more_horizontal"} size={16}></Icon>
-                                </Button>
+                                <div className={styles.post_detail_info_buttons}>
+                                    <Button appearance={"subtle"}> 
+                                        <Icon name={"more_horizontal"} size={16}></Icon>
+                                    </Button>
+                                    <Button appearance={"subtle"} onClick={() => setIsOpenDetail(false)}> 
+                                        <Icon name={"dismiss"} size={16}></Icon>
+                                    </Button>
+                                </div>
                             </div>
                             <div className={styles.content}>
                                 <p>Lorem ipsum dolor sit amet consectetur. Id suscipit pharetra sagittis amet sed elementum nibh consequat. Mattis morbi congue donec mattis tortor porta dignissim.</p>
@@ -294,9 +299,6 @@ export default memo(function PostCard({ content = "", time = "2025-04-04 11:40:2
                             </div>
                         </div>
                     </div>
-                    <Button appearance={"standard"} className={styles.close} onClick={() => setIsOpenDetail(false)}>
-                        <Icon name={"dismiss"}></Icon>
-                    </Button>
                 </div>
             )}
         </>

@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import { Button, Icon } from "@/components";
 
-import styles from "./SuggestionUsersCard.module.css";
+import styles from "./SuggestionUsersCard.module.scss";
 
 interface User {
     display_name: string;

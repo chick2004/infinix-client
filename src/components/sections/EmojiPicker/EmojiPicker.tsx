@@ -6,7 +6,7 @@ import { Icon, Input } from "@/components";
 
 import EmojiPickerProps from "./EmojiPicker.types";
 import EmojiType from "./Emoji.types";
-import styles from "./EmojiPicker.module.css";
+import styles from "./EmojiPicker.module.scss";
 
 export default memo(function EmojiPicker({ onEmojiSelect }: EmojiPickerProps) {
     const [search, setSearch] = useState<string>("");

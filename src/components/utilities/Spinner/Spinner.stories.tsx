@@ -3,14 +3,14 @@ import Spinner from './Spinner';
 import SpinnerProps from './Spinner.types';
 
 const meta: Meta<typeof Spinner> = {
-    title: 'Controls/Spinner',
+    title: 'Utilities/Spinner',
     component: Spinner,
     tags: ['autodocs']
 }
 
 export default meta;
 
-export const Default = (args: SpinnerProps) => {
+export const Docs = (args: SpinnerProps) => {
     return (
         <Spinner {...args}/>
     );

@@ -1,7 +1,7 @@
 "use client";
 
 import SpinnerProps from "./Spinner.types";
-import styles from "./Spinner.module.css";
+import styles from "./Spinner.module.scss";
 
 export default function Spinner({ size = "small"}: SpinnerProps) {
 

@@ -1,0 +1,90 @@
+"use client";
+
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { Button, Icon } from "@/components";
+import CarouselProps from "./Carousel.types";
+import styles from "./Carousel.module.scss";
+
+export default function Carousel({ medias = ["https://placehold.co/600x300?text=Slide+1", "https://placehold.co/600x300?text=Slide+2", "https://placehold.co/600x300?text=Slide+3"], className, autoPlay, interval, showIndicators = true, showArrows = true }: CarouselProps) {
+    
+    const [currentIndex, setCurrentIndex] = useState(1);
+    const [realIndex, setRealIndex] = useState(0);
+    const [transitionEnabled, setTransitionEnabled] = useState(true);
+    const slideRef = useRef<HTMLDivElement>(null);
+
+    const extendedSlides = medias.length > 1 ? [medias[medias.length - 1], ...medias, medias[0]] : medias;
+
+    const handleNext = () => {
+        setCurrentIndex(prev => prev + 1);
+        setRealIndex((prev) => (prev + 1) % medias.length);
+        setTransitionEnabled(true);
+    };
+    
+    const handlePrev = () => {
+        setCurrentIndex(prev => prev - 1);
+        setRealIndex((prev) => (prev - 1 + medias.length) % medias.length);
+        setTransitionEnabled(true);
+    };
+
+    const handleTransitionEnd = () => {
+        if (currentIndex === 0) {
+            setTransitionEnabled(false);
+            setCurrentIndex(medias.length);
+        } else if (currentIndex === extendedSlides.length - 1) {
+            setTransitionEnabled(false);
+            setCurrentIndex(1);
+        }
+    };
+
+    useEffect(() => {
+        if (!slideRef.current) return;
+
+        const slide = slideRef.current;
+        requestAnimationFrame(() => {
+            slide.style.transition = transitionEnabled ? "transform 0.5s ease-in-out" : "none";
+            slide.style.transform = `translateX(-${currentIndex * 100}%)`;
+        });
+    }, [currentIndex, transitionEnabled]);
+
+    return (
+        <div className={`${styles.carousel} ${className || ""}`}>
+            <div
+                className={styles.slides}
+                ref={slideRef}
+                onTransitionEnd={handleTransitionEnd}
+            >
+                {extendedSlides.map((slide, index) => (
+                    <div key={index} className={styles.slide}>
+                        <Image src={slide} alt={`Slide ${index + 1}`} fill />
+                    </div>
+                ))}
+            </div>
+
+            {showIndicators && (
+                <div className={styles.indicators}>
+                    {medias.map((_, index) => (
+                        <div key={index} className={styles.indicator_button}>
+                            <div
+                                className={`${styles.indicator} ${
+                                    index === realIndex ? styles.active : ""
+                                }`}
+                            ></div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {showArrows && (
+                <div className={styles.arrows}>
+                    <Button className={styles.arrow_left} onClick={handlePrev}>
+                        <Icon name="chevron_left" />
+                    </Button>
+                    <Button className={styles.arrow_right} onClick={handleNext}>
+                        <Icon name="chevron_right" />
+                    </Button>
+                </div>
+            )}
+        </div>
+    );
+}

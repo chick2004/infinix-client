@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 import InputProps from "./Input.types";
-import styles from "./Input.module.css";
+import styles from "./Input.module.scss";
 
 export function TextInput({ value = "", name, disabled, placeholder, onChange }: InputProps) {
 
