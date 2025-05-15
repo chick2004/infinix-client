@@ -18,10 +18,12 @@ export { default as Video } from './utilities/Video/Video';
 
 export { default as Chatbox } from './sections/Chatbox/Chatbox';
 export { default as CreatePostCard } from './sections/CreatePostCard/CreatePostCard';
+export { default as DetailPost } from './sections/DetailPost/DetailPost';
 export { default as EmojiPicker } from './sections/EmojiPicker/EmojiPicker';
 export { default as FollowingListCard } from './sections/FollowingListCard/FollowingListCard';
 export { default as FriendListCard } from './sections/FriendListCard/FriendListCard';
 export { default as GroupListCard } from './sections/GroupListCard/GroupListCard';
+export { default as MediaBox } from './sections/MediaBox/MediaBox';
 export { default as LoadingPage } from './sections/LoadingPage/LoadingPage';
 export { default as Message } from './sections/Message/Message';
 export { default as MessageGroup } from './sections/MessageGroup/MessageGroup';

@@ -35,7 +35,7 @@ export default function Page() {
                 <div className={styles.center}>
                     <CreatePostCard></CreatePostCard>
                     {Array.isArray(postsRequestData) && postsRequestData.map((post: any, index: number) => (
-                        <PostCard key={post.id} id={post.id} content={post.content} medias={post.medias} time={post.time} visibility={post.visibility} user_id={post.user.id} user_display_name={post.user.display_name} user_profile_photo={post.user.profile_photo}></PostCard>
+                        <PostCard key={post.id} id={post.id} content={post.content} medias={post.medias} time={post.created_at} visibility={post.visibility} user_id={post.user.id} user_display_name={post.user.display_name} user_profile_photo={post.user.profile_photo}></PostCard>
                     ))}
                 </div>
                 <div className={styles.right}>

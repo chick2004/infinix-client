@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
 import { Icon } from "@/components";
-import { useMotion, MotionName } from "@/hooks";
+import { useMotion, MotionName, useClickOutside } from "@/hooks";
 
 import DropdownSearchProps from "./DropdownSearch.types";
 import styles from "./DropdownSearch.module.scss";
@@ -15,25 +15,12 @@ export default function DropdownSearch({ suggestions = ["option1", "option2", "o
     const { shouldRender, animationStyle } = useMotion(isOpen, { appear: MotionName.SLIDE_DOWN_IN, disappear: MotionName.SLIDE_UP_OUT});
 
     const [internalValue, setInternalValue] = useState<string>(value);
-    const containerRef = useRef<HTMLDivElement | null>(null);
+    const ref = useRef<HTMLDivElement>(null);
+    useClickOutside(ref, () => setIsOpen(false));
 
     useEffect(() => {
         setInternalValue(value);
     }, [value]);
-
-    
-    const handleClickOutside = useCallback((event: MouseEvent) => {
-        if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-            setIsOpen(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInternalValue(e.target.value);
@@ -56,7 +43,7 @@ export default function DropdownSearch({ suggestions = ["option1", "option2", "o
     );
 
     return (
-        <div className={styles.dropdown_search} ref={containerRef}>
+        <div className={styles.dropdown_search} ref={ref}>
             <div className={`${styles.input_group} ${disabled ? styles.disabled : ""} ${isOpen ? styles.opened : ""}`}>
                 <input className={styles.input} type="search" disabled={disabled} placeholder={placeholder} value={internalValue} onChange={handleChange} onClick={() => setIsOpen(filteredSuggestions.length > 0)}/>
                 {internalValue && (

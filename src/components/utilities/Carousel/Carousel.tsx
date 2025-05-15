@@ -6,7 +6,7 @@ import { Button, Icon } from "@/components";
 import CarouselProps from "./Carousel.types";
 import styles from "./Carousel.module.scss";
 
-export default function Carousel({ medias = ["https://placehold.co/600x300?text=Slide+1", "https://placehold.co/600x300?text=Slide+2", "https://placehold.co/600x300?text=Slide+3"], className, autoPlay, interval, showIndicators = true, showArrows = true }: CarouselProps) {
+export default function Carousel({ medias, className, autoPlay, interval, showIndicators = true, showArrows = true }: CarouselProps) {
     
     const [currentIndex, setCurrentIndex] = useState(1);
     const [realIndex, setRealIndex] = useState(0);
@@ -16,12 +16,14 @@ export default function Carousel({ medias = ["https://placehold.co/600x300?text=
     const extendedSlides = medias.length > 1 ? [medias[medias.length - 1], ...medias, medias[0]] : medias;
 
     const handleNext = () => {
+        if (transitionEnabled) return; // Prevent rapid slide change
         setCurrentIndex(prev => prev + 1);
         setRealIndex((prev) => (prev + 1) % medias.length);
         setTransitionEnabled(true);
     };
     
     const handlePrev = () => {
+        if (transitionEnabled) return; // Prevent rapid slide change
         setCurrentIndex(prev => prev - 1);
         setRealIndex((prev) => (prev - 1 + medias.length) % medias.length);
         setTransitionEnabled(true);
@@ -34,6 +36,8 @@ export default function Carousel({ medias = ["https://placehold.co/600x300?text=
         } else if (currentIndex === extendedSlides.length - 1) {
             setTransitionEnabled(false);
             setCurrentIndex(1);
+        } else {
+            setTransitionEnabled(false); // Allow next transition
         }
     };
 
