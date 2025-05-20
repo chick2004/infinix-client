@@ -1,5 +1,7 @@
 export default interface DropdownSearchProps {
 
+    style?: React.CSSProperties;
+
     value?: string;
 
     suggestions: string[];

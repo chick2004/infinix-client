@@ -21,4 +21,6 @@ export default interface MessageProps {
     onEdit?: () => void;
 
     onPin?: () => void;
+
+    style?: React.CSSProperties;
 }

@@ -1,5 +1,7 @@
 export default interface InputProps {
 
+    style?: React.CSSProperties;
+
     type?: "text" | "password" | "number" | "search" | "date";
 
     value?: string;

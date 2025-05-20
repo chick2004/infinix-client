@@ -1,14 +1,14 @@
 export default interface ButtonProps {
 
-    children: React.ReactNode;
+    style?: React.CSSProperties;
 
     appearance?: "accent" | "standard" | "subtle" | "transparent";
 
     type?: "button" | "submit" | "reset";
 
-    disabled?: boolean;
+    children: React.ReactNode;
 
-    className?: string;
+    disabled?: boolean;
 
     onClick?: () => void;
 

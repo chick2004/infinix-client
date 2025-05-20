@@ -5,7 +5,9 @@ import { useState, useRef, useEffect } from "react";
 import TextareaProps from "./Textarea.types";
 import styles from "./Textarea.module.scss";
 
-export default function Textarea({ value = "", rows, placeholder, disabled = false, onChange }: TextareaProps) {
+export default function Textarea(props: TextareaProps) {
+
+    const { value = "", rows, placeholder, disabled = false, style, onChange } = props;
 
     const [internalValue, setInternalValue] = useState(value);
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -25,7 +27,7 @@ export default function Textarea({ value = "", rows, placeholder, disabled = fal
     }, [value]);
     
     return (
-        <div className={styles.component}>
+        <div style={style} className={styles.component}>
             <textarea className={styles.textarea} value={internalValue} rows={rows} onChange={handleChange} ref={textareaRef} spellCheck={false} disabled={disabled} placeholder={placeholder}></textarea>
         </div>
     )

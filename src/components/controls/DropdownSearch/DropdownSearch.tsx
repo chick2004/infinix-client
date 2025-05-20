@@ -8,7 +8,9 @@ import { useMotion, MotionName, useClickOutside } from "@/hooks";
 import DropdownSearchProps from "./DropdownSearch.types";
 import styles from "./DropdownSearch.module.scss";
 
-export default function DropdownSearch({ suggestions = ["option1", "option2", "option3"], value = "", disabled = false, placeholder, onChange, onSearch}: DropdownSearchProps) {
+export default function DropdownSearch(props: DropdownSearchProps) {
+
+    const { suggestions, value = "", disabled = false, placeholder, style, onChange, onSearch} = props;
     
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -38,12 +40,12 @@ export default function DropdownSearch({ suggestions = ["option1", "option2", "o
         onChange?.(selectedValue);
     };
 
-    const filteredSuggestions = suggestions.filter((item) => 
+    const filteredSuggestions = Array.isArray(suggestions) ? suggestions.filter((item) => 
         item.toLowerCase().includes(internalValue.toLowerCase())
-    );
+    ) : [];
 
     return (
-        <div className={styles.dropdown_search} ref={ref}>
+        <div style={style} className={styles.dropdown_search} ref={ref}>
             <div className={`${styles.input_group} ${disabled ? styles.disabled : ""} ${isOpen ? styles.opened : ""}`}>
                 <input className={styles.input} type="search" disabled={disabled} placeholder={placeholder} value={internalValue} onChange={handleChange} onClick={() => setIsOpen(filteredSuggestions.length > 0)}/>
                 {internalValue && (

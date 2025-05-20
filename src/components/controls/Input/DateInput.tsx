@@ -13,8 +13,9 @@ const getDaysInMonth = (year: number, month: number) =>{
     return date.getDate();
 }
 
-export function DateInput({ value = "", name, disabled, placeholder, onChange }: InputProps) {
+export function DateInput(props: InputProps) {
 
+    const { style, name, value = "", disabled = false, placeholder, onChange } = props;
 
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
     const { shouldRender, animationStyle } = useMotion(showDatePicker, { appear: MotionName.SLIDE_DOWN_IN, appearDistance: 10, disappear: MotionName.SLIDE_UP_OUT, disappearDistance: 10});
@@ -87,7 +88,7 @@ export function DateInput({ value = "", name, disabled, placeholder, onChange }:
 
     return (
         <div>
-            <div className={`${styles.input_group} ${styles.input_date} ${disabled ? styles.disabled : ""}`} onClick={() => setShowDatePicker(!showDatePicker)}>
+            <div style={style} className={`${styles.input_group} ${styles.input_date} ${disabled ? styles.disabled : ""}`} onClick={() => setShowDatePicker(!showDatePicker)}>
                 <input type="text" readOnly value={internalValue.toLocaleDateString("en-ES", {weekday: "short", year: "numeric", month: "short", day: "numeric"})} name={name} disabled={disabled} placeholder={placeholder}/>
                 <button type="button" className={styles.input_button}>
                     <Icon name="calendar" size={16} type="regular" />

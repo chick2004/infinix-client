@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import { useState, useRef } from "react";
 import { useClickOutside } from "@/hooks";
@@ -7,7 +6,21 @@ import { Video, Button, Icon, Textarea, Carousel } from "@/components"
 import DetailPostProps from "./DetailPost.types";
 import styles from "./DetailPost.module.scss";
 
-export default function DetailPost({ content = "", time = "2025-04-04 11:40:28", visibility = "public", medias = [], likes_count = 0, comments_count = 0, shares_count = 0, user_id = "", user_display_name = "", user_profile_photo = "/images/avatar.png" }: DetailPostProps) {
+export default function DetailPost(props: DetailPostProps) {
+
+    const { content, time, visibility, medias} = {
+        content: "content #2025",
+        medias: [
+            // { "id": 24, "post_id": 14, "path": "/storage/uploads/1744992934_default_wallpaper.png", "type": "image/jpeg", "created_at": "2025-04-18T16:15:35.000000Z", "updated_at": "2025-04-18T16:15:35.000000Z" },
+            // { "id": 24, "post_id": 14, "path": "/storage/uploads/1744992934_default_wallpaper.png", "type": "image/jpeg", "created_at": "2025-04-18T16:15:35.000000Z", "updated_at": "2025-04-18T16:15:35.000000Z" },
+            // { "id": 24, "post_id": 14, "path": "/storage/uploads/1744992934_default_wallpaper.png", "type": "image/jpeg", "created_at": "2025-04-18T16:15:35.000000Z", "updated_at": "2025-04-18T16:15:35.000000Z" },
+            // { "id": 24, "post_id": 14, "path": "/storage/uploads/1744992934_default_wallpaper.png", "type": "image/jpeg", "created_at": "2025-04-18T16:15:35.000000Z", "updated_at": "2025-04-18T16:15:35.000000Z" },
+            // { "id": 24, "post_id": 14, "path": "/storage/uploads/1744992934_default_wallpaper.png", "type": "image/jpeg", "created_at": "2025-04-18T16:15:35.000000Z", "updated_at": "2025-04-18T16:15:35.000000Z" },
+            // { "id": 24, "post_id": 14, "path": "/storage/uploads/1744992934_default_wallpaper.png", "type": "image/jpeg", "created_at": "2025-04-18T16:15:35.000000Z", "updated_at": "2025-04-18T16:15:35.000000Z" }
+        ],
+        time: "2025-04-06 10:24:37",
+        visibility: "public"
+    };
 
     const medias_path = Array.isArray(medias) && medias.length > 0 ? medias.map((media) => {
         return process.env.NEXT_PUBLIC_API_URL + "/media"+ media.path;
@@ -21,7 +34,7 @@ export default function DetailPost({ content = "", time = "2025-04-04 11:40:28",
     });
 
     return (
-        <div ref={ref} className={`${styles.detail_post} ${Array.isArray(medias) && medias.length > 0 ? styles.detail_post_with_media : ""}`}>
+        <div ref={ref} className={`${styles.detail_post} ${Array.isArray(medias) && medias.length > 0 ? styles.detail_post_with_media : ""}`} style={props.style}>
             {Array.isArray(medias) && medias.length > 0 && (
                 <div className={styles.gallery_carousel}>
                     {Array.isArray(medias) && medias.length > 1 ? (

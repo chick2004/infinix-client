@@ -1,5 +1,7 @@
 
 .media_gallery {
+    border-radius: 8px;
+    overflow: hidden;
     width: 100%;
     display: grid;
     height: 400px;
@@ -7,7 +9,6 @@
 }
 
 .media_item {
-    border-radius: 6px;
     border: 1px inset var(--card-stroke-default);
     overflow: hidden;
 }

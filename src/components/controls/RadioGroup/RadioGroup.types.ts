@@ -8,6 +8,8 @@ export default interface RadioGroupProps {
 
     options?: Array<{ label: string; value: string }>;
 
+    style?: React.CSSProperties;
+
     onChange?: (value: string) => void;
 
 }

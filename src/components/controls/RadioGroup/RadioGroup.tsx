@@ -5,7 +5,9 @@ import { useState, useEffect } from "react";
 import RadioGroupProps from "./RadioGroup.types";
 import styles from "./RadioGroup.module.scss";
 
-export default function RadioGroup({name = "", label, value, options, onChange} : RadioGroupProps) {
+export default function RadioGroup(props : RadioGroupProps) {
+
+    const { style, name, label = "", value = "", options = [], onChange } = props;
 
     const [selectedValue, setSelectedValue] = useState<string>(value || "");
 
@@ -17,7 +19,7 @@ export default function RadioGroup({name = "", label, value, options, onChange} 
     };
 
     return (
-        <div className={styles.radio_group_container}>
+        <div style={style} className={styles.radio_group_container}>
             <div className={styles.radio_group_label}>{label}</div>
             <div className={styles.radio_group}>
                 {options?.map((option) => (

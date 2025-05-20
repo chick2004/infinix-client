@@ -5,23 +5,19 @@ import { useState, useEffect } from "react";
 import CheckboxProps from "./Checkbox.types";
 import styles from "./Checkbox.module.scss";
 
-export default function Checkbox({label = "", checked = false, onChange} : CheckboxProps) {
+export default function Checkbox(props: CheckboxProps) {
 
-    const [isChecked, setIsChecked] = useState<boolean>(checked);
+    const { label, checked = false, style, onChange } = props;
+
+    const [isChecked, setIsChecked] = useState(checked);
 
     useEffect(() => {
         setIsChecked(checked);
     }, [checked]);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newChecked = event.target.checked;
-        setIsChecked(newChecked);
-        onChange?.(newChecked);
-    }
-
     return (
-        <label className={styles.label}> 
-            <input className={styles.checkbox} type="checkbox" checked={isChecked} onChange={handleChange}/>
+        <label style={style} className={styles.label}>
+            <input className={styles.checkbox} type="checkbox" checked={isChecked} onChange={e => { setIsChecked(e.target.checked); onChange?.(e.target.checked); }} />
             <span>{label}</span>
         </label>
     );

@@ -4,7 +4,7 @@ import { Video } from "@/components"
 import  MediaBoxProps from "./MediaBox.types";
 import styles from "./MediaBox.module.scss";
 
-export default function MediaBox({ medias, onClick }: MediaBoxProps) {
+export default function MediaBox({ medias, onClick, style }: MediaBoxProps) {
 
     if (!Array.isArray(medias)) return null;
 
@@ -25,19 +25,21 @@ export default function MediaBox({ medias, onClick }: MediaBoxProps) {
     };
     
     return (
-        <div className={mediaGalleryClassName()} onClick={onClick}> 
-            {medias.slice(0, 5).map((media, index) => (
-                <div key={index} className={styles.media_item}>
-                    {media.type.startsWith("video/") ? (
-                        <Video src={process.env.NEXT_PUBLIC_API_URL + "/media"+ media.path} controls autoPlay muted loop playsInline/>
-                    ) : (
-                        <Image src={process.env.NEXT_PUBLIC_API_URL + "/media" + media.path} alt={`media-${index}`} fill />
-                    )}
-                    {index === 4 && extraMediaCount > 0 && (
-                        <div className={styles.overlay}>+{extraMediaCount}</div>
-                    )}
-                </div>
-            ))}
+        <div className={styles.media_box} style={style}>
+            <div className={mediaGalleryClassName()} onClick={onClick}> 
+                {medias.slice(0, 5).map((media, index) => (
+                    <div key={index} className={styles.media_item}>
+                        {media.type.startsWith("video/") ? (
+                            <Video src={process.env.NEXT_PUBLIC_API_URL + "/media"+ media.path} controls autoPlay muted loop playsInline/>
+                        ) : (
+                            <Image src={process.env.NEXT_PUBLIC_API_URL + "/media" + media.path} alt={`media-${index}`} fill />
+                        )}
+                        {index === 4 && extraMediaCount > 0 && (
+                            <div className={styles.overlay}>+{extraMediaCount}</div>
+                        )}
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }

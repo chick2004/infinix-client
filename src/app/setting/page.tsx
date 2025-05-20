@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { useMotion, MotionName } from "@/hooks";
-import { DropdownSearch, Icon, Input, Button, Textarea, ToggleSwitch, Select, Collapse, Radio} from "@/components";
+import { DropdownSearch, Icon, Input, Button, Textarea, Switch, Select, Collapse, Radio} from "@/components";
 
 import { ClientLayout } from "@/layouts";
 import styles from './page.module.css';
@@ -29,7 +29,7 @@ const GeneralTab = ({ openedDropdown, handleDropdownClick, style}: TabProps) => 
                             <div className={styles.setting_item_title}>All notification</div>
                             <div className={styles.setting_item_desc}>Allow all notification</div>
                         </div>
-                        <ToggleSwitch></ToggleSwitch>
+                        <Switch></Switch>
                     </div>
                 </div>
                 <div className={styles.setting_group_item}>
@@ -56,11 +56,11 @@ const GeneralTab = ({ openedDropdown, handleDropdownClick, style}: TabProps) => 
                     <Collapse visible={openedDropdown === "message_notification"}>
                         <div className={styles.setting_item_dropdown}>
                             <p className={styles.setting_item_option_title}>Message notification</p>
-                            <ToggleSwitch></ToggleSwitch>
+                            <Switch></Switch>
                         </div>
                         <div className={styles.setting_item_dropdown}>
                             <p className={styles.setting_item_option_title}>Group message notification</p>
-                            <ToggleSwitch></ToggleSwitch>
+                            <Switch></Switch>
                         </div>
                     </Collapse>
                 </div>

@@ -22,6 +22,20 @@ function renderWithTags(text: string) {
 
 export default memo(function PostCard(props: PostCardProps) {
 
+    const { content, time, visibility, medias} = {
+        content: "content #2025",
+        medias: [
+            { "id": 24, "post_id": 14, "path": "/storage/uploads/1744992934_default_wallpaper.png", "type": "image/jpeg", "created_at": "2025-04-18T16:15:35.000000Z", "updated_at": "2025-04-18T16:15:35.000000Z" },
+            { "id": 24, "post_id": 14, "path": "/storage/uploads/1744992934_default_wallpaper.png", "type": "image/jpeg", "created_at": "2025-04-18T16:15:35.000000Z", "updated_at": "2025-04-18T16:15:35.000000Z" },
+            { "id": 24, "post_id": 14, "path": "/storage/uploads/1744992934_default_wallpaper.png", "type": "image/jpeg", "created_at": "2025-04-18T16:15:35.000000Z", "updated_at": "2025-04-18T16:15:35.000000Z" },
+            { "id": 24, "post_id": 14, "path": "/storage/uploads/1744992934_default_wallpaper.png", "type": "image/jpeg", "created_at": "2025-04-18T16:15:35.000000Z", "updated_at": "2025-04-18T16:15:35.000000Z" },
+            { "id": 24, "post_id": 14, "path": "/storage/uploads/1744992934_default_wallpaper.png", "type": "image/jpeg", "created_at": "2025-04-18T16:15:35.000000Z", "updated_at": "2025-04-18T16:15:35.000000Z" },
+            { "id": 24, "post_id": 14, "path": "/storage/uploads/1744992934_default_wallpaper.png", "type": "image/jpeg", "created_at": "2025-04-18T16:15:35.000000Z", "updated_at": "2025-04-18T16:15:35.000000Z" }
+        ],
+        time: "2025-04-06 10:24:37",
+        visibility: "public"
+    };
+
     const [isOpenDetail, setIsOpenDetail] = useState(false);
     const [isOpenPostActions, setIsOpenPostActions] = useState(false);
 
@@ -34,23 +48,23 @@ export default memo(function PostCard(props: PostCardProps) {
         setIsOpenDetail(false);
     });
 
-    const date = new Date(props.time.replace(" ", "T"));
+    const date = new Date(time.replace(" ", "T"));
 
     return (
-        <>
+        <div className={styles.post_card} style={props.style}>
             <div className={styles.section}>
                 <div className={styles.header}>
                     <div className={styles.avatar_container}>
-                        <Image src={props.user_profile_photo || "/images/avatar.png"} width={40} height={40} alt="Avatar" />
+                        <Image src={"/images/avatar.png"} width={40} height={40} alt="Avatar" />
                     </div>
                     <div className={styles.info}>
-                        <div className={styles.display_name}>{props.user_display_name}</div>
+                        <div className={styles.display_name}>{"props.user_display_name"}</div>
                         <div className={styles.post_info_container}>
                             <p className={styles.date}>{date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                             <p className={styles.time}>{date.toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' })}</p>
-                            {props.visibility === "public" ? (
+                            {visibility === "public" ? (
                                 <Icon name={"earth"} size={16} type={"regular"}></Icon>
-                            ) : props.visibility === "private" ? (
+                            ) : visibility === "private" ? (
                                 <Icon name={"lock_closed"} size={16} type={"regular"}></Icon>
                             ) : (
                                 <Icon name={"person"} size={16} type={"regular"}></Icon>
@@ -76,11 +90,11 @@ export default memo(function PostCard(props: PostCardProps) {
                     </div>
                 </div>
                 <div className={styles.content}>
-                    <p>{renderWithTags(props.content)}</p>
+                    <p>{renderWithTags(content)}</p>
                 </div>
 
-                {Array.isArray(props.medias) && props.medias.length > 0 && (
-                    <MediaBox medias={props.medias}></MediaBox>
+                {Array.isArray(medias) && medias.length > 0 && (
+                    <MediaBox medias={medias}></MediaBox>
                 )}
 
                 <div className={styles.footer}>
@@ -108,9 +122,9 @@ export default memo(function PostCard(props: PostCardProps) {
 
             {isOpenDetail && (
                 <div ref={postDetailRef} className={styles.post_detail_container}>
-                    <DetailPost {...props}></DetailPost>
+                    <DetailPost></DetailPost>
                 </div>
             )}
-        </>
+        </div>
     );
 });

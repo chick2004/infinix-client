@@ -7,7 +7,9 @@ import { Icon } from "@/components";
 import InputProps from "./Input.types";
 import styles from "./Input.module.scss";
 
-export function NumberInput({ value = "0", name, disabled, placeholder, min, max, step = 1, onChange }: InputProps) {
+export function NumberInput(props: InputProps) {
+
+    const { style, name, value = "", disabled = false, placeholder = "", onChange, min, max, step = 1 } = props;
     
     const [internalValue, setInternalValue] = useState<number>(value === "" ? 0 : Number(value));
 
@@ -40,7 +42,7 @@ export function NumberInput({ value = "0", name, disabled, placeholder, min, max
     }
 
     return (
-        <div className={`${styles.input_group} ${disabled ? styles.disabled : ""}`}>
+        <div style={style} className={`${styles.input_group} ${disabled ? styles.disabled : ""}`}>
             <input type="number" value={internalValue} name={name} disabled={disabled} placeholder={placeholder} onChange={handleChange}
             />
             <button type="button" className={styles.input_button} onClick={handleIncrement}>

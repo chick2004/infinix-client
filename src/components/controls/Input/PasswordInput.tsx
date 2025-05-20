@@ -7,7 +7,9 @@ import { Icon } from "@/components";
 import InputProps from "./Input.types";
 import styles from "./Input.module.scss";
 
-export function PasswordInput({ value = "", name, disabled, placeholder, onChange }: InputProps) {
+export function PasswordInput(props: InputProps) {
+
+    const { style, name, value = "", disabled = false, placeholder = "", onChange } = props;
 
     const [internalValue, setInternalValue] = useState<string | number>(value);
     const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -26,7 +28,7 @@ export function PasswordInput({ value = "", name, disabled, placeholder, onChang
     };
 
     return (
-        <div className={`${styles.input_group} ${disabled ? styles.disabled : ""}`}>
+        <div style={style} className={`${styles.input_group} ${disabled ? styles.disabled : ""}`}>
             <input type={showPassword ? "text" : "password"} value={internalValue} name={name} disabled={disabled} placeholder={placeholder} onChange={handleChange}/>
             <button type="button" onClick={handleShowPassword}>
                 <Icon name={showPassword ? "eye_off" : "eye"} size={16} type="regular"></Icon>

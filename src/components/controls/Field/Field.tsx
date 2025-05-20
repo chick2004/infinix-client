@@ -5,7 +5,9 @@ import { Icon } from "@/components";
 import FieldProps from "./Field.types";
 import styles from "./Field.module.scss";
 
-export default function Field({children, label, validation_state = "info", validation_message}: FieldProps) {
+export default function Field(props: FieldProps) {
+
+    const { style, label, validation_state = "info", validation_message, children } = props;
 
     const id = useId();
 
@@ -19,7 +21,7 @@ export default function Field({children, label, validation_state = "info", valid
     const validationIcon = useMemo(() => validation_icons[validation_state], [validation_state]);
 
     return (
-        <div className={styles.field}>
+        <div style={style} className={styles.field}>
             {label && <label className={styles.label} htmlFor={id}>{label}</label>}
             {children && React.isValidElement(children) && React.cloneElement(children as React.ReactElement<any>, { id })}
             {validation_message && (

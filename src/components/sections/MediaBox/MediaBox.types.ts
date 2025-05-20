@@ -4,4 +4,6 @@ export default interface MediaBoxProps {
 
     onClick?: () => void,
 
+    style?: React.CSSProperties;
+
 }

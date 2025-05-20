@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from "react";
 
-import ToggleSwitchProps from "./ToggleSwitch.types";
-import styles from "./ToggleSwitch.module.scss";
+import SwitchProps from "./Switch.types";
+import styles from "./Switch.module.scss";
 
-export default function ToggleSwitch({label, checked = false, onChange, disabled }: ToggleSwitchProps) {
+export default function Switch(props: SwitchProps) {
+
+    const { style, label = "", checked = false, disabled = false, onChange } = props;
 
     const [isChecked, setIsChecked] = useState<boolean>(checked);
 
@@ -20,7 +22,7 @@ export default function ToggleSwitch({label, checked = false, onChange, disabled
     };
 
     return (
-        <label className={styles.switch}>
+        <label style={style} className={styles.switch}>
             <input type="checkbox" checked={isChecked} className={styles.input} disabled={disabled} onChange={handleChange}/>
             <div className={styles.slider}></div>
             {label && <p className={styles.label}>{label}</p>}

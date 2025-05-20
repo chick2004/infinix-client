@@ -7,7 +7,7 @@ import { Icon } from "@/components";
 import MessageProps from "./Message.types";
 import styles from "./Message.module.scss";
 
-export default function Message({ content = "this is a message", time = new Date, is_own = true }: MessageProps) {
+export default function Message({ content = "this is a message", time = new Date, is_own = true, style }: MessageProps) {
 
     const sectionClassName = `${styles.section} ${is_own ? styles.own: ""}`;
 
@@ -16,7 +16,7 @@ export default function Message({ content = "this is a message", time = new Date
     }
     
     return (
-        <div className={sectionClassName}>
+        <div className={sectionClassName} style={style}>
             <p className={styles.content}>{content}</p>
             <div className={styles.flyout_container}>
                 <div className={styles.flyout}>

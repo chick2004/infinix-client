@@ -7,7 +7,7 @@ export { default as RadioGroup } from './controls/RadioGroup/RadioGroup';
 export { default as Radio } from './controls/Radio/Radio';
 export { default as Select } from './controls/Select/Select';
 export { default as Textarea } from './controls/Textarea/Textarea';
-export { default as ToggleSwitch } from './controls/ToggleSwitch/ToggleSwitch';
+export { default as Switch } from './controls/Switch/Switch';
 
 export { default as Collapse } from './motions/Collapse/Collapse';
 

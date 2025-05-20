@@ -4,6 +4,8 @@ export default interface SelectProps {
 
     disabled?: boolean;
 
+    style?: React.CSSProperties;
+
     onChange?: (value: string) => void;
 
     onClick?: () => void;

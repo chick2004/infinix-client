@@ -6,17 +6,17 @@ import { DateInput } from "./DateInput";
 
 import InputProps from "./Input.types";
 
-export default function Input({ type = "text", disabled = false, ...rest }: InputProps) {
+export default function Input({ type = "text", disabled = false, ...props }: InputProps) {
     switch (type) {
         case "password":
-            return <PasswordInput disabled={disabled} {...rest} />;
+            return <PasswordInput disabled={disabled} {...props} />;
         case "number":
-            return <NumberInput disabled={disabled} {...rest} />;
+            return <NumberInput disabled={disabled} {...props} />;
         case "search":
-            return <SearchInput disabled={disabled} {...rest} />;
+            return <SearchInput disabled={disabled} {...props} />;
         case "date":
-            return <DateInput disabled={disabled} {...rest} />;
+            return <DateInput disabled={disabled} {...props} />;
         default:
-            return <TextInput disabled={disabled} {...rest} />;
+            return <TextInput disabled={disabled} {...props} />;
     }
 }

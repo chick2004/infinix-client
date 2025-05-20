@@ -7,7 +7,9 @@ import { useMotion, MotionName } from "@/hooks";
 import SelectProps from "./Select.types";
 import styles from "./Select.module.scss";
 
-export default function Select({ options=["option1", "option2", "option3"], disabled = false }: SelectProps) {
+export default function Select(props: SelectProps) {
+
+    const { options=["option1", "option2", "option3"], disabled = false, style } = props;
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -44,7 +46,7 @@ export default function Select({ options=["option1", "option2", "option3"], disa
     }, []);
 
     return (
-        <div className={styles.select} ref={containerRef}>
+        <div style={style} className={styles.select} ref={containerRef}>
             <div className={`${styles.select_group} ${disabled ? styles.disabled : ""} ${isOpen ? styles.opened : ""}`} onClick={handleClick}>
                 {labelValue}
                 <button type="button" className={styles.select_button}>

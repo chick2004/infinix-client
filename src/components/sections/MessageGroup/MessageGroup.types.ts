@@ -12,4 +12,6 @@ export default interface MessageGroupProps {
 
     time: Date;
 
+    style?: React.CSSProperties;
+
 }

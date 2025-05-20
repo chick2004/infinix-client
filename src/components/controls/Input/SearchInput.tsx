@@ -7,7 +7,9 @@ import { Icon } from "@/components";
 import InputProps from "./Input.types";
 import styles from "./Input.module.scss";
 
-export function SearchInput({ value = "", name, disabled, placeholder, onChange, onSearch }: InputProps) {
+export function SearchInput(props: InputProps) {
+
+    const { style, name, value = "", disabled = false, placeholder = "", onChange, onSearch } = props;
 
     const [internalValue, setInternalValue] = useState<string>(value);
 
@@ -30,7 +32,7 @@ export function SearchInput({ value = "", name, disabled, placeholder, onChange,
     }
 
     return (
-        <div className={`${styles.input_group} ${disabled ? styles.disabled : ""}`}>
+        <div style={style} className={`${styles.input_group} ${disabled ? styles.disabled : ""}`}>
             <input type="search" value={internalValue} name={name} disabled={disabled} placeholder={placeholder} onChange={handleChange}/>
             <button type="button" className={styles.input_button} onClick={handleClear}>
                 <Icon name="dismiss" size={16} type="regular"></Icon>

@@ -1,5 +1,7 @@
 export default interface RadioProps {
 
+    style?: React.CSSProperties;
+
     name?: string;
 
     label?: string;
