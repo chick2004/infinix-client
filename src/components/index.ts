@@ -16,6 +16,9 @@ export { default as Icon } from './utilities/Icon/Icon';
 export { default as Spinner } from './utilities/Spinner/Spinner';
 export { default as Video } from './utilities/Video/Video';
 
+export { default as AcrylicCard } from './utilities/AcrylicCard/AcrylicCard';
+export { default as MicaCard } from './utilities/MicaCard/MicaCard';
+
 export { default as Chatbox } from './sections/Chatbox/Chatbox';
 export { default as CreatePostCard } from './sections/CreatePostCard/CreatePostCard';
 export { default as DetailPost } from './sections/DetailPost/DetailPost';

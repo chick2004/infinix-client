@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, useEffect, useRef, useCallback, memo } from "react";
 
 import { Button, Icon, Input, Textarea, Spinner, EmojiPicker } from "@/components";
-import { useRequest } from "@/hooks";
+import { useRequest, useClickOutside } from "@/hooks";
 import styles from "./CreatePostCard.module.scss";
 
 export default memo(function CreatePostCard() {
@@ -62,12 +62,17 @@ export default memo(function CreatePostCard() {
     }, [mediaFiles]);
 
     const [emojiPickerOpen, setEmojiPickerOpen] = useState<boolean>(false);
+    const emojiPickerRef = useRef<HTMLDivElement | null>(null);
+    useClickOutside(emojiPickerRef, () => {
+        setEmojiPickerOpen(false);
+    });
     const handleToggleEmojiPicker = () => {
         setEmojiPickerOpen((prev) => !prev);
     };
     const handleEmojiSelect = useCallback((emoji: { character: string }) => {
         setPostContent((prev) => prev + emoji.character);
     }, []);
+
 
 
     const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/posts", "POST");
@@ -115,7 +120,7 @@ export default memo(function CreatePostCard() {
                                 <Icon name={"emoji"} size={20} type={"regular"}></Icon>
                             </button>
                             <div className={styles.emoji_picker}>
-                                <EmojiPicker onEmojiSelect={handleEmojiSelect} />
+                                {emojiPickerOpen && <EmojiPicker ref={emojiPickerRef} onEmojiSelect={handleEmojiSelect} />}
                             </div>
                         </div>
                         <button>

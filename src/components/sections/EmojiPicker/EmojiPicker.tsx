@@ -8,7 +8,7 @@ import EmojiPickerProps from "./EmojiPicker.types";
 import EmojiType from "./Emoji.types";
 import styles from "./EmojiPicker.module.scss";
 
-export default memo(function EmojiPicker({ onEmojiSelect }: EmojiPickerProps) {
+export default memo(function EmojiPicker({ ref, onEmojiSelect }: EmojiPickerProps) {
     const [search, setSearch] = useState<string>("");
     const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
@@ -42,7 +42,7 @@ export default memo(function EmojiPicker({ onEmojiSelect }: EmojiPickerProps) {
     );
 
     return (
-        <div className={styles.section}>
+        <div className={styles.section} ref={ref}>
             <div className={styles.group_list}>
                 {Object.keys(emoji_list).map((group) => (
                     <div

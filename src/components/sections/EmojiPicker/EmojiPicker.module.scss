@@ -2,10 +2,10 @@
     width: 360px;
     height: 400px;
     background-color: var(--acrylic-background-default);
+    backdrop-filter: blur(20px);
     border-radius: 8px;
     border: 1px solid var(--card-stroke-default);
     box-shadow: 0px 8px 16px 0px var(--shadow-flyout);
-    backdrop-filter: blur(60px);
     display: flex;
     flex-direction: column;
     gap: 15px;

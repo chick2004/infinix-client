@@ -2,10 +2,10 @@
     width: 1200px;
     width: fit-content;
     height: 700px;
-    background-color: var(--acrylic-background-default);
+    background-color: var(--acrylic-background-base);
+    backdrop-filter: blur(240px);
     border: 1px solid var(--card-stroke-default);
     box-shadow: 0px 2px 21px 0px var(--shadow-dialog);
-    backdrop-filter: blur(240px);
     border-radius: 8px;
     overflow: hidden;
 }

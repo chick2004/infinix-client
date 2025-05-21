@@ -76,7 +76,8 @@
 
 
 .list {
-    background-color: var(--acrylic-background-default);
+    background: linear-gradient(var(--acrylic-background-default-tint)), var(--acrylic-background-default-luminosity);
+    mix-blend-mode:luminosity;
     backdrop-filter: blur(60px);
     border-radius: 0px 0px 7px 7px;
     border: 1px inset var(--control-stroke-default);

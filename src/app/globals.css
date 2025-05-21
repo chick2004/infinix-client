@@ -120,23 +120,11 @@
     --shadow-flyout: #00000024;
     --shadow-dialog: #00000026;
 
-    --acrylic-background-default-main: #FCFCFCD9;
-    --acrylic-background-default-overlay: #FCFCFC00;
+    --acrylic-background-base-tint: #F3F3F300;
+    --acrylic-background-base-luminosity: #F3F3F3E6;
 
-    --acrylic-background-base-main: #F3F3F3E6;
-    --acrylic-background-base-overlay: #F3F3F300;
-
-    --accent-acrylic-background-base-main: #99EBFFE6;
-    --accent-acrylic-background-base-overlay: #99EBFFCC;
-
-    --accent-acrylic-background-default-main: #99EBFFE6;
-    --accent-acrylic-background-default-overlay: #99EBFFCC;
-
-    --mica-background-base-main: #F3F3F3FF;
-    --mica-background-base-overlay: #F3F3F380;
-
-    --mica-background-base-alt-main: #DADADAFF;
-    --mica-background-base-alt-overlay: #DADADA80;
+    --mica-background-base-tint: #F3F3F380;
+    --mica-background-base-luminosity: #F3F3F3FF;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -239,24 +227,19 @@
         --shadow-tooltip: #00000042;
         --shadow-flyout: #00000042;
         --shadow-dialog: #0000005E;
+        
 
-        --acrylic-background-default-main: #2C2C2CF5;
-        --acrylic-background-default-overlay: #2C2C2C26;
+        --acrylic-background-base-tint: #20202080;
+        --acrylic-background-base-luminosity: #202020F5;
 
-        --acrylic-background-base-main: #202020F5;
-        --acrylic-background-base-overlay: #20202080;
+        /* --acrylic-background-default-tint: #2C2C2C26;
+        --acrylic-background-default-luminosity: #2C2C2CF5; */
 
-        --accent-acrylic-background-base-main: #003F92CC;
-        --accent-acrylic-background-base-overlay: #003F92CC;
+        --mica-background-base-tint: #202020CC;
+        --mica-background-base-luminosity: #202020FF;
 
-        --accent-acrylic-background-default-main: #0078D4CC;
-        --accent-acrylic-background-default-overlay: #0078D4CC;
-
-        --mica-background-base-main: #202020FF;
-        --mica-background-base-overlay: #202020CC;
-
-        --mica-background-base-alt-main: #0A0A0AFF;
-        --mica-background-base-alt-overlay: #0A0A0A00;
+        /* --mica-background-default-tint: #0A0A0A00;
+        --mica-background-default-luminosity: #0A0A0AFF; */
     }
 }
 
