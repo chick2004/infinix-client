@@ -1,0 +1,48 @@
+.component {
+    height: fit-content;
+    border-radius: 4px;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    padding: 3px 5px 3px 10px;
+    gap: 5px;
+    background-color: var(--control-default);
+    border-bottom: 1px inset var(--control-strong-stroke-default);
+    border-left: 1px inset var(--control-stroke-default);
+    border-top: 1px inset var(--control-stroke-default);
+    border-right: 1px inset var(--control-stroke-default);
+    overflow-y: scroll;
+    outline: none;
+    position: relative;
+}
+
+.component:hover {
+    background-color: var(--control-hover);
+}
+
+.component:focus-within{
+    background-color: var(--control-input-active);
+    border-bottom: 1px inset var(--accent-default);
+}
+
+.component.disabled {
+    background-color: var(--control-disabled);
+    border: 1px inset var(--control-stroke-default);
+    color: var(--text-disabled);
+}
+
+.component.disabled > textarea {
+    color: var(--text-disabled);
+}
+
+.component > textarea {
+    width: 100%;
+    border: unset;
+    outline: unset;
+    background-color: unset;
+    color: var(--text-primary);
+    resize: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+}

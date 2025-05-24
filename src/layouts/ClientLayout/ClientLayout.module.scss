@@ -10,72 +10,7 @@ $desktop: 1024px;
     height: 100vh;
 }
 
-.header {
-    height: fit-content;
-    width: 100%;
-    background-color: var(--layer-default);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    align-items: center;
-    padding: 0px 20px;
-    gap: 20px;
-    border-bottom: 1px solid var(--card-stroke-default);
-
-    @media (max-width: $tablet) {
-
-    }
-
-    @media (max-width: $mobile) {
-        grid-template-columns: auto 1fr;
-        gap: 0px;
-
-        .header_right {
-            grid-column: span 2;
-            display: flex;
-            justify-content: space-evenly;
-        }
-    }
-}
-
-.header_right {
-    display: flex;
-    justify-content: flex-end;
-    gap: 35px;
-}
-
-.header_right > a,.header_right .notification_button > button {
-    text-decoration: none;
-    color: var(--text-secondary);
-    padding: 3px;
-    border-radius: 3px;
-    cursor: pointer;
-    background-color: var(--subtle-transparent);
-    outline: none;
-    border: 1px solid var(--subtle-transparent);
-}
-
-.header_right > a:hover, .header_right .notification_button > button:hover {
-    background-color: var(--subtle-secondary);
-    border-color: var(--subtle-secondary);
-}
-
-.header_right > a.active i, .header_right .notification_button > button.active i {
-    color: var(--accent-default);
-}
-
 .main {
     min-height: 0;
-}
-
-.notification_button {
-    position: relative;
-}
-
-.notification_button > div {
-    display: block;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    z-index: 2;
-    margin-top: 10px;
+    height: 100%;
 }
