@@ -34,7 +34,7 @@ export default function Textarea(props: TextareaProps) {
     }, []);
     
     return (
-        <div style={style} className={`${styles.component} ${props.className}`}>
+        <div style={style} className={`${styles.component} ${props.className} ${disabled ? styles.disabled : ""}`}>
             <textarea className={styles.textarea} value={internalValue} rows={rows} onChange={handleChange} ref={textareaRef} spellCheck={false} disabled={disabled} placeholder={placeholder}></textarea>
         </div>
     )

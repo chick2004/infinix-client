@@ -6,5 +6,5 @@ export default interface EditPostCardProps {
 
     ref?: React.Ref<HTMLDivElement>;
 
-    onClose?: () => void;
+    handleClose?: () => void;
 }

@@ -12,6 +12,16 @@ import styles from './page.module.css';
 
 export default function Page() {
 
+    const { data: postListData, loading: postListLoading, error: postListError, status: postListStatus, execute: postListExecute } = useRequest(process.env.NEXT_PUBLIC_API_URL + '/posts', "GET");
+
+    useEffect(() => {
+        postListExecute();
+    }, []);
+
+    useEffect(() => {
+        console.log("postListData", postListData);
+    }, [postListData]);
+
     return (
         <ClientLayout>
             <div className={styles.page}>
@@ -21,7 +31,9 @@ export default function Page() {
                 </div>
                 <div className={styles.center}>
                     <CreatePostCard></CreatePostCard>
-                    <PostCard></PostCard>
+                    { Array.isArray(postListData) && postListData.map((postData: any) => (
+                        <PostCard key={postData.id} {...postData}></PostCard>
+                    ))}
                 </div>
                 <div className={styles.right}>
                     <FriendListCard></FriendListCard>

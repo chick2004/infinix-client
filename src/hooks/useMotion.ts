@@ -59,8 +59,8 @@ function createMotionStyle(name: MotionName, distance: MotionDistance = 10): Ani
     switch (name) {
         case MotionName.FADE_IN: return new Animation(fadeIn(), DURATION_1, EASING_FUNCTION_1);
         case MotionName.FADE_OUT: return new Animation(fadeOut(), DURATION_1, EASING_FUNCTION_1);
-        case MotionName.SCALE_UP_IN: return new Animation(`${fadeIn()}, ${scaleUp103()}`, DURATION_3, EASING_FUNCTION_1);
-        case MotionName.SCALE_UP_OUT: return new Animation(`${fadeOut()}, ${scaleUp100()}`, DURATION_1, EASING_FUNCTION_2);
+        case MotionName.SCALE_UP_IN: return new Animation(`${fadeIn()}, ${scaleUp100()}`, DURATION_3, EASING_FUNCTION_1);
+        case MotionName.SCALE_UP_OUT: return new Animation(`${fadeOut()}, ${scaleUp103()}`, DURATION_1, EASING_FUNCTION_2);
         case MotionName.SCALE_DOWN_IN: return new Animation(`${fadeIn()}, ${scaleDown100()}`, DURATION_3, EASING_FUNCTION_1);
         case MotionName.SCALE_DOWN_OUT: return new Animation(`${fadeOut()}, ${scaleDown98()}`, DURATION_1, EASING_FUNCTION_2);
         case MotionName.SLIDE_LEFT_IN: return new Animation(`${fadeIn()}, ${slideLeftIn(distance)}`, DURATION_1, EASING_FUNCTION_1);

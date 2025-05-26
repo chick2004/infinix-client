@@ -166,7 +166,7 @@ export default memo(function EditPostCard(props: EditPostCardProps) {
                         </div>
                     </div>
                     <div className={styles.buttons}>
-                        <Button appearance={"standard"} onClick={props.onClose}>
+                        <Button appearance={"standard"} onClick={props.handleClose}>
                             Cancel
                         </Button>
                         <Button appearance={"accent"}>

@@ -1,6 +1,7 @@
+import { Media } from "@/types";
 export default interface MediaBoxProps {
 
-    medias: Array<any>,
+    medias: Media[],
 
     onClick?: () => void,
 

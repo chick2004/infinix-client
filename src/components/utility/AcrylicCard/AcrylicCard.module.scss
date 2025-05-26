@@ -1,0 +1,8 @@
+.card {
+    position: relative;
+    background-color: var(--acrylic-background-base);
+    background-image: url("/images/acrylic-noise.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    backdrop-filter: blur(60px);
+}

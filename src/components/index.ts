@@ -14,14 +14,15 @@ export { default as Collapse } from './motion/Collapse/Collapse';
 export { default as Header } from './partial/Header/Header';
 
 export { default as Carousel } from './utility/Carousel/Carousel';
-export { default as Icon } from './utility/Icon/Icon';
-export { default as Spinner } from './utility/Spinner/Spinner';
+export { default as Icon } from './ui/Icon/Icon';
+export { default as Spinner } from './ui/Spinner/Spinner';
 export { default as Video } from './utility/Video/Video';
+export { default as AcrylicCard } from './utility/AcrylicCard/AcrylicCard';
+export { default as MicaCard } from './utility/MicaCard/MicaCard';
+
 
 export { default as Chatbox } from './card/Chatbox/Chatbox';
 export { default as CreatePostCard } from './card/CreatePostCard/CreatePostCard';
-export { default as DetailPost } from './card/DetailPost/DetailPost';
-export { default as EditPostCard } from './card/EditPostCard/EditPostCard';
 export { default as EmojiPicker } from './card/EmojiPicker/EmojiPicker';
 export { default as FollowingListCard } from './card/FollowingListCard/FollowingListCard';
 export { default as FriendListCard } from './card/FriendListCard/FriendListCard';

@@ -120,8 +120,10 @@
     --shadow-flyout: #00000024;
     --shadow-dialog: #00000026;
 
-    --acrylic-background-base: #F3F3F380;
-    --mica-background-base: #F3F3F3E6;
+    --acrylic-background-base: #F3F3F3BF;
+    --mica-background-base: #F3F3F3D9;
+
+    
 }
 
 @media (prefers-color-scheme: dark) {
@@ -226,14 +228,9 @@
         --shadow-dialog: #0000005E;
         
 
-        --acrylic-background-base-tint: #20202080;
-        --acrylic-background-base-luminosity: #202020F5;
-
-        /* --acrylic-background-default-tint: #2C2C2C26;
-        --acrylic-background-default-luminosity: #2C2C2CF5; */
-
-        --mica-background-base-tint: #202020CC;
-        --mica-background-base-luminosity: #202020FF;
+        --acrylic-background-base: #202020F5;
+        --acrylic-background-default: #2C2C2CF5;
+        --mica-background-base: #202020FF;
 
         /* --mica-background-default-tint: #0A0A0A00;
         --mica-background-default-luminosity: #0A0A0AFF; */
