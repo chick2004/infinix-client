@@ -7,4 +7,6 @@ export default interface IconProps {
     type?: "filled" | "regular";
 
     className?: string;
+
+    style?: React.CSSProperties;
 }

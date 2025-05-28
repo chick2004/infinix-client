@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { Button, Icon } from "@/components";
+import { Button, Icon, Video } from "@/components";
 import CarouselProps from "./Carousel.types";
 import styles from "./Carousel.module.scss";
 
@@ -53,14 +53,14 @@ export default function Carousel({ medias, className, autoPlay, interval, showIn
 
     return (
         <div className={`${styles.carousel} ${className || ""}`}>
-            <div
-                className={styles.slides}
-                ref={slideRef}
-                onTransitionEnd={handleTransitionEnd}
-            >
-                {extendedSlides.map((slide, index) => (
+            <div className={styles.slides} ref={slideRef} onTransitionEnd={handleTransitionEnd} >
+                {extendedSlides.map((media, index) => (
                     <div key={index} className={styles.slide}>
-                        <Image src={slide} alt={`Slide ${index + 1}`} fill />
+                        {media.type.startsWith("video/") ? (
+                            <Video src={process.env.NEXT_PUBLIC_API_URL + "/media"+ media.path} controls autoPlay muted loop style={{height: "100%", width: "100%", display: "block"}}/>
+                        ) : (
+                            <Image src={process.env.NEXT_PUBLIC_API_URL + "/media" + media.path} alt={`media-${index}`} fill />
+                        )}
                     </div>
                 ))}
             </div>

@@ -1,6 +1,7 @@
+import { Media } from "@/types";
 export default interface CarouselProps {
 
-    medias: string[];
+    medias: Media[];
 
     className?: string;
 

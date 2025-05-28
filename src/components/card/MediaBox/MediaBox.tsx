@@ -30,7 +30,7 @@ export default function MediaBox({ medias, onClick, style }: MediaBoxProps) {
                 {medias.slice(0, 5).map((media, index) => (
                     <div key={index} className={styles.media_item}>
                         {media.type.startsWith("video/") ? (
-                            <Video src={process.env.NEXT_PUBLIC_API_URL + "/media"+ media.path} controls autoPlay muted loop playsInline/>
+                            <Video src={process.env.NEXT_PUBLIC_API_URL + "/media"+ media.path} controls autoPlay muted loop playsInline style={{objectFit: "fill", height: "100%", width: "100%", display: "block"}}/>
                         ) : (
                             <Image src={process.env.NEXT_PUBLIC_API_URL + "/media" + media.path} alt={`media-${index}`} fill />
                         )}

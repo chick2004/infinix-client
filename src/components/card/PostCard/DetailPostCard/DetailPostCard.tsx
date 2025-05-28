@@ -10,19 +10,16 @@ import styles from "./DetailPostCard.module.scss";
 export default function DetailPostCard(props: DetailPostCardProps) {
 
     const { id, content = "", visibility = "public", medias = [], shared_post, user, created_at, updated_at, deleted_at } = props;
-
-    const medias_path = Array.isArray(medias) && medias.length > 0 ? medias.map((media) => {
-        return process.env.NEXT_PUBLIC_API_URL + "/media"+ media.path;
-    }) : [];
-
     return (
         <div ref={props.ref} style={props.style} className={`${styles.detail_post} ${props.className} ${Array.isArray(medias) && medias.length > 0 ? styles.detail_post_with_media : ""}`}>
             {Array.isArray(medias) && medias.length > 0 && (
                 <div className={styles.gallery_carousel}>
                     {Array.isArray(medias) && medias.length > 1 ? (
-                        <Carousel medias={medias_path}></Carousel>
-                    ) : medias.length == 1 ? (
-                        <Image src={medias_path[0]} alt="" fill style={{objectFit: "contain"}}/>
+                        <Carousel medias={medias}></Carousel>
+                    ) : medias[0].type.startsWith("image/") ? (
+                        <Image src={process.env.NEXT_PUBLIC_API_URL + "/media" + medias[0].path} alt={`media`} fill style={{objectFit: "contain"}}/>
+                    ) : medias[0].type.startsWith("video/") ? (
+                        <Video src={process.env.NEXT_PUBLIC_API_URL + "/media"+ medias[0].path} controls autoPlay muted loop style={{objectFit: "contain", height: "100%", width: "100%", display: "block"}}/>
                     ) : (
                         <></>
                     )}
