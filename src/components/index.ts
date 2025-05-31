@@ -8,6 +8,7 @@ export { default as Radio } from './ui/Radio/Radio';
 export { default as Select } from './ui/Select/Select';
 export { default as Textarea } from './ui/Textarea/Textarea';
 export { default as Switch } from './ui/Switch/Switch';
+export { default as Slider } from './ui/Slider/Slider';
 
 export { default as Collapse } from './motion/Collapse/Collapse';
 

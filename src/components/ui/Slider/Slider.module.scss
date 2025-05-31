@@ -1,0 +1,25 @@
+.input {
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    position: relative;
+    background-color: var(--control-strong-stroke-default);
+    
+    &::-webkit-slider-thumb {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        margin-top: -7px;
+        border-radius: 50%;
+        background-color: var(--accent-default);
+        outline: 1px solid var(--control-stroke-default);
+        cursor: pointer;
+        position: relative;
+        box-shadow: 0px 0px 0px 6px var(--control-solid-default) inset;
+    }
+
+    &::-webkit-slider-runnable-track {
+        height: 6px;
+    }
+}

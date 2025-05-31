@@ -14,7 +14,7 @@
     left: 0;
     right: 0;
     display: flex;
-    background: linear-gradient(to-top, var(--smoke-default, #f5f5f5) 0%, transparent 100%);
+    background: linear-gradient(to top, var(--smoke-default) 0%, transparent 100%);
 
     padding: 5px;
     gap: 10px;
@@ -32,6 +32,25 @@
     color: var(--text-on-accent-primary);
 }
 
+.video_play_button, .video_fullscreen, .video_pip_button, .video_volume_button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.video_time {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    width: auto;
+}
+
 .video_progress_bar {
     flex-grow: 1;
+}
+
+.video_volume {
+    input {
+        display: none;
+    }
 }
