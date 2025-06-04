@@ -87,12 +87,12 @@ export default memo(function CreatePostCard() {
                         <button onClick={() => fileInputRef.current?.click()}>
                             <Icon name={"image"} size={20} type={"regular"}></Icon>
                         </button>
-                        <div className={styles.emoji_picker_container}>
+                        <div className={styles.emoji_picker_container} ref={emojiPickerRef}>
                             <button onClick={() => {setIsOpenEmojiPickerCard((prev) => !prev)}}>
                                 <Icon name={"emoji"} size={20} type={"regular"}></Icon>
                             </button>
                             <div className={styles.emoji_picker}>
-                                {isOpenEmojiPickerCard && <EmojiPicker ref={emojiPickerRef} onEmojiSelect={handleEmojiSelect} />}
+                                {isOpenEmojiPickerCard && <EmojiPicker onEmojiSelect={handleEmojiSelect} />}
                             </div>
                         </div>
                         <button>

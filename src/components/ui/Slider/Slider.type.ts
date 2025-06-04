@@ -4,6 +4,8 @@ export default interface SliderProps {
 
     style?: React.CSSProperties;
 
+    direction?: "horizontal" | "vertical";
+
     min?: number;
 
     max?: number;

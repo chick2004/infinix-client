@@ -2,17 +2,27 @@
 
 import Link from "next/link";
 
+import { useEffect } from "react";
 import { Icon, Button } from "@/components";
+import { useRequest } from "@/hooks";
 
 import styles from "./TrendingTagsCard.module.scss";
 
 export default function TrendingTagsCard() {
 
+    const { data: tagsData, loading: tagsLoading, error: tagsError, status: tagsStatus, execute: tagsExecute } = useRequest(process.env.NEXT_PUBLIC_API_URL + '/tags', "GET");
+    useEffect(() => {
+        tagsExecute();
+    }, []);
+
+    useEffect(() => {
+        console.log("tagsData", tagsData);
+    }, [tagsData]);
+
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault();
     }
-
-    const tags = [{name: "#2025", post_count: 10}, {name: "#2025", post_count: 10}, {name: "#2025", post_count: 10}];
 
     return (
         <div className={styles.section}>
@@ -21,13 +31,12 @@ export default function TrendingTagsCard() {
                 <Link href="" className={styles.see_all}>See all</Link>
             </div>
             {
-                tags.map((tag, index) => {
+                (Array.isArray(tagsData) ? tagsData : []).slice(0, 5).map((tag: any) => {
                     return (
-                        
-                        <Link href={""} key={index} className={styles.tag_bar}>
+                        <Link href={""} key={tag.id} className={styles.tag_bar}>
                             <div>
                                 <p className={styles.tag_name}>{tag.name}</p>
-                                <p className={styles.post_count}>{tag.post_count} posts</p>
+                                <p className={styles.post_count}>{tag.posts_count} posts</p>
                             </div>
                             <Button appearance="subtle" onClick={() => handleClick}>
                                 <Icon name="more_horizontal" size={16}></Icon>

@@ -19,7 +19,9 @@ export default function Page() {
     }, []);
 
     useEffect(() => {
-        console.log("postListData", postListData);
+        if (Array.isArray(postListData) && postListData.length > 0) {
+            console.log("postListData", postListData);
+        }
     }, [postListData]);
 
     return (

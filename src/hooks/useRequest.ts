@@ -3,8 +3,7 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
-// Convert object to FormData
-const objectToFormData = (obj: Record<string, any>, formData: FormData = new FormData(), parentKey?: string): FormData => {
+export const objectToFormData = (obj: Record<string, any>, formData: FormData = new FormData(), parentKey?: string): FormData => {
     if (obj && typeof obj === 'object' && !(obj instanceof File)) {
         Object.keys(obj).forEach(key => {
             const value = obj[key];
