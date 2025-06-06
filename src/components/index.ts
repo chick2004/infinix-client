@@ -9,14 +9,11 @@ export { default as Select } from './ui/Select/Select';
 export { default as Textarea } from './ui/Textarea/Textarea';
 export { default as Switch } from './ui/Switch/Switch';
 export { default as Slider } from './ui/Slider/Slider';
-
-export { default as Collapse } from './motion/Collapse/Collapse';
-
-export { default as Header } from './partial/Header/Header';
-
-export { default as Carousel } from './utility/Carousel/Carousel';
 export { default as Icon } from './ui/Icon/Icon';
 export { default as Spinner } from './ui/Spinner/Spinner';
+export { default as Skeleton } from './ui/Skeleton/Skeleton';
+
+export { default as Carousel } from './utility/Carousel/Carousel';
 export { default as Video } from './utility/Video/Video';
 export { default as AcrylicCard } from './utility/AcrylicCard/AcrylicCard';
 export { default as MicaCard } from './utility/MicaCard/MicaCard';
@@ -36,4 +33,8 @@ export { default as NotificationsCard } from './card/NotificationsCard/Notificat
 export { default as PostCard } from './card/PostCard/PostCard';
 export { default as SuggestionUsersCard } from './card/SuggestionUsersCard/SuggestionUsersCard';
 export { default as TrendingTagsCard } from './card/TrendingTagsCard/TrendingTagsCard';
+
+export { default as Collapse } from './motion/Collapse/Collapse';
+
+export { default as Header } from './partial/Header/Header';
 

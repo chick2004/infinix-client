@@ -123,6 +123,10 @@
     --acrylic-background-base: #F3F3F3BF;
     --mica-background-base: #F3F3F3D9;
 
+    --skeleton-background: #E6E6E6;
+    --skeleton-foreground: #FAFAFA;
+    
+    --skeleton-background-alpha: rgba(0, 0, 0, 0.1);
     
 }
 
@@ -229,11 +233,13 @@
         
 
         --acrylic-background-base: #202020F5;
-        --acrylic-background-default: #2C2C2CF5;
         --mica-background-base: #202020FF;
 
-        /* --mica-background-default-tint: #0A0A0A00;
-        --mica-background-default-luminosity: #0A0A0AFF; */
+
+        --skeleton-background: #575757;
+        --skeleton-foreground: #333333;
+    
+    --skeleton-background-alpha: rgba(255, 255, 255, 0.1);
     }
 }
 

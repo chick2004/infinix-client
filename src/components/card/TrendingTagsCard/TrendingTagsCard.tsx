@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 
-import { useEffect } from "react";
-import { Icon, Button } from "@/components";
+import { useEffect, Suspense } from "react";
+import { Icon, Button, Skeleton } from "@/components";
 import { useRequest } from "@/hooks";
 
 import styles from "./TrendingTagsCard.module.scss";
@@ -30,21 +30,27 @@ export default function TrendingTagsCard() {
                 <p>Trending tags</p>
                 <Link href="" className={styles.see_all}>See all</Link>
             </div>
-            {
-                (Array.isArray(tagsData) ? tagsData : []).slice(0, 5).map((tag: any) => {
-                    return (
-                        <Link href={""} key={tag.id} className={styles.tag_bar}>
-                            <div>
-                                <p className={styles.tag_name}>{tag.name}</p>
-                                <p className={styles.post_count}>{tag.posts_count} posts</p>
-                            </div>
-                            <Button appearance="subtle" onClick={() => handleClick}>
-                                <Icon name="more_horizontal" size={16}></Icon>
-                            </Button>
-                        </Link>
-                    );
-                })
-            }
+                {tagsLoading ? (
+                    <>
+                        <Skeleton animation={"pulse"} style={{width: "100%", height: "24px", borderRadius: "4px"}}></Skeleton>
+                        <Skeleton animation={"pulse"} style={{width: "100%", height: "24px", borderRadius: "4px"}}></Skeleton>
+                        <Skeleton animation={"pulse"} style={{width: "100%", height: "24px", borderRadius: "4px"}}></Skeleton>
+                    </>
+                ) : (
+                    Array.isArray(tagsData) ? tagsData : []).slice(0, 5).map((tag: any) => {
+                        return (
+                            <Link href={""} key={tag.id} className={styles.tag_bar}>
+                                <div>
+                                    <p className={styles.tag_name}>{tag.name}</p>
+                                    <p className={styles.post_count}>{tag.posts_count} posts</p>
+                                </div>
+                                <Button appearance="subtle" onClick={() => handleClick}>
+                                    <Icon name="more_horizontal" size={16}></Icon>
+                                </Button>
+                            </Link>
+                        );
+                    }
+                )}
         </div>
     );
 }

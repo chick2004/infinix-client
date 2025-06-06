@@ -242,7 +242,7 @@ const SetPasswordStep = ({formData, setFormData}: StepProps) => {
             return;
         }
         setFormError({});
-        execute({email: formData.email, password: formData.password});
+        execute({email: formData.email, password: formData.password, code: formData.code, display_name: formData.display_name});
     }
 
     useEffect(() => {

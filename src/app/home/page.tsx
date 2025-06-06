@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useAuth, useRequest } from "@/hooks";
+import { Skeleton } from "@/components";
 
 import ClientLayout from "@/layouts/ClientLayout/ClientLayout";
 
@@ -33,9 +34,17 @@ export default function Page() {
                 </div>
                 <div className={styles.center}>
                     <CreatePostCard></CreatePostCard>
-                    { Array.isArray(postListData) && postListData.map((postData: any) => (
-                        <PostCard key={postData.id} {...postData}></PostCard>
-                    ))}
+                    {postListLoading ? (
+                        <>
+                            <Skeleton animation={"pulse"} style={{width: "100%", height: "128px", borderRadius: "4px"}}></Skeleton>
+                            <Skeleton animation={"pulse"} style={{width: "100%", height: "128px", borderRadius: "4px"}}></Skeleton>
+                            <Skeleton animation={"pulse"} style={{width: "100%", height: "128px", borderRadius: "4px"}}></Skeleton>
+                        </>
+                    ) : (
+                        Array.isArray(postListData) && postListData.map((postData: any) => (
+                            <PostCard key={postData.id} {...postData}></PostCard>
+                        ))
+                    )}
                 </div>
                 <div className={styles.right}>
                     <FriendListCard></FriendListCard>
