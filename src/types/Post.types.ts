@@ -2,7 +2,7 @@ import type { Media, User } from "@/types";
 
 export default interface Post {
 
-    id?: string;
+    id: number;
 
     content?: string;
 

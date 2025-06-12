@@ -1,79 +1,88 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect, useRef, useCallback, memo } from "react";
+import { useState, useEffect, useRef, useCallback, useReducer, memo } from "react";
 
-import { Button, Icon, MediaBox, Textarea, Spinner, EmojiPicker } from "@/components";
+import { Button, Icon, Textarea, Spinner, EmojiPicker, Video } from "@/components";
 import { useRequest, useClickOutside } from "@/hooks";
 import styles from "./EditPostCard.module.scss";
 import EditPostCardProps from "./EditPostCard.types";
 
 export default memo(function EditPostCard(props: EditPostCardProps) {
 
-    const [postContent, setPostContent] = useState<string>("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-    const handlePostContentChange = (value: string) => {
-        setPostContent(value);
+    const { id, content, visibility, medias = [], shared_post, user, created_at, updated_at, deleted_at, handleClose } = props;
+
+    const initialState  = {
+        content: content || "",
+        visibility: visibility || "public",
+        medias: [] as File[],
+        deleted_medias: [] as number[],
     };
 
-    const [visibility, setVisibility] = useState<string>("public");
-    const [isVisibilityOpen, setIsVisibilityOpen] = useState<boolean>(false);
-    const handleVisibilityChange = (value: string) => {
-        setVisibility(value);
-        setIsVisibilityOpen(false);
+    const [currentMedias, setCurrentMedias] = useState<{ file: File | undefined, url: string, type: string, isNewMedia: boolean, id: number | undefined }[]>(medias.map(media => ({ file: undefined, url: process.env.NEXT_PUBLIC_API_URL + "/media" + media.path, type: media.type, isNewMedia: false, id: Number(media.id) })));
+
+
+    const reducer = (state: typeof initialState, action: any) => {
+        switch (action.type) {
+            case "SET_CONTENT":
+                return { ...state, content: action.payload };
+            case "SET_VISIBILITY":
+                return { ...state, visibility: action.payload };
+            case "ADD_MEDIA":
+                return { ...state, medias: [...state.medias, action.payload] };
+            case "REMOVE_MEDIA":
+                return { ...state, medias: state.medias.filter((_, index) => index !== action.payload) };
+            case "REMOVE_OLD_MEDIA":
+                return { ...state, deleted_medias: [...state.deleted_medias, action.payload] };
+            default:
+                return state;
+        }
     };
 
-    const [mediaFiles, setMediaFiles] = useState<{url: string, file: File}[]>([]);
+    const [state, dispatch] = useReducer(reducer, initialState);
+
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(event.target.files || []);
-        const newMedia = files.map((file) => ({
-            url: URL.createObjectURL(file),
-            file,
-        }));
-        setMediaFiles((prev) => [...prev, ...newMedia]);
-        if (fileInputRef.current) {
-            fileInputRef.current.value = "";
-        }
-    };
-    const handleRemoveMedia = (index: number) => {
-        setMediaFiles((prev) => prev.filter((_, i) => i !== index));
-        if (fileInputRef.current) {
-            fileInputRef.current.value = "";
-        }
-    };
 
-    const [emojiPickerOpen, setEmojiPickerOpen] = useState<boolean>(false);
+    const [isOpenVisibilityCard, setIsOpenVisibilityCard] = useState<boolean>(false);
+
+    const [isOpenEmojiPickerCard, setIsOpenEmojiPickerCard] = useState<boolean>(false);
+
     const emojiPickerRef = useRef<HTMLDivElement | null>(null);
+
     useClickOutside(emojiPickerRef, () => {
-        setEmojiPickerOpen(false);
+        setIsOpenEmojiPickerCard(false);
     });
-    const handleToggleEmojiPicker = () => {
-        setEmojiPickerOpen((prev) => !prev);
-    };
+    
     const handleEmojiSelect = useCallback((emoji: { character: string }) => {
-        setPostContent((prev) => prev + emoji.character);
-    }, []);
+        dispatch({ type: "SET_CONTENT", payload: state.content + emoji.character });
+    }, [state.content]);
 
-    const extraMediaCount = mediaFiles.length > 5 ? mediaFiles.length - 5 : 0;
-
-    const mediaGalleryClassName = () => {
-        const subClassName = () => {
-            switch (mediaFiles.length) {
-                case 1: return styles.one_image;
-                case 2: return styles.two_images;
-                case 3: return styles.three_images;
-                case 4: return styles.four_images;
-                case 5: return styles.five_images;
-                default: return styles.more_images;
+    const handleRemoveMedia = useCallback((index: number) => {
+        setCurrentMedias(prev => {
+            const temp_media = prev[index];
+            if (temp_media && temp_media.id !== undefined) {
+                dispatch({ type: "REMOVE_OLD_MEDIA", payload: temp_media.id });
             }
-        }
-        return `${styles.media_gallery} ${subClassName()}`;
-    };
+            return prev.filter((_, i) => i !== index);
+        });
+    } , []);
 
-    const date = new Date();
+
+    const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + '/posts/' + id, "PUT");
+    
+    const handleSubmit = function() {
+        console.log("Submitting post edit", state);
+        execute(state);
+    }
+
+    useEffect(() => {
+        if (status === 200) {
+            handleClose?.();
+        }
+    }, [status]);
 
     return (
-        <div ref={props.ref} style={styles} className={`${styles.section} ${props.className}`}>
+        <div ref={props.ref} style={styles} className={`${styles.section} ${props.className} ${loading ? styles.disabled_section : ""}`}>
             <div className={styles.header}>
                 <div className={styles.avatar_container}>
                     <Image src={"/images/avatar.png"} width={40} height={40} alt="Avatar" />
@@ -81,11 +90,11 @@ export default memo(function EditPostCard(props: EditPostCardProps) {
                 <div className={styles.info}>
                     <div className={styles.display_name}>{"props.user_display_name"}</div>
                     <div className={styles.post_info_container}>
-                        <p className={styles.date}>{date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                        <p className={styles.time}>{date.toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' })}</p>
-                        {visibility === "public" ? (
+                        <p className={styles.date}>{(new Date(created_at?.replace(" ", "T") || "")).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                        <p className={styles.time}>{(new Date(created_at?.replace(" ", "T") || "")).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' })}</p>
+                        {state.visibility === "public" ? (
                             <Icon name={"earth"} size={16} type={"regular"}></Icon>
-                        ) : visibility === "private" ? (
+                        ) : state.visibility === "private" ? (
                             <Icon name={"lock_closed"} size={16} type={"regular"}></Icon>
                         ) : (
                             <Icon name={"person"} size={16} type={"regular"}></Icon>
@@ -94,26 +103,10 @@ export default memo(function EditPostCard(props: EditPostCardProps) {
                 </div>
             </div>
             <div className={styles.post_container}>
-                <Textarea style={{maxHeight: "200px"}} placeholder={"What is on your mind?"} value={postContent} onChange={handlePostContentChange}></Textarea>
+                <Textarea style={{maxHeight: "200px"}} placeholder={"What is on your mind?"} value={state.content} onChange={(value) => {dispatch({type: "SET_CONTENT", payload: value})}}></Textarea>
 
-                {mediaFiles.length > 0 && (
-                    <div className={mediaGalleryClassName()}>
-                        {mediaFiles.slice(0, 5).map((media, index) => (
-                            <div key={index} className={styles.media_item}>
-                                {media.file.type.startsWith("image/") ? (
-                                    <Image src={media.url} alt={""} width={100} height={100} />
-                                ) : (
-                                    <video src={media.url} width={100} height={100} autoPlay muted></video>
-                                )}
-                                {index === 4 && extraMediaCount > 0 && (
-                                    <div className={styles.overlay}>+{extraMediaCount}</div>
-                                )}
-                                <button className={styles.remove_media_button} onClick={() => handleRemoveMedia(index)}>
-                                    <Icon name={"dismiss"} size={16} />
-                                </button>
-                            </div>
-                        ))}
-                    </div>
+                {Array.isArray(currentMedias) && currentMedias.length > 0 && (
+                    <MediaBox medias={currentMedias} handleRemoveMedia={handleRemoveMedia} />
                 )}
 
                 <div className={styles.actions}>
@@ -122,24 +115,24 @@ export default memo(function EditPostCard(props: EditPostCardProps) {
                             <Icon name={"image"} size={20} type={"regular"}></Icon>
                         </button>
                         <div className={styles.emoji_picker_container}>
-                            <button onClick={handleToggleEmojiPicker}>
+                            <button onClick={() => {setIsOpenEmojiPickerCard((prev) => !prev)}}>
                                 <Icon name={"emoji"} size={20} type={"regular"}></Icon>
                             </button>
                             <div className={styles.emoji_picker}>
-                                {emojiPickerOpen && <EmojiPicker ref={emojiPickerRef} onEmojiSelect={handleEmojiSelect} />}
+                                {isOpenEmojiPickerCard && <EmojiPicker ref={emojiPickerRef} onEmojiSelect={handleEmojiSelect} />}
                             </div>
                         </div>
                         <button>
                             <Icon name={"mic"} size={20} type={"regular"}></Icon>
                         </button>
-                        {/* <button>
+                        <button>
                             <Icon name={"attach"} size={20} type={"regular"}></Icon>
-                        </button> */}
+                        </button>
                         <button>
                             <Icon name={"data_histogram"} size={20} type={"regular"}></Icon>
                         </button>
-                        <div className={`${styles.visibility_dropdown} ${isVisibilityOpen ? styles.active : ""}`}>
-                            <button onClick={() => setIsVisibilityOpen((prev) => !prev)}>
+                        <div className={`${styles.visibility_dropdown} ${isOpenVisibilityCard ? styles.active : ""}`}>
+                            <button onClick={() => setIsOpenVisibilityCard((prev) => !prev)}>
                                 {visibility === "public" ? (
                                     <Icon name={"earth"} size={20} type={"regular"}></Icon>
                                 ) : visibility === "private" ? (
@@ -150,15 +143,15 @@ export default memo(function EditPostCard(props: EditPostCardProps) {
                                 <Icon name={"caret_down"} size={16} type={"filled"}></Icon>
                             </button>
                             <div className={styles.visibility_list}>
-                                <div className={styles.visibility_item} onClick={() => handleVisibilityChange("public")}>
+                                <div className={styles.visibility_item} onClick={() => dispatch({ type: "SET_VISIBILITY", payload: "public" })}>
                                     <Icon name={"earth"} size={16} type={"regular"}></Icon>
                                     <span>Public</span>
                                 </div>
-                                <div className={styles.visibility_item} onClick={() => handleVisibilityChange("private")}>
+                                <div className={styles.visibility_item} onClick={() => dispatch({ type: "SET_VISIBILITY", payload: "private" })}>
                                     <Icon name={"lock_closed"} size={16} type={"regular"}></Icon>
                                     <span>Private</span>
                                 </div>
-                                <div className={styles.visibility_item} onClick={() => handleVisibilityChange("friends")}>
+                                <div className={styles.visibility_item} onClick={() => dispatch({ type: "SET_VISIBILITY", payload: "friends" })}>
                                     <Icon name={"person"} size={16} type={"regular"}></Icon>
                                     <span>Friends</span>
                                 </div>
@@ -169,15 +162,67 @@ export default memo(function EditPostCard(props: EditPostCardProps) {
                         <Button appearance={"standard"} onClick={props.handleClose}>
                             Cancel
                         </Button>
-                        <Button appearance={"accent"}>
-                            Save
-                            <Icon name={"send"} size={20} type={"filled"}></Icon>
-                        </Button>
+                        {loading ? (
+                            <Button appearance={"accent"}>
+                                Save
+                                <Spinner></Spinner>
+                            </Button>
+                        ) : (
+                            <Button appearance={"accent"} onClick={handleSubmit}>
+                                Save
+                            </Button>
+                        )}
                     </div>
                 </div>
 
-                <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*,video/*" multiple onChange={handleFileChange} />
+                <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*,video/*" multiple onChange={(e) => {
+                    const files = Array.from(e.target.files || []);
+                    files.forEach(file => {
+                        dispatch({ type: "ADD_MEDIA", payload: file }); // chỉ truyền file
+                        setCurrentMedias(prev => [...prev, { file: file, type: file.type, url: URL.createObjectURL(file), isNewMedia: true, id: undefined }]);
+                    });
+                    if (fileInputRef.current) fileInputRef.current.value = "";
+                }}/>
             </div>
         </div>
     );
-})
+});
+
+
+const MediaBox = memo(function MediaBox({ medias, handleRemoveMedia }: { medias: { url: string, type: string, isNewMedia: boolean }[], handleRemoveMedia: (index: number) => void }) {
+
+    const extraMediaCount = medias.length > 5 ? medias.length - 5 : 0;
+
+    const mediaGalleryClassName = () => {
+        const subClassName = () => {
+            switch (medias.length) {
+                case 1: return styles.one_image;
+                case 2: return styles.two_images;
+                case 3: return styles.three_images;
+                case 4: return styles.four_images;
+                case 5: return styles.five_images;
+                default: return styles.more_images;
+            }
+        }
+        return `${styles.media_gallery} ${subClassName()}`;
+    };
+    return (
+        <div className={mediaGalleryClassName()}>
+            {medias.slice(0, 5).map((media, index) => (
+                <div key={index} className={styles.media_item}>
+                    {media.type.startsWith("image/") ? (
+                        <Image src={media.url} alt={""} width={100} height={100} />
+                    ) : (
+                        <Video src={media.url} style={{width: "100%", height: "100%", objectFit: "cover"}} autoPlay={true} muted={true}></Video>
+                    )}
+                    {index === 4 && extraMediaCount > 0 && (
+                        <div className={styles.overlay}>+{extraMediaCount}</div>
+                    )}
+                    <button className={styles.remove_media_button} onClick={() => handleRemoveMedia(index)}>
+                        <Icon name={"dismiss"} size={16} />
+                    </button>
+                </div>
+            ))}
+        </div>
+    );
+});

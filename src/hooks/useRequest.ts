@@ -11,13 +11,13 @@ export const objectToFormData = (obj: Record<string, any>, formData: FormData = 
 
             if (value instanceof File) {
                 formData.append(fullKey, value);
-            } else if (Array.isArray(value)) {
+            } else if (Array.isArray(value) && value.length > 0) {
                 value.forEach((item, index) => {
                     objectToFormData({ [`${index}`]: item }, formData, fullKey);
                 });
             } else if (typeof value === 'object' && value !== null) {
                 objectToFormData(value, formData, fullKey);
-            } else if (value !== undefined && value !== null) {
+            } else if (value !== undefined && value !== null && value !== '') {
                 formData.append(fullKey, value.toString());
             }
         });
@@ -50,12 +50,13 @@ export const useRequest = <T = any>(url: string, method: "GET" | "POST" | "PUT" 
         };
 
         if (payload) {
-            body = objectToFormData(payload);
+            body = objectToFormData({ ...payload, _method: method });
+            console.log("Request Body:", Array.from(body.entries()).reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {}));
         }
 
         try {
             const response = await fetch(url, {
-                method,
+                method: method === "GET" ? "GET" : "POST",
                 body: method !== "GET" ? body : null,
                 headers,
                 credentials: "include",

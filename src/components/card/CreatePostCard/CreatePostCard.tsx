@@ -1,11 +1,17 @@
 "use client";
 
 import Image from "next/image";
+import dynamic from 'next/dynamic';
 import { useState, useEffect, useReducer , useRef, useCallback, memo } from "react";
 
-import { Button, Icon, Textarea, Spinner, EmojiPicker } from "@/components";
+import { Button, Icon, Textarea, Spinner } from "@/components";
 import { useRequest, useClickOutside } from "@/hooks";
 import styles from "./CreatePostCard.module.scss";
+
+const EmojiPicker = dynamic(() => import('@/components').then(mod => ({ default: mod.EmojiPicker })), {
+    loading: () => <div className={styles.emoji_picker_loading}><Spinner></Spinner></div>,
+    ssr: false,
+});
 
 export default memo(function CreatePostCard() {
 

@@ -1,0 +1,71 @@
+.comment_input {
+    width: 100%;
+    min-width: 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0px 10px 10px 10px;
+    height: fit-content;
+}
+
+.comment_input textarea {
+    max-height: 200px;
+}
+
+.comment_input > * {
+    width: 100%;
+}
+
+.comment_input .buttons {
+    display: flex;
+    gap: 5px;
+    justify-content: space-between;
+}
+
+.comment_input .buttons .button_left {
+    display: flex;
+}
+
+.comment_input > :last-child {
+    width: 100%;
+}
+
+.media_list {
+    width: 100%;
+    display: flex;
+    gap: 5px;
+    overflow: scroll;
+}
+
+.media_item {
+    width: 75px;
+    height: 75px;
+    position: relative;
+    border-radius: 5px;
+    border: 1px solid var(--control-stroke-default);
+}
+
+.media_item img {
+    border-radius: 5px;
+}
+
+.media_item > button {
+    position: absolute;
+    top: 2;
+    right: 2;
+    z-index: 1;
+    padding: 2px;
+    border-radius: 50%;
+    background-color:  var(--control-on-image-fill-default);
+    border: 1px solid var(--control-stroke-default);
+    color: var(--text-primary);
+    cursor: pointer;
+
+    &:hover {
+        background-color:  var(--control-on-image-fill-secondary);
+    }
+
+    &:active {
+        background-color:  var(--control-on-image-fill-tertiary);
+    }
+}

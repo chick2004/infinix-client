@@ -1,15 +1,29 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useRef } from "react";
-import { useClickOutside } from "@/hooks";
-import { Video, Button, Icon, Textarea, Carousel } from "@/components"
+import { useState, useRef, useEffect } from "react";
+import { useRequest } from "@/hooks";
+import { Video, Button, Icon, Textarea, Carousel, Skeleton } from "@/components"
 
 import DetailPostCardProps from "./DetailPostCard.types";
 import styles from "./DetailPostCard.module.scss";
 
+import CreateCommentCard from "../CreateCommentCard/CreateCommentCard";
+
 export default function DetailPostCard(props: DetailPostCardProps) {
 
     const { id, content = "", visibility = "public", medias = [], shared_post, user, created_at, updated_at, deleted_at } = props;
+
+    const { data: commentListData, loading: commentListLoading, error: commentListError, status: commentListStatus, execute: commentListExecute } = useRequest(process.env.NEXT_PUBLIC_API_URL + '/posts/' + id + '/comments', "GET");
+
+    useEffect(() => {
+        commentListExecute();
+    }, []);
+
+    useEffect(() => {
+        
+            console.log("commentListData", commentListData);
+    }, [commentListData]);
+
     return (
         <div ref={props.ref} style={props.style} className={`${styles.detail_post} ${props.className} ${Array.isArray(medias) && medias.length > 0 ? styles.detail_post_with_media : ""}`}>
             {Array.isArray(medias) && medias.length > 0 && (
@@ -78,54 +92,37 @@ export default function DetailPostCard(props: DetailPostCardProps) {
                     </div>
                 </div>
                 <div className={styles.comments_container}>
-
-                    <div className={styles.comment}>
-                        <div className={styles.avatar_container}>
-                            <Image src="/images/avatar.png" width={30} height={30} alt="Avatar" />
-                        </div>
-                        <div className={styles.comment_content}>
-                            <div className={styles.display_name}>Châu Thành Cường</div>
-                            <div className={styles.comment_text}>
-                                <p>Lorem ipsum dolor sit amet consectetur. Id suscipit pharetra sagittis amet sed elementum nibh consequat. Mattis morbi congue donec mattis tortor porta dignissim.</p>
+                    {commentListLoading && (
+                        <>
+                            <Skeleton animation={"pulse"} style={{ width: "100%", height: "60px", borderRadius: "4px" }}></Skeleton>
+                            <Skeleton animation={"pulse"} style={{ width: "100%", height: "60px", borderRadius: "4px" }}></Skeleton>
+                        </>
+                    )}
+                    {Array.isArray(commentListData) && commentListData.length > 0 && (
+                        commentListData.map((comment: any) => (
+                            <div className={styles.comment} key={comment.id}>
+                                <div className={styles.avatar_container}>
+                                    <Image src={comment.user.profile.profile_photo || "/images/avatar.png"} width={30} height={30} alt="Avatar" />
+                                </div>
+                                <div className={styles.comment_content}>
+                                    <div className={styles.display_name}>{comment.user.profile.display_name}</div>
+                                    <div className={styles.comment_text}>
+                                        <p>{comment.content}</p>
+                                    </div>
+                                    <div className={styles.comment_time}>{(new Date(comment.created_at?.replace(" ", "T") || "")).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' })} {(new Date(comment.created_at?.replace(" ", "T") || "")).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                                </div>
                             </div>
-                            <div className={styles.comment_time}>19/2/2025 11:58 PM</div>
-                        </div>
-                    </div>
-
+                        ))
+                    )}
                 </div>
-                <div className={styles.comment_input}>
-                    <div className={styles.text_container}>
-                        <Textarea />
-                    </div>
-                    <div className={styles.buttons}>
-                        <div className={styles.button_left}>
-                            <Button appearance={"subtle"}>
-                                <Icon name={"image"} type={"regular"} size={20} />
-                            </Button>
-                            <Button appearance={"subtle"}>
-                                <Icon name={"camera"} type={"regular"} size={20} />
-                            </Button>
-                            <Button appearance={"subtle"}>
-                                <Icon name={"emoji"} type={"regular"} size={20} />
-                            </Button>
-                        </div>
-                        <div className={styles.button_right}>
-                            <Button appearance={"accent"}>
-                                Send
-                                <Icon name={"send"} type={"regular"} size={20} />
-                            </Button>
-                        </div>
-                    </div>
-                </div>
+                <CreateCommentCard post_id={id}></CreateCommentCard>
             </div>
         </div>
     )
 }
 
 function renderWithTags(text: string) {
-
     if (!text) return <span></span>;
-
     const parts = text.split(/(#\w+)/g);
     return parts.map((part, index) => {
         if (/^#\w+$/.test(part)) {

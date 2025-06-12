@@ -1,4 +1,6 @@
-export default interface EditPostCardProps {
+import { Post } from "@/types"
+
+export default interface EditPostCardProps extends Post{
 
     style?: React.CSSProperties;
 
