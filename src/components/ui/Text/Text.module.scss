@@ -1,0 +1,109 @@
+.text {
+    .primary {
+        color: var(--text-primary);
+    }
+
+    .secondary {
+        color: var(--text-secondary);
+    }
+
+    .tertiary {
+        color: var(--text-tertiary);
+    }
+
+    .disabled {
+        color: var(--text-disabled);
+    }
+}
+
+.accent_text {
+    .primary {
+        color: var(--accent-text-primary);
+    }
+
+    .secondary {
+        color: var(--accent-text-secondary);
+    }
+
+    .tertiary {
+        color: var(--accent-text-tertiary);
+    }
+
+    .disabled {
+        color: var(--accent-text-disabled);
+    }
+}
+
+.text_on_accent {
+    .primary {
+        color: var(--text-on-accent-primary);
+    }
+
+    .secondary {
+        color: var(--text-on-accent-secondary);
+    }
+
+    .tertiary {
+        color: var(--text-on-accent-tertiary);
+    }
+
+    .disabled {
+        color: var(--text-on-accent-disabled);
+    }
+}
+
+.caption {
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0%;
+    font-weight: 400;
+}
+
+.body {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 400;
+}
+
+.body_strong {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0%;
+    font-weight: 600;
+}
+
+.body_large {
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: 0%;
+    font-weight: 400;
+}
+
+.subtitle {
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0%;
+    font-weight: 600;
+}
+
+.title {
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: 0%;
+    font-weight: 600;
+}
+
+.title_large {
+    font-size: 40px;
+    line-height: 52px;
+    letter-spacing: 0%;
+    font-weight: 600;
+}
+
+.display {
+    font-size: 68px;
+    line-height: 92px;
+    letter-spacing: 0%;
+    font-weight: 600;
+}

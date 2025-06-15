@@ -1,9 +1,10 @@
 "use client";
 
+import clsx from "clsx";
 import Image from "next/image";
 import { useState, useEffect, useRef, useCallback, useReducer, memo } from "react";
 
-import { Button, Icon, Textarea, Spinner, EmojiPicker, Video } from "@/components";
+import { Button, Icon, Textarea, Spinner, EmojiPicker, Video, Surface } from "@/components";
 import { useRequest, useClickOutside } from "@/hooks";
 import styles from "./EditPostCard.module.scss";
 import EditPostCardProps from "./EditPostCard.types";
@@ -11,6 +12,7 @@ import EditPostCardProps from "./EditPostCard.types";
 export default memo(function EditPostCard(props: EditPostCardProps) {
 
     const { id, content, visibility, medias = [], shared_post, user, created_at, updated_at, deleted_at, handleClose } = props;
+    const { style, className, ref } = props;
 
     const initialState  = {
         content: content || "",
@@ -81,8 +83,14 @@ export default memo(function EditPostCard(props: EditPostCardProps) {
         }
     }, [status]);
 
+    const root = clsx(
+        styles.section,
+        className,
+        loading ? styles.disabled_section : ""
+    );
+
     return (
-        <div ref={props.ref} style={styles} className={`${styles.section} ${props.className} ${loading ? styles.disabled_section : ""}`}>
+        <Surface stroke shadow ref={props.ref} style={style} className={root}>
             <div className={styles.header}>
                 <div className={styles.avatar_container}>
                     <Image src={"/images/avatar.png"} width={40} height={40} alt="Avatar" />
@@ -184,7 +192,7 @@ export default memo(function EditPostCard(props: EditPostCardProps) {
                     if (fileInputRef.current) fileInputRef.current.value = "";
                 }}/>
             </div>
-        </div>
+        </Surface>
     );
 });
 

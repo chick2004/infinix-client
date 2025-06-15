@@ -1,12 +1,9 @@
 .section {
-    background-color: var(--solid-background-senary);
-    border: 1px solid var(--card-stroke-default);
     border-radius: 8px;
     padding: 10px;
     gap: 10px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0px 8px 16px 0px var(--shadow-flyout);
     width: 400px;
 }
 

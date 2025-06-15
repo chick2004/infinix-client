@@ -1,0 +1,15 @@
+.layer_default{
+    background-color: var(--layer-default);
+}
+
+.layer_alt {
+    background-color: var(--layer-alt);
+}
+
+.layer_on_acrylic {
+    background-color: var(--layer-on-acrylic-default);
+}
+
+.stroke {
+    border: 1px solid var(--card-stroke-default);
+}

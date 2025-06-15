@@ -1,0 +1,35 @@
+.dialog_base {
+    background-color: var(--solid-background-base);
+}
+
+.dialog_base_alt {
+    background-color: var(--solid-background-base-alt);
+}
+
+.dialog_secondary {
+    background-color: var(--solid-background-secondary);
+}
+
+.dialog_tertiary {
+    background-color: var(--solid-background-tertiary);
+}
+
+.dialog_quaternary {
+    background-color: var(--solid-background-quaternary);
+}
+
+.dialog_quinary {
+    background-color: var(--solid-background-quinary);
+}
+
+.dialog_senary {
+    background-color: var(--solid-background-senary);
+}
+
+.stroke {
+    border: 1px solid var(--surface-stroke-default);
+}
+
+.shadow {
+    box-shadow: var(--shadow-dialog);
+}

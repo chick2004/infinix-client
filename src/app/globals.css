@@ -114,11 +114,11 @@
     --system-solid-neutral-background: #F3F3F3FF;
     --system-solid-attention-background: #F7F7F7FF;
 
-    --shadow-card-rest: #0000000A;
-    --shadow-card-hover: #0000001A;
-    --shadow-tooltip: #00000024;
-    --shadow-flyout: #00000024;
-    --shadow-dialog: #00000026;
+    --shadow-card: 0px 2px 4px 0px #0000000A;
+    --shadow-tooltip: 0px 4px 8px 0px #00000024;
+    --shadow-flyout: 0px 8px 16px 0px #00000024;
+    --shadow-dialog:  0px 32px 64px 0px#00000030, 0px 2px 21px 0px#00000026;
+    --shadow-surface: 0px 32px 64px 0px #00000047, 0px 2px 21px 0px #00000038;
 
     --acrylic-background-base: #F3F3F3BF;
     --mica-background-base: #F3F3F3D9;
@@ -225,11 +225,11 @@
         --solid-background-quinary: #333333FF;
         --solid-background-senary: #373737FF;
         --solid-background-base-alt: #0A0A0AFF;
-        --shadow-card-rest: #00000021;
-        --shadow-card-hover: #00000042;
-        --shadow-tooltip: #00000042;
-        --shadow-flyout: #00000042;
-        --shadow-dialog: #0000005E;
+        --shadow-card: 0px 2px 4px 0px #00000021;
+        --shadow-tooltip: 0px 4px 8px 0px #00000042;
+        --shadow-flyout: 0px 8px 16px 0px #00000042;
+        --shadow-dialog:  0px 32px 64px 0px#0000005E, 0px 2px 21px 0px#0000005E;
+        --shadow-surface: 0px 32px 64px 0px #0000008F, 0px 2px 21px 0px #0000008C;
         
 
         --acrylic-background-base: #202020F5;

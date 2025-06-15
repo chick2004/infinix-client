@@ -96,19 +96,11 @@
     top: 100%;
     left: 0;
     width: fit-content;
-    background-color: var(--solid-background-senary);
     border-radius: 8px;
-    border: 1px solid var(--card-stroke-default);
     display: flex;
     flex-direction: column;
     gap: 5px;
     padding: 5px;
-    box-shadow: 0px 8px 16px 0px var(--shadow-flyout);
-    display: none;
-}
-
-.visibility_dropdown.active .visibility_list {
-    display: flex;
 }
 
 .visibility_item {

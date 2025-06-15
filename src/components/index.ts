@@ -8,6 +8,7 @@ export { default as Radio } from './ui/Radio/Radio';
 export { default as Select } from './ui/Select/Select';
 export { default as Textarea } from './ui/Textarea/Textarea';
 export { default as Switch } from './ui/Switch/Switch';
+export { default as Text } from './ui/Text/Text';
 export { default as Slider } from './ui/Slider/Slider';
 export { default as Icon } from './ui/Icon/Icon';
 export { default as Spinner } from './ui/Spinner/Spinner';
@@ -37,4 +38,10 @@ export { default as TrendingTagsCard } from './card/TrendingTagsCard/TrendingTag
 export { default as Collapse } from './motion/Collapse/Collapse';
 
 export { default as Header } from './partial/Header/Header';
+
+export { default as Surface } from './surface/Surface/Surface';
+export { default as Card } from './surface/Card/Card';
+export { default as Layer } from './surface/Layer/Layer';
+export { default as Dialog } from './surface/Dialog/Dialog';
+export { default as Flyout } from './surface/Flyout/Flyout';
 

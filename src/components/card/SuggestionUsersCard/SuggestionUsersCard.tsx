@@ -1,27 +1,26 @@
 "use client";
 
+import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect } from "react";
 
-import { Button, Skeleton } from "@/components";
-import { useRequest } from "@/hooks";
+import { Button, Skeleton, Layer } from "@/components";
+import { useFetch } from "@/hooks";
 
+import SuggestionUsersCardProps from "./SuggestionUsersCard.types";
 import styles from "./SuggestionUsersCard.module.scss";
 
-export default function SuggestionUsersCard() {
+export default function SuggestionUsersCard({ style, className, ref }: SuggestionUsersCardProps) {
 
-    const { data: usersData, loading: usersLoading, error: usersError, status: usersStatus, execute: usersExecute } = useRequest(process.env.NEXT_PUBLIC_API_URL + '/users', "GET");
-    useEffect(() => {
-        usersExecute();
-    }, []);
+    const root = clsx(
+        styles.section,
+        className
+    );
 
-    useEffect(() => {
-        console.log("usersData", usersData);
-    }, [usersData]);
+    const { data: usersData, loading: usersLoading, error: usersError, status: usersStatus } = useFetch(process.env.NEXT_PUBLIC_API_URL + '/users');
 
     return (
-        <div className={styles.section}>
+        <Layer stroke className={root} style={style} ref={ref}>
             <div className={styles.title_bar}>
                 <p>Suggestion users</p>
                 <Link href="" className={styles.see_all}>See all</Link>
@@ -48,6 +47,6 @@ export default function SuggestionUsersCard() {
                         );
                     }
                 )}
-        </div>
+        </Layer>
     )
 }

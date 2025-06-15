@@ -1,0 +1,35 @@
+.surface_base {
+    background-color: var(--solid-background-base);
+}
+
+.surface_base_alt {
+    background-color: var(--solid-background-base-alt);
+}
+
+.surface_secondary {
+    background-color: var(--solid-background-secondary);
+}
+
+.surface_tertiary {
+    background-color: var(--solid-background-tertiary);
+}
+
+.surface_quaternary {
+    background-color: var(--solid-background-quaternary);
+}
+
+.surface_quinary {
+    background-color: var(--solid-background-quinary);
+}
+
+.surface_senary {
+    background-color: var(--solid-background-senary);
+}
+
+.stroke {
+    border: 1px solid var(--surface-stroke-default);
+}
+
+.shadow {
+    box-shadow: var(--shadow-surface)
+}

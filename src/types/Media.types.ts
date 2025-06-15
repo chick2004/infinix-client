@@ -1,6 +1,6 @@
 export default interface Media {
 
-    id: string;
+    id: number;
 
     post_id?: string;
 

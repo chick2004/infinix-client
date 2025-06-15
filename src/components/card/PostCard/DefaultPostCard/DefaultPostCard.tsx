@@ -1,10 +1,11 @@
 "use client";
 
+import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, memo } from "react";
 
-import { Icon, Button, MediaBox, AcrylicCard, MicaCard} from "@/components";
+import { Icon, Button, MediaBox, Layer, Flyout} from "@/components";
 import { useClickOutside, useMotion, MotionName } from "@/hooks";
 
 import DefaultPostCardProps from "./DefaultPostCard.types";
@@ -30,9 +31,14 @@ export default memo(function DefaultPostCard(props: DefaultPostCardProps) {
     const { shouldRender, animationStyle} = useMotion(isOpenActions, {appear: MotionName.SLIDE_DOWN_IN, appearDistance: 10, disappear: MotionName.SLIDE_UP_OUT, disappearDistance: 10});
 
     const { id, content = "", visibility = "public", medias = [], shared_post, user, created_at, updated_at, deleted_at } = props;
+    const { style, className, ref} = props;
+    const root = clsx(
+        styles.section,
+        className
+    );
 
     return (
-        <div className={styles.section} style={props.style}>
+        <Layer stroke className={root} style={style} ref={ref}>
             <div className={styles.header}>
                 <div className={styles.avatar_container}>
                     <Image src={user?.profile?.profile_photo ? process.env.NEXT_PUBLIC_SERVER_URL + "/" + user?.profile?.profile_photo : "/images/avatar.png"} width={40} height={40} alt="Avatar" />
@@ -56,7 +62,7 @@ export default memo(function DefaultPostCard(props: DefaultPostCardProps) {
                         <Icon name={"more_horizontal"} size={16}></Icon>
                     </Button>
                     {shouldRender && (
-                        <div className={styles.post_actions_list} style={animationStyle}>
+                        <Flyout className={styles.post_actions_list} style={animationStyle}>
                             <div className={styles.post_actions_item} onClick={props.handleOpenEditPost}>
                                 <Icon name={"edit"} size={16}></Icon>
                                 Edit this post
@@ -65,7 +71,7 @@ export default memo(function DefaultPostCard(props: DefaultPostCardProps) {
                                 <Icon name={"delete"} size={16}></Icon>
                                 Delete this post
                             </div>
-                        </div>
+                        </Flyout>
                     )}
                 </div>
             </div>
@@ -100,6 +106,6 @@ export default memo(function DefaultPostCard(props: DefaultPostCardProps) {
                     </Button>
                 </div>
             </div>
-        </div>
+        </Layer>
     );
 });

@@ -1,31 +1,26 @@
-"use client";
-
+import clsx from "clsx";
 import Link from "next/link";
+import { Icon, Button, Skeleton, Layer } from "@/components";
+import { useFetch } from "@/hooks";
 
-import { useEffect, Suspense } from "react";
-import { Icon, Button, Skeleton } from "@/components";
-import { useRequest } from "@/hooks";
-
+import TrendingTagsProps from "./TrendingTagsCard.types";
 import styles from "./TrendingTagsCard.module.scss";
 
-export default function TrendingTagsCard() {
+export default function TrendingTagsCard({ style, className, ref }: TrendingTagsProps) {
 
-    const { data: tagsData, loading: tagsLoading, error: tagsError, status: tagsStatus, execute: tagsExecute } = useRequest(process.env.NEXT_PUBLIC_API_URL + '/tags', "GET");
-    useEffect(() => {
-        tagsExecute();
-    }, []);
-
-    useEffect(() => {
-        console.log("tagsData", tagsData);
-    }, [tagsData]);
-
+    const { data: tagsData, loading: tagsLoading, error: tagsError, status: tagsStatus } = useFetch(process.env.NEXT_PUBLIC_API_URL + '/tags');
+    
+    const root = clsx(
+        styles.section,
+        className
+    );
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault();
     }
 
     return (
-        <div className={styles.section}>
+        <Layer stroke className={root} style={style} ref={ref}>
             <div className={styles.title_bar}>
                 <p>Trending tags</p>
                 <Link href="" className={styles.see_all}>See all</Link>
@@ -51,6 +46,6 @@ export default function TrendingTagsCard() {
                         );
                     }
                 )}
-        </div>
+        </Layer>
     );
 }

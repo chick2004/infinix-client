@@ -1,10 +1,11 @@
 "use client";
 
+import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
 
-import { Button, Icon } from "@/components";
+import { Button, Layer } from "@/components";
+import GroupListCardProps from "./GroupListCard.types";
 import styles from './GroupListCard.module.scss';
 
 interface Group {
@@ -13,7 +14,12 @@ interface Group {
     group_image: string;
 }
 
-export default function GroupListCard() {
+export default function GroupListCard({ style, className, ref }: GroupListCardProps) {
+
+    const root = clsx(
+        styles.section,
+        className
+    );
 
     const groups: Array<Group> = [
         {group_name: "John Doe", member_count: 10, group_image: "/images/avatar.png"},
@@ -22,7 +28,7 @@ export default function GroupListCard() {
     ];
 
     return (
-        <div className={styles.section}>
+        <Layer className={root} style={style} ref={ref}>
             <div className={styles.title_bar}>
                 <p>Groups</p>
                 <Link href="" className={styles.see_all}>See all</Link>
@@ -45,6 +51,6 @@ export default function GroupListCard() {
                     })
                 }
             </div>
-        </div>
+        </Layer>
     )
 }

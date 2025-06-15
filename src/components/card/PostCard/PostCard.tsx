@@ -19,21 +19,24 @@ export default memo(function PostCard(props: PostCardProps) {
         setIsOpenDetail(false);
     });
 
-    const { shouldRender, animationStyle} = useMotion(isOpenDetail, { appear: MotionName.SCALE_UP_IN, disappear: MotionName.SCALE_DOWN_OUT });
+    const postEditRef = useRef<HTMLDivElement>(null);
+    useClickOutside(postEditRef, () => {
+        setIsOpenEdit(false);
+    });
+
+    const { shouldRender: shouldRenderDetailCard, animationStyle: animationStyleDetailCard} = useMotion(isOpenDetail, { appear: MotionName.SCALE_UP_IN, disappear: MotionName.SCALE_DOWN_OUT });
+    const { shouldRender: shouldRenderEditCard, animationStyle: animationStyleEditCard } = useMotion(isOpenEdit, { appear: MotionName.SCALE_UP_IN, disappear: MotionName.SCALE_DOWN_OUT });
 
     return (
         <>
             <DefaultPostCard {...props} handleOpenEditPost={() => setIsOpenEdit(true)} handleOpenDetailPost={() => {setIsOpenDetail(true)}}></DefaultPostCard>
 
-            {shouldRender && (
-                <div className={styles.post_detail_container}>
-                    <DetailPost {...props} style={animationStyle} ref={postDetailRef} handleClose={() => {setIsOpenDetail(false)}}></DetailPost>
-                </div>
-                
+            {shouldRenderDetailCard && (
+                <DetailPost {...props} className={styles.post_detail_container} style={animationStyleDetailCard} ref={postDetailRef} handleClose={() => {setIsOpenDetail(false)}}></DetailPost>
             )}
 
-            {isOpenEdit && (
-                <EditPostCard {...props} className={styles.post_edit_container} handleClose={() => setIsOpenEdit(false)}></EditPostCard>
+            {shouldRenderEditCard && (
+                <EditPostCard {...props} className={styles.post_edit_container} style={animationStyleEditCard} ref={postEditRef} handleClose={() => setIsOpenEdit(false)}></EditPostCard>
             )}
         </>
     );

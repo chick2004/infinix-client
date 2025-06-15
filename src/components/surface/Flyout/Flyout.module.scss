@@ -1,0 +1,14 @@
+.flyout {
+    background-color: var(--acrylic-background-base);
+    background-image: url('./acrylic-noise.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(60px);
+}
+.stroke {
+    border: 1px solid var(--surface-stroke-flyout);
+}
+
+.shadow {
+    box-shadow: var(--shadow-flyout);
+}

@@ -1,10 +1,13 @@
 "use client";
 
+import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
 
-import { Button, Icon } from "@/components";
+// import { User } from "@/types";
+import { Button, Layer } from "@/components";
+
+import FollowingListCardProps from "./FollowingListCard.types";
 import styles from './FollowingListCard.module.scss';
 
 interface User {
@@ -13,7 +16,12 @@ interface User {
     profile_image: string;
 }
 
-export default function FollowingListCard() {
+export default function FollowingListCard({ style, className, ref }: FollowingListCardProps) {
+
+    const root = clsx(
+        styles.section,
+        className
+    );
 
     const users: Array<User> = [
         {display_name: "John Doe", username: "@johndoe", profile_image: "/images/avatar.png"},
@@ -22,9 +30,9 @@ export default function FollowingListCard() {
     ];
 
     return (
-        <div className={styles.section}>
+        <Layer stroke className={root} style={style} ref={ref}>
             <div className={styles.title_bar}>
-                <p>Friends</p>
+                <p>Followings</p>
                 <Link href="" className={styles.see_all}>See all</Link>
             </div>
             <div className={styles.users}>
@@ -45,6 +53,6 @@ export default function FollowingListCard() {
                     })
                 }
             </div>
-        </div>
+        </Layer>
     )
 }

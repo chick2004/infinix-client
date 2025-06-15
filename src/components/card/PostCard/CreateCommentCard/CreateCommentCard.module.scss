@@ -69,3 +69,22 @@
         background-color:  var(--control-on-image-fill-tertiary);
     }
 }
+
+.emoji_picker_loading {
+    background-color: var(--solid-background-base);
+    width: 360px;
+    height: 400px;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--card-stroke-default);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.emoji_picker {
+    position: absolute;
+    bottom: 0;
+    left: calc(100% + 5px);
+    z-index: 1;
+}

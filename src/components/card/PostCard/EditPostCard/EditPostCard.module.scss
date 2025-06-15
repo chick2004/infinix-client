@@ -1,15 +1,11 @@
 .section {
     width: 550px;
     height: fit-content;
-    border: 1px solid var(--card-stroke-default);
-    box-shadow: 0px 2px 21px 0px var(--shadow-dialog);
     border-radius: 8px;
     padding: 10px;
     gap: 10px;
     display: flex;
     flex-direction: column;
-    background-color: var(--mica-background-base);
-    backdrop-filter: blur(240px);
     position: relative;
 }
 

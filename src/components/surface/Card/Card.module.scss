@@ -1,0 +1,19 @@
+.card_default {
+    background-color: var(--card-background-default);
+}
+
+.card_secondary {
+    background-color: var(--solid-background-secondary);
+}
+
+.card_tertiary {
+    background-color: var(--solid-background-tertiary);
+}
+
+.stroke {
+    border: 1px solid var(--card-stroke-default);
+}
+
+.shadow {
+    box-shadow: var(--shadow-card)
+}

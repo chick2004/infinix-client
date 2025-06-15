@@ -5,6 +5,8 @@ export default interface DefaultPostCardProps extends Post {
     style?: React.CSSProperties;
 
     className?: string;
+
+    ref?: React.Ref<HTMLDivElement>;
     
     handleOpenEditPost?: () => void;
 

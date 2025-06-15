@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 
-import { Button, Icon } from "@/components";
+import { Button, Icon, Flyout } from "@/components";
+import NotificationCardProps from "./NotificationsCard.types";
 import styles from "./NotificationsCard.module.scss";
 
 interface Notification {
@@ -14,7 +15,12 @@ interface Notification {
     time: string;
 }
 
-export default function NotificationsCard() {
+export default function NotificationsCard({ style, className, ref }: NotificationCardProps) {
+
+    const root = clsx(
+        styles.section,
+        className
+    );
 
     const notifications: Array<Notification> = [
         {image: "/images/avatar.png", name: "John Doe", content: "started following you", time: "2 hours ago"},
@@ -24,7 +30,7 @@ export default function NotificationsCard() {
     ];
 
     return (
-        <div className={styles.section}>
+        <Flyout stroke shadow className={root} style={style} ref={ref}>
             <div className={styles.title_bar}>
                 <p>Notifications</p>
                 <Link href="" className={styles.see_all}>See all</Link>
@@ -51,6 +57,6 @@ export default function NotificationsCard() {
                     })
                 }
             </div>
-        </div>
+        </Flyout>
     )
 }

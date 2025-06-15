@@ -1,14 +1,21 @@
 "use client";
 
+import clsx from "clsx";
 import { useState, useRef, memo } from "react";
 import emoji_list from "./emoji.json";
-import { Icon, Input } from "@/components";
+import { Icon, Input, Flyout } from "@/components";
 
 import EmojiPickerProps from "./EmojiPicker.types";
 import EmojiType from "./Emoji.types";
 import styles from "./EmojiPicker.module.scss";
 
-export default memo(function EmojiPicker({ ref, onEmojiSelect }: EmojiPickerProps) {
+export default memo(function EmojiPicker({ style, className, ref, onEmojiSelect }: EmojiPickerProps) {
+
+    const root = clsx(
+        styles.section,
+        className
+    );
+
     const [search, setSearch] = useState<string>("");
     const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
@@ -42,14 +49,10 @@ export default memo(function EmojiPicker({ ref, onEmojiSelect }: EmojiPickerProp
     );
 
     return (
-        <div className={styles.section} ref={ref}>
+        <Flyout stroke shadow className={root} style={style} ref={ref}>
             <div className={styles.group_list}>
                 {Object.keys(emoji_list).map((group) => (
-                    <div
-                        key={group}
-                        className={styles.group}
-                        onClick={() => handleSelectGroup(group)}
-                    >
+                    <div key={group} className={styles.group} onClick={() => handleSelectGroup(group)}>
                         <Icon name={getIconName(group)} type={"regular"} size={20} />
                     </div>
                 ))}
@@ -59,21 +62,11 @@ export default memo(function EmojiPicker({ ref, onEmojiSelect }: EmojiPickerProp
 
             <div className={styles.emoji_container}>
                 {Object.entries(filteredEmojiList).map(([group, emojis]) => (
-                    <div
-                        key={group}
-                        ref={(el) => {
-                            groupRefs.current[group] = el;
-                        }}
-                        className={styles.emoji_group}
-                    >
+                    <div key={group} ref={(el) => { groupRefs.current[group] = el; }} className={styles.emoji_group}>
                         <p className={styles.group_title}>{group}</p>
                         <div className={styles.emoji_list}>
                             {emojis.map((emoji) => (
-                                <span
-                                    key={emoji.slug}
-                                    className={styles.emoji}
-                                    onClick={() => handleEmojiClick(emoji)}
-                                >
+                                <span key={emoji.slug} className={styles.emoji} onClick={() => handleEmojiClick(emoji)}>
                                     {emoji.character}
                                 </span>
                             ))}
@@ -81,11 +74,10 @@ export default memo(function EmojiPicker({ ref, onEmojiSelect }: EmojiPickerProp
                     </div>
                 ))}
             </div>
-        </div>
+        </Flyout>
     );
 });
 
-// Hàm lấy icon phù hợp với từng nhóm
 const getIconName = (group: string): string => {
     const icons: Record<string, string> = {
         recent: "clock",

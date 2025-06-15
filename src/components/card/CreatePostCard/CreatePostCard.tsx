@@ -4,8 +4,8 @@ import Image from "next/image";
 import dynamic from 'next/dynamic';
 import { useState, useEffect, useReducer , useRef, useCallback, memo } from "react";
 
-import { Button, Icon, Textarea, Spinner } from "@/components";
-import { useRequest, useClickOutside } from "@/hooks";
+import { Button, Icon, Textarea, Spinner, Flyout } from "@/components";
+import { useRequest, useClickOutside, useMotion, MotionName } from "@/hooks";
 import styles from "./CreatePostCard.module.scss";
 
 const EmojiPicker = dynamic(() => import('@/components').then(mod => ({ default: mod.EmojiPicker })), {
@@ -43,6 +43,9 @@ export default memo(function CreatePostCard() {
     const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + '/posts', "POST");
 
     const handleSubmit = function() {
+        if (!state.content.trim() && state.medias.length === 0) {
+            return;
+        }
         const postData = {
             ...state,
             medias: state.medias.map(media => media.file),
@@ -59,11 +62,14 @@ export default memo(function CreatePostCard() {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     const [isOpenVisibilityCard, setIsOpenVisibilityCard] = useState<boolean>(false);
+    const { shouldRender, animationStyle } = useMotion(isOpenVisibilityCard, { appear: MotionName.SLIDE_DOWN_IN, appearDistance: 20, disappear: MotionName.SLIDE_UP_OUT, disappearDistance: 20 });
+    const visibilityCardRef = useRef<HTMLDivElement | null>(null);
+    useClickOutside(visibilityCardRef, () => {
+        setIsOpenVisibilityCard(false);
+    });
 
     const [isOpenEmojiPickerCard, setIsOpenEmojiPickerCard] = useState<boolean>(false);
-
     const emojiPickerRef = useRef<HTMLDivElement | null>(null);
-
     useClickOutside(emojiPickerRef, () => {
         setIsOpenEmojiPickerCard(false);
     });
@@ -110,7 +116,7 @@ export default memo(function CreatePostCard() {
                         <button>
                             <Icon name={"data_histogram"} size={20} type={"regular"}></Icon>
                         </button>
-                        <div className={`${styles.visibility_dropdown} ${isOpenVisibilityCard ? styles.active : ""}`}>
+                        <div className={styles.visibility_dropdown} ref={visibilityCardRef}>
                             <button onClick={() => setIsOpenVisibilityCard((prev) => !prev)}>
                                 {state.visibility === "public" ? (
                                     <Icon name={"earth"} size={20} type={"regular"}></Icon>
@@ -121,20 +127,22 @@ export default memo(function CreatePostCard() {
                                 )}
                                 <Icon name={"caret_down"} size={16} type={"filled"}></Icon>
                             </button>
-                            <div className={styles.visibility_list}>
-                                <div className={styles.visibility_item} onClick={() => dispatch({ type: "SET_VISIBILITY", payload: "public" })}>
-                                    <Icon name={"earth"} size={16} type={"regular"}></Icon>
-                                    <span>Public</span>
-                                </div>
-                                <div className={styles.visibility_item} onClick={() => dispatch({ type: "SET_VISIBILITY", payload: "private" })}>
-                                    <Icon name={"lock_closed"} size={16} type={"regular"}></Icon>
-                                    <span>Private</span>
-                                </div>
-                                <div className={styles.visibility_item} onClick={() => dispatch({ type: "SET_VISIBILITY", payload: "friends" })}>
-                                    <Icon name={"person"} size={16} type={"regular"}></Icon>
-                                    <span>Friends</span>
-                                </div>
-                            </div>
+                            { shouldRender && (
+                                <Flyout stroke shadow className={styles.visibility_list} style={animationStyle}>
+                                    <div className={styles.visibility_item} onClick={() => {dispatch({ type: "SET_VISIBILITY", payload: "public" }); setIsOpenVisibilityCard(false);}}>
+                                        <Icon name={"earth"} size={16} type={"regular"}></Icon>
+                                        <span>Public</span>
+                                    </div>
+                                    <div className={styles.visibility_item} onClick={() => {dispatch({ type: "SET_VISIBILITY", payload: "private" }); setIsOpenVisibilityCard(false);}}>
+                                        <Icon name={"lock_closed"} size={16} type={"regular"}></Icon>
+                                        <span>Private</span>
+                                    </div>
+                                    <div className={styles.visibility_item} onClick={() => {dispatch({ type: "SET_VISIBILITY", payload: "friends" }); setIsOpenVisibilityCard(false);}}>
+                                        <Icon name={"person"} size={16} type={"regular"}></Icon>
+                                        <span>Friends</span>
+                                    </div>
+                                </Flyout>
+                            )}
                         </div>
                     </div>
                     {loading ? (

@@ -1,10 +1,12 @@
 "use client";
 
+import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
 
-import { Button, Icon } from "@/components";
+import { Button, Layer } from "@/components";
+
+import FriendListCardProps from "./FriendListCard.types";
 import styles from './FriendListCard.module.scss';
 
 interface User {
@@ -13,7 +15,12 @@ interface User {
     profile_image: string;
 }
 
-export default function FriendListCard() {
+export default function FriendListCard({ style, className, ref }: FriendListCardProps) {
+
+    const root = clsx(
+        styles.section,
+        className
+    );
 
     const users: Array<User> = [
         {display_name: "John Doe", username: "@johndoe", profile_image: "/images/avatar.png"},
@@ -22,7 +29,7 @@ export default function FriendListCard() {
     ];
 
     return (
-        <div className={styles.section}>
+        <Layer stroke className={root} style={style} ref={ref}>
             <div className={styles.title_bar}>
                 <p>Friends</p>
                 <Link href="" className={styles.see_all}>See all</Link>
@@ -45,6 +52,6 @@ export default function FriendListCard() {
                     })
                 }
             </div>
-        </div>
+        </Layer>
     )
 }
