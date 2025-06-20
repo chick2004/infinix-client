@@ -1,4 +1,4 @@
-import { Comment } from '@/types';
+import type { Comment } from '@/types';
 
 export default interface CommentCardProps {
 
@@ -10,4 +10,5 @@ export default interface CommentCardProps {
 
     comment: Comment;
 
+    onStartEdit?: (comment: Comment) => void;
 }

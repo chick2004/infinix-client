@@ -1,12 +1,14 @@
-import { Post } from "@/types"
+import type { Post } from "@/types"
 
-export default interface DefaultPostCardProps extends Post {
+export default interface DefaultPostCardProps {
 
     style?: React.CSSProperties;
 
     className?: string;
 
     ref?: React.Ref<HTMLDivElement>;
+
+    post: Post;
     
     handleOpenEditPost?: () => void;
 

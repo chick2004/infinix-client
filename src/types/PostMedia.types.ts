@@ -1,4 +1,4 @@
-export default interface Media {
+export default interface PostMedia {
 
     id: number;
 
@@ -11,7 +11,5 @@ export default interface Media {
     create_at?: string;
 
     updated_at?: string;
-
-    deleted_at?: string | null;
 
 }

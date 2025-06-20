@@ -5,11 +5,42 @@ import Image from "next/image";
 
 import { ClientLayout } from "@/layouts";
 
-import { DropdownSearch, Button, Icon, Textarea, Chatbox, Checkbox } from "@/components";
+import { DropdownSearch, Button, Icon, ConversationListCard, ConversationBoxCard, Checkbox } from "@/components";
 import { useAuth } from "@/hooks";
 import styles from './page.module.css';
 
 export default function Page() {
+
+    
+    const conversation = {
+        id: 1,
+        is_group: false,
+        name: "Châu Thành Cường",
+        image: "/images/avatar.png",
+        last_message: "Hello, how are you?",
+        messages: [
+            {
+                id: 1,
+                conversation_id: 1,
+                user_id: 1,
+                user_displayname: "Châu Thành Cường",
+                content: "Hello, how are you?",
+                time: new Date(),
+                avatar: "/images/avatar.png",
+                is_own: true
+            },
+            {
+                id: 2,
+                conversation_id: 1,
+                user_id: 2,
+                user_displayname: "Jen",
+                content: "I'm good, thank you.",
+                time: new Date(),
+                avatar: "/images/avatar.png",
+                is_own: false
+            }
+        ]
+    }
 
     const [isExpanded, setIsExpanded] = useState(true);
     const [replyMessage, setReplyMessage] = useState("");
@@ -26,64 +57,11 @@ export default function Page() {
         <ClientLayout>
             <div className={styles.page}>
                 <div className={styles.left}>
-                    <div className={styles.conversations_list_container}>
-                        <div className={styles.title_container}>
-                            <div className={styles.title}>Conversations</div>
-                            <Button appearance={"subtle"}>
-                                <Icon name={"chat_add"} type={"regular"}></Icon>
-                            </Button>
-                            <Button appearance={"subtle"}>
-                                <Icon name={"more_horizontal"} type={"regular"}></Icon>
-                            </Button>
-                        </div>
-                        <div className={styles.search_container}>
-                            <DropdownSearch placeholder={"Search..."} suggestions={[]}></DropdownSearch>
-                        </div>
-                        <div className={styles.list_container}>
-                            <div className={styles.item}>
-                                <div className={styles.avatar}>
-                                    <Image src={"/images/avatar.png"} width={45} height={45} alt={"avatar"}></Image>
-                                </div>
-                                <div className={styles.info}>
-                                    <div className={styles.name}>John Doe</div>
-                                    <div className={styles.message}>Hello, how are you? <span className={styles.time}>12:00 PM</span></div>
-                                </div>
-                                <Button appearance={"subtle"}>
-                                    <Icon name={"more_horizontal"} type={"regular"}></Icon>
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
+                    <ConversationListCard></ConversationListCard>
                 </div>
                 <div className={mainClassname}>
-                    
                     <div className={styles.center}>
-                        <div className={styles.conversation_container}>
-                            <div className={styles.header}>
-                                <div className={styles.avatar}>
-                                    <Image src={"/images/avatar.png"} width={45} height={45} alt={"avatar"}></Image>
-                                </div>
-                                <div className={styles.info}>
-                                    <div className={styles.name}>John Doe</div>
-                                    <div className={styles.status}>Online</div>
-                                </div>
-                                <Button appearance={"subtle"}>
-                                    <Icon name={"video"} type={"filled"}></Icon>
-                                </Button>
-                                <Button appearance={"subtle"}>
-                                    <Icon name={"call"} type={"filled"}></Icon>
-                                </Button>
-                                <Button appearance={"subtle"}>
-                                    <Icon name={"more_horizontal"} type={"filled"}></Icon>
-                                </Button>
-                                <Button appearance={"subtle"} onClick={() => setIsExpanded(!isExpanded)}>
-                                    {isExpanded ? <Icon name={"panel_left_contract"} type={"filled"}></Icon> : <Icon name={"panel_right_contract"} type={"filled"}></Icon>}
-                                </Button>
-                            </div>
-                            <div className={styles.chat_container}>
-                                <Chatbox></Chatbox>
-                            </div>
-                        </div>
+                        <ConversationBoxCard conversation={conversation} style={{ width: "100%", height: "100%"}}></ConversationBoxCard>
                     </div>
                     {!isExpanded && <div className={styles.right}>
                         <div className={styles.conversation_detail_container}>

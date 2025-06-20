@@ -4,8 +4,6 @@ export default interface TextProps {
 
     className?: string;
 
-    ref?: React.Ref<HTMLSpanElement>;
-
     appearance?: "text" | "accent_text" | "text_on_accent";
 
     type?: "caption" | "body" | "body_strong" | "body_large" | "subtitle" | "title" | "title_large" | "display";
@@ -14,4 +12,5 @@ export default interface TextProps {
 
     children?: React.ReactNode;
 
+    onClick?: React.MouseEventHandler<HTMLSpanElement>;
 }

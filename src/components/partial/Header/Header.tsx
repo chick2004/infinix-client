@@ -1,19 +1,22 @@
 "use client";
 
-import { useState, memo } from "react";
+import { useState, memo, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { DropdownSearch, Icon, NotificationsCard } from "@/components";
+import { useClickOutside } from "@/hooks";
+import { DropdownSearch, Icon, NotificationsCard, Layer } from "@/components";
 import styles from "./Header.module.scss";
 
 export default memo(function Header() {
 
     const [showNotifications, setShowNotifications] = useState(false);
+    const notificationsRef = useRef<HTMLDivElement>(null);
+    useClickOutside(notificationsRef, () => setShowNotifications(false));
     const pathname = usePathname();
 
     return (
-        <header className={styles.header}>
+        <Layer className={styles.header}>
             <div className={styles.header_left}>
                 <Image src="/images/logo.png" alt="logo" width={35} height={35}></Image>
             </div>
@@ -25,7 +28,7 @@ export default memo(function Header() {
                     <Icon name="home" size={24} type={pathname === "/home" ? "filled" : "regular"}/>
                 </Link>
 
-                <div className={styles.notification_button} onClick={() => setShowNotifications(!showNotifications)}>
+                <div className={styles.notification_button} ref={notificationsRef} onClick={() => setShowNotifications(!showNotifications)}>
                     <button className={pathname === "/notifications" ? styles.active : ""}>
                         <Icon name="alert" size={24} type={pathname === "/notifications" ? "filled" : "regular"}/>
                     </button>
@@ -46,6 +49,6 @@ export default memo(function Header() {
                     <Icon name="settings" size={24} type={pathname === "/setting" ? "filled" : "regular"}/>
                 </Link>
             </div>
-        </header>
+        </Layer>
     )
 });

@@ -21,6 +21,8 @@ export { default as MicaCard } from './utility/MicaCard/MicaCard';
 
 
 export { default as Chatbox } from './card/Chatbox/Chatbox';
+export { default as ConversationBoxCard } from './card/ConversationBoxCard/ConversationBoxCard';
+export { default as ConversationListCard } from './card/ConversationListCard/ConversationListCard';
 export { default as CreatePostCard } from './card/CreatePostCard/CreatePostCard';
 export { default as EmojiPicker } from './card/EmojiPicker/EmojiPicker';
 export { default as FollowingListCard } from './card/FollowingListCard/FollowingListCard';
@@ -32,6 +34,8 @@ export { default as Message } from './card/Message/Message';
 export { default as MessageGroup } from './card/MessageGroup/MessageGroup';
 export { default as NotificationsCard } from './card/NotificationsCard/NotificationsCard';
 export { default as PostCard } from './card/PostCard/PostCard';
+export { default as ProfileCard } from './card/ProfileCard/ProfileCard';
+export { default as ProfileMediaGalleryCard } from './card/ProfileMediaGalleryCard/ProfileMediaGalleryCard';
 export { default as SuggestionUsersCard } from './card/SuggestionUsersCard/SuggestionUsersCard';
 export { default as TrendingTagsCard } from './card/TrendingTagsCard/TrendingTagsCard';
 

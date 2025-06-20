@@ -1,4 +1,4 @@
-import { Profile } from "@/types";
+import type { Profile } from "@/types";
 export default interface User {
 
     id?: number;

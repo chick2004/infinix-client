@@ -1,13 +1,20 @@
 "use client";
-
+import clsx from "clsx";
 import { useState, useEffect } from "react";
 
 import InputProps from "./Input.types";
 import styles from "./Input.module.scss";
 
-export function TextInput(props: InputProps) {
+export function TextInput({ style, className, ref, name, value = "", disabled = false, placeholder = "", onChange }: InputProps) {
 
-    const { style, className, name, value = "", disabled = false, placeholder = "", onChange } = props;
+    const root = clsx(
+        styles.input_group,
+        styles.text_input,
+        className,
+        {
+            [styles.disabled]: disabled
+        }
+    );
 
     const [internalValue, setInternalValue] = useState<string | number>(value);
 
@@ -21,7 +28,7 @@ export function TextInput(props: InputProps) {
     }
 
     return (
-        <div style={style} className={`${styles.input_group} ${className} ${disabled ? styles.disabled : ""}`}>
+        <div style={style} ref={ref} className={root}>
             <input type="text" value={internalValue} name={name} disabled={disabled} placeholder={placeholder} onChange={handleChange}/>
         </div>
     );

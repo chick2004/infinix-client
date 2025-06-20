@@ -9,7 +9,7 @@ import { useRequest, useClickOutside, useMotion, MotionName } from "@/hooks";
 import styles from "./CreatePostCard.module.scss";
 
 const EmojiPicker = dynamic(() => import('@/components').then(mod => ({ default: mod.EmojiPicker })), {
-    loading: () => <div className={styles.emoji_picker_loading}><Spinner></Spinner></div>,
+    loading: () => <Flyout stroke shadow className={styles.emoji_picker_loading}><Spinner></Spinner></Flyout>,
     ssr: false,
 });
 

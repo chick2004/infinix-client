@@ -1,53 +1,56 @@
+.root {
+    width: fit-content;
+}
 .text {
-    .primary {
+    &.primary {
         color: var(--text-primary);
     }
 
-    .secondary {
+    &.secondary {
         color: var(--text-secondary);
     }
 
-    .tertiary {
+    &.tertiary {
         color: var(--text-tertiary);
     }
 
-    .disabled {
+    &.disabled {
         color: var(--text-disabled);
     }
 }
 
 .accent_text {
-    .primary {
+    &.primary {
         color: var(--accent-text-primary);
     }
 
-    .secondary {
+    &.secondary {
         color: var(--accent-text-secondary);
     }
 
-    .tertiary {
+    &.tertiary {
         color: var(--accent-text-tertiary);
     }
 
-    .disabled {
+    &.disabled {
         color: var(--accent-text-disabled);
     }
 }
 
 .text_on_accent {
-    .primary {
+    &.primary {
         color: var(--text-on-accent-primary);
     }
 
-    .secondary {
+    &.secondary {
         color: var(--text-on-accent-secondary);
     }
 
-    .tertiary {
+    &.tertiary {
         color: var(--text-on-accent-tertiary);
     }
 
-    .disabled {
+    &.disabled {
         color: var(--text-on-accent-disabled);
     }
 }

@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    padding: 0px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
     height: fit-content;
 }
 
@@ -87,4 +87,10 @@
     bottom: 0;
     left: calc(100% + 5px);
     z-index: 1;
+}
+
+.button_right {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }

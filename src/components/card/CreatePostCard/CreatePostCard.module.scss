@@ -264,12 +264,10 @@
 }
 
 .emoji_picker_loading {
-    background-color: var(--solid-background-base);
     width: 360px;
     height: 400px;
     padding: 20px;
     border-radius: 8px;
-    border: 1px solid var(--card-stroke-default);
     display: flex;
     justify-content: center;
     align-items: center;

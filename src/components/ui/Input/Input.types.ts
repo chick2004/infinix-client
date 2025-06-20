@@ -4,6 +4,8 @@ export default interface InputProps {
 
     className?: string;
 
+    ref?: React.Ref<HTMLInputElement>;
+
     type?: "text" | "password" | "number" | "search" | "date";
 
     value?: string;

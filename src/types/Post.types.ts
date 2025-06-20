@@ -1,4 +1,4 @@
-import type { Media, User } from "@/types";
+import type { PostMedia, User } from "@/types";
 
 export default interface Post {
 
@@ -8,7 +8,7 @@ export default interface Post {
 
     visibility?: string;
 
-    medias?: Media[];
+    medias?: PostMedia[];
 
     shared_post?: Post | null;
 

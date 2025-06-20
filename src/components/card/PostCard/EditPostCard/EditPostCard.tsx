@@ -9,19 +9,16 @@ import { useRequest, useClickOutside } from "@/hooks";
 import styles from "./EditPostCard.module.scss";
 import EditPostCardProps from "./EditPostCard.types";
 
-export default memo(function EditPostCard(props: EditPostCardProps) {
-
-    const { id, content, visibility, medias = [], shared_post, user, created_at, updated_at, deleted_at, handleClose } = props;
-    const { style, className, ref } = props;
+export default memo(function EditPostCard({ style, className, ref, post, handleClose }: EditPostCardProps) {
 
     const initialState  = {
-        content: content || "",
-        visibility: visibility || "public",
+        content: post.content || "",
+        visibility: post.visibility || "public",
         medias: [] as File[],
         deleted_medias: [] as number[],
     };
 
-    const [currentMedias, setCurrentMedias] = useState<{ file: File | undefined, url: string, type: string, isNewMedia: boolean, id: number | undefined }[]>(medias.map(media => ({ file: undefined, url: process.env.NEXT_PUBLIC_API_URL + "/media" + media.path, type: media.type, isNewMedia: false, id: Number(media.id) })));
+    const [currentMedias, setCurrentMedias] = useState<{ file: File | undefined, url: string, type: string, isNewMedia: boolean, id: number | undefined }[]>(post.medias?.map(media => ({ file: undefined, url: process.env.NEXT_PUBLIC_API_URL + "/media" + media.path, type: media.type, isNewMedia: false, id: Number(media.id) })) || []);
 
 
     const reducer = (state: typeof initialState, action: any) => {
@@ -70,7 +67,7 @@ export default memo(function EditPostCard(props: EditPostCardProps) {
     } , []);
 
 
-    const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + '/posts/' + id, "PUT");
+    const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + '/posts/' + post.id, "PUT");
     
     const handleSubmit = function() {
         console.log("Submitting post edit", state);
@@ -90,7 +87,7 @@ export default memo(function EditPostCard(props: EditPostCardProps) {
     );
 
     return (
-        <Surface stroke shadow ref={props.ref} style={style} className={root}>
+        <Surface stroke shadow ref={ref} style={style} className={root}>
             <div className={styles.header}>
                 <div className={styles.avatar_container}>
                     <Image src={"/images/avatar.png"} width={40} height={40} alt="Avatar" />
@@ -98,8 +95,8 @@ export default memo(function EditPostCard(props: EditPostCardProps) {
                 <div className={styles.info}>
                     <div className={styles.display_name}>{"props.user_display_name"}</div>
                     <div className={styles.post_info_container}>
-                        <p className={styles.date}>{(new Date(created_at?.replace(" ", "T") || "")).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                        <p className={styles.time}>{(new Date(created_at?.replace(" ", "T") || "")).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' })}</p>
+                        <p className={styles.date}>{(new Date(post.created_at?.replace(" ", "T") || "")).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                        <p className={styles.time}>{(new Date(post.created_at?.replace(" ", "T") || "")).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' })}</p>
                         {state.visibility === "public" ? (
                             <Icon name={"earth"} size={16} type={"regular"}></Icon>
                         ) : state.visibility === "private" ? (
@@ -141,9 +138,9 @@ export default memo(function EditPostCard(props: EditPostCardProps) {
                         </button>
                         <div className={`${styles.visibility_dropdown} ${isOpenVisibilityCard ? styles.active : ""}`}>
                             <button onClick={() => setIsOpenVisibilityCard((prev) => !prev)}>
-                                {visibility === "public" ? (
+                                {post.visibility === "public" ? (
                                     <Icon name={"earth"} size={20} type={"regular"}></Icon>
-                                ) : visibility === "private" ? (
+                                ) : post.visibility === "private" ? (
                                     <Icon name={"lock_closed"} size={20} type={"regular"}></Icon>
                                 ) : (
                                     <Icon name={"person"} size={20} type={"regular"}></Icon>
@@ -167,7 +164,7 @@ export default memo(function EditPostCard(props: EditPostCardProps) {
                         </div>
                     </div>
                     <div className={styles.buttons}>
-                        <Button appearance={"standard"} onClick={props.handleClose}>
+                        <Button appearance={"standard"} onClick={handleClose}>
                             Cancel
                         </Button>
                         {loading ? (

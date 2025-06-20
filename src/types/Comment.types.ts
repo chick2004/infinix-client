@@ -1,5 +1,5 @@
-import Media from './Media.types';
-import User from './User.types';
+import type CommentMedia from './CommentMedia.types';
+import type User from './User.types';
 export default interface Comment {
 
     id?: number;
@@ -10,5 +10,5 @@ export default interface Comment {
 
     user?: User;
 
-    media?: Media
+    media?: CommentMedia
 }

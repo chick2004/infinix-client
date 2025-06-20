@@ -1,29 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
-import { useAuth, useRequest } from "@/hooks";
-import { Skeleton } from "@/components";
-
+import { useAuth, useFetch } from "@/hooks";
 import ClientLayout from "@/layouts/ClientLayout/ClientLayout";
 
-import { TrendingTagsCard, SuggestionUsersCard, CreatePostCard, PostCard, FriendListCard, GroupListCard, FollowingListCard } from "@/components";
+import { Skeleton, TrendingTagsCard, SuggestionUsersCard, CreatePostCard, PostCard, FriendListCard, GroupListCard, FollowingListCard } from "@/components";
 
 
 import styles from './page.module.css';
 
 export default function Page() {
 
-    const { data: postListData, loading: postListLoading, error: postListError, status: postListStatus, execute: postListExecute } = useRequest(process.env.NEXT_PUBLIC_API_URL + '/posts', "GET");
-
-    useEffect(() => {
-        postListExecute();
-    }, []);
-
-    useEffect(() => {
-        if (Array.isArray(postListData) && postListData.length > 0) {
-            console.log("postListData", postListData);
-        }
-    }, [postListData]);
+    const { data: postListData, loading: postListLoading, error: postListError, status: postListStatus } = useFetch(process.env.NEXT_PUBLIC_API_URL + '/posts');
 
     return (
         <ClientLayout>
@@ -42,7 +30,7 @@ export default function Page() {
                         </>
                     ) : (
                         Array.isArray(postListData) && postListData.map((postData: any) => (
-                            <PostCard key={postData.id} {...postData}></PostCard>
+                            <PostCard key={postData.id} post={postData}></PostCard>
                         ))
                     )}
                 </div>

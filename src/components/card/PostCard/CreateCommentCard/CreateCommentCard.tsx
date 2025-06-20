@@ -9,13 +9,15 @@ import { Button, Icon, Textarea, Spinner } from "@/components";
 import { useClickOutside } from "@/hooks";
 import CreateCommentCardProps from "./CreateCommentCard.types";
 import styles from "./CreateCommentCard.module.scss";
+import { use } from 'chai';
+import { on } from 'events';
 
 const EmojiPicker = dynamic(() => import('@/components').then(mod => ({ default: mod.EmojiPicker })), {
     loading: () => <div className={styles.emoji_picker_loading}><Spinner></Spinner></div>,
     ssr: false,
 });
 
-export default function CreateCommentCard({ post_id }: CreateCommentCardProps) {
+export default function CreateCommentCard({ style, className, ref, post_id, editting_comment, onEndEdit }: CreateCommentCardProps) {
 
     const [isOpenEmojiPickerCard, setIsOpenEmojiPickerCard] = useState<boolean>(false);
     const emojiPickerRef = useRef<HTMLDivElement | null>(null);
@@ -24,7 +26,10 @@ export default function CreateCommentCard({ post_id }: CreateCommentCardProps) {
         setIsOpenEmojiPickerCard(false);
     });
 
-    const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/posts/" + post_id + "/comments", "POST");
+    const { data, loading, error, status, execute } = useRequest(
+        editting_comment ? process.env.NEXT_PUBLIC_API_URL + "/comments/" + editting_comment.id : process.env.NEXT_PUBLIC_API_URL + "/posts/" + post_id + "/comments",
+        editting_comment ? "PUT" : "POST"
+    );
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -32,7 +37,8 @@ export default function CreateCommentCard({ post_id }: CreateCommentCardProps) {
         content: "",
         post_id: post_id,
         reply_to_comment_id: undefined,
-        media:  {} as { file: File, url: string }
+        media:  {} as { file: File, type: string, url: string },
+        remove_media: false as boolean | undefined,
     }
 
     const reducer = (state: typeof initialState, action: any) => {
@@ -42,16 +48,17 @@ export default function CreateCommentCard({ post_id }: CreateCommentCardProps) {
             case "SET_REPLY_TO_COMMENT_ID":
                 return { ...state, reply_to_comment_id: action.payload };
             case "SET_MEDIA":
-                return { ...state, media: action.payload };
+                return { ...state, media: action.payload, remove_media: false };
             case "REMOVE_MEDIA":
-                return { ...state, media: {} };
+                return { ...state, media: {}, remove_media: true };
             case "CLEAR":
                 return { ...initialState };
+            case "SET_ALL":
+                return { ...state, ...action.payload };
             default:
                 return state;
         }
     }
-
 
     const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -59,15 +66,31 @@ export default function CreateCommentCard({ post_id }: CreateCommentCardProps) {
         if (state.content.trim() === "" && state.media) {
             return;
         }
-        execute({ ...state, media: state.media ? [state.media.file] : [] });
+        const payload = { ...state };
+        if (payload.remove_media === false) {
+            delete payload.remove_media;
+        }
+        execute({ ...payload, media: state.media ? [state.media.file] : [] });
     }
 
     useEffect(() => {
         if (status === 200) {
-            console.log("Comment created successfully", data);
             dispatch({ type: "CLEAR" });
+            onEndEdit?.();
         }
     }, [status]);
+
+    useEffect(() => {
+        if (editting_comment) {
+            dispatch({
+                type: "SET_ALL",
+                payload: {
+                    content: editting_comment.content,
+                    post_id: editting_comment.post_id,
+                    media: editting_comment.media ? { file: undefined, type: editting_comment.media.type, url: process.env.NEXT_PUBLIC_API_URL + "/media" + editting_comment.media.path } : {},                }
+            });
+        }
+    }, [editting_comment]);
 
     return (
         <div className={styles.comment_input}>
@@ -106,7 +129,27 @@ export default function CreateCommentCard({ post_id }: CreateCommentCardProps) {
                     </div>
                 </div>
                 <div className={styles.button_right}>
-                    {loading ? (
+                    {editting_comment ? loading ? (
+                        <>
+                            <Button>
+                                Cancel
+                            </Button>
+                            <Button appearance={"accent"}>
+                                Saving
+                                <Spinner></Spinner>
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <Button onClick={() => { dispatch({ type: "CLEAR" }); onEndEdit}}>
+                                Cancel
+                            </Button>
+                            <Button appearance={"accent"} onClick={handleSubmit}>
+                                Save
+                                <Icon name={"send"} type={"filled"} size={20} />
+                            </Button>
+                        </>
+                    ) : loading ? (
                         <Button appearance={"accent"}>
                             Sending
                             <Spinner></Spinner>
@@ -114,7 +157,7 @@ export default function CreateCommentCard({ post_id }: CreateCommentCardProps) {
                     ) : (
                         <Button appearance={"accent"} onClick={handleSubmit}>
                             Send
-                            <Icon name={"send"} type={"regular"} size={20} />
+                            <Icon name={"send"} type={"filled"} size={20} />
                         </Button>
                     )}
                 </div>
@@ -125,7 +168,7 @@ export default function CreateCommentCard({ post_id }: CreateCommentCardProps) {
             <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*,video/*" onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (!file) return;
-                dispatch({ type: "SET_MEDIA", payload: { file, url: URL.createObjectURL(file) } });
+                dispatch({ type: "SET_MEDIA", payload: { file: file, type: file.type, url: URL.createObjectURL(file) } });
                 if (fileInputRef.current) fileInputRef.current.value = "";
             }}/>
         </div>
