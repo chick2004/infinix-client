@@ -6,18 +6,18 @@ export default interface Post {
 
     content?: string;
 
-    visibility?: string;
+    visibility: string;
 
     medias?: PostMedia[];
 
     shared_post?: Post | null;
 
-    created_at?: string;
+    created_at: string;
 
-    updated_at?: string;
+    updated_at: string;
 
     deleted_at?: string | null;
 
-    user?: User;
+    user: User;
 
 }

@@ -19,8 +19,6 @@ export { default as Video } from './utility/Video/Video';
 export { default as AcrylicCard } from './utility/AcrylicCard/AcrylicCard';
 export { default as MicaCard } from './utility/MicaCard/MicaCard';
 
-
-export { default as Chatbox } from './card/Chatbox/Chatbox';
 export { default as ConversationBoxCard } from './card/ConversationBoxCard/ConversationBoxCard';
 export { default as ConversationListCard } from './card/ConversationListCard/ConversationListCard';
 export { default as CreatePostCard } from './card/CreatePostCard/CreatePostCard';
@@ -30,8 +28,8 @@ export { default as FriendListCard } from './card/FriendListCard/FriendListCard'
 export { default as GroupListCard } from './card/GroupListCard/GroupListCard';
 export { default as MediaBox } from './card/MediaBox/MediaBox';
 export { default as LoadingPage } from './card/LoadingPage/LoadingPage';
-export { default as Message } from './card/Message/Message';
-export { default as MessageGroup } from './card/MessageGroup/MessageGroup';
+export { default as MessageCard } from './card/MessageCard/MessageCard';
+export { default as MessageGroupCard } from './card/MessageGroupCard/MessageGroupCard';
 export { default as NotificationsCard } from './card/NotificationsCard/NotificationsCard';
 export { default as PostCard } from './card/PostCard/PostCard';
 export { default as ProfileCard } from './card/ProfileCard/ProfileCard';

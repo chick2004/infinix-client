@@ -1,7 +1,10 @@
 "use client";
 
 import { use } from "react";
-import { useFetch, useAuth } from "@/hooks";
+import { useAuth } from "@/hooks";
+
+import { requestInit } from "@/lib";
+import { useQuery } from "@tanstack/react-query";
 import ClientLayout from "@/layouts/ClientLayout/ClientLayout";
 import { ProfileCard, ProfileMediaGalleryCard, CreatePostCard, PostCard, Skeleton, FriendListCard, GroupListCard, FollowingListCard } from "@/components";
 import styles from './page.module.scss';
@@ -10,32 +13,61 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
     const { id } = use(params);
     const { user } = useAuth();
-    const { data: userData, loading: userLoading, error: userError, status: userStatus } = useFetch(process.env.NEXT_PUBLIC_API_URL + "/users/" + id);
-    const { data: postListData, loading: postListLoading, error: postListError, status: postListStatus } = useFetch(process.env.NEXT_PUBLIC_API_URL + "/users/" + id + "/posts");
 
+    const userQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + id;
+    const queryUser = async () => {
+        const response = await fetch(userQueryUrl, requestInit("GET"));
+        if (!response.ok) {
+            throw new Error("Failed to fetch user data");
+        }
+        return response.json();
+    }
+    const userQuery = useQuery({
+        queryKey: [userQueryUrl],
+        queryFn: queryUser,
+        refetchOnWindowFocus: false,
+        retry: true,
+        staleTime: 1000 * 60 * 5,
+    });
+
+    const postsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + id + "/posts";
+    const queryPosts = async () => {
+        const response = await fetch(postsQueryUrl, requestInit("GET"));
+        if (!response.ok) {
+            throw new Error("Failed to fetch user posts");
+        }
+        return response.json();
+    }
+    const postsQuery = useQuery({
+        queryKey: [postsQueryUrl],
+        queryFn: queryPosts,
+        refetchOnWindowFocus: false,
+        retry: true,
+        staleTime: 1000 * 60 * 5,
+    });
 
 
     return (
         <ClientLayout>
             <div className={styles.page}>
                 <div className={styles.left}>
-                    {userLoading ? (
+                    {userQuery.isPending ? (
                         <Skeleton animation={"pulse"} style={{width: "100%", height: "384px", borderRadius: "8px"}}></Skeleton>
                     ) : (
-                        <ProfileCard user={userData} is_owner={id == user.id ? true : false}></ProfileCard>
+                        <ProfileCard user={userQuery.data.data} is_owner={id == user.id ? true : false}></ProfileCard>
                     )}
                     <ProfileMediaGalleryCard></ProfileMediaGalleryCard>
                 </div>
                 <div className={styles.right}>
                     {id == user.id && <CreatePostCard></CreatePostCard>}
-                    {postListLoading ? (
+                    {postsQuery.isPending ? (
                         <>
                             <Skeleton animation={"pulse"} style={{width: "100%", height: "128px", borderRadius: "4px"}}></Skeleton>
                             <Skeleton animation={"pulse"} style={{width: "100%", height: "128px", borderRadius: "4px"}}></Skeleton>
                             <Skeleton animation={"pulse"} style={{width: "100%", height: "128px", borderRadius: "4px"}}></Skeleton>
                         </>
                     ) : (
-                        Array.isArray(postListData) && postListData.map((postData: any) => (
+                        Array.isArray(postsQuery.data?.data) && postsQuery.data.data.length > 0 && postsQuery.data.data.map((postData: any) => (
                             <PostCard key={postData.id} post={postData}></PostCard>
                         ))
                     )}

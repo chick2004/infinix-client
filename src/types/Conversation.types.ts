@@ -1,13 +1,13 @@
 import type Message from './Message.types';
 export default interface Conversation {
 
-    id?: number;
+    id: number;
 
-    is_group?: boolean;
+    is_group: boolean;
 
-    name?: string;
+    name: string;
 
-    image?: string;
+    image: string;
 
     last_message?: Message;
 

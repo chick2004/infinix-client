@@ -7,8 +7,8 @@ export default interface ProfileCardProps {
 
     ref?: React.Ref<HTMLDivElement>;
 
-    user?: User;
+    user: User;
 
-    is_owner?: boolean;
+    is_owner: boolean;
     
 }

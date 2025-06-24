@@ -1,24 +1,22 @@
 import type { Profile } from "@/types";
 export default interface User {
 
-    id?: number;
+    id: number;
 
-    username?: string;
+    username: string;
 
-    email?: string;
+    email: string;
 
     phone_number?: string | null;
 
-    last_activity?: string | null;
-    
-    email_verified_at?: string | null;
+    last_activity: string | null;
 
-    profile?: Profile;
+    profile: Profile;
 
-    created_at?: string;
+    created_at: string;
 
-    updated_at?: string;
+    updated_at: string;
 
-    deleted_at?: string | null;
+    deleted_at: string | null;
 
 }

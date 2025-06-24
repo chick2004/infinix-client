@@ -7,7 +7,9 @@ import { useState, useEffect, useMemo } from "react";
 
 import { Field, Input, Button, Spinner } from "@/components";
 import styles from "./page.module.css";
-import { useRequest, useAuth } from "@/hooks";
+import { useAuth } from "@/hooks";
+import { requestInit } from "@/lib";
+import { useMutation } from "@tanstack/react-query";
 
 interface FormError {
     display_name?: string;
@@ -21,8 +23,35 @@ export default function Page() {
     const router = useRouter();
     const [formData, setFormData] = useState({email: "", password: ""});
     const [formError, setFormError] = useState<FormError>({});
-    const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/login", "POST");
     
+    //const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/login", "POST");
+    
+    const mutateLogin = async (data: { email: string, password: string }) => {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/login", requestInit("POST", data));
+        if (!response.ok) {
+            throw new Error("Failed to login");
+        }
+        return response.json();
+    }
+
+    const loginMutation = useMutation({
+        mutationFn: mutateLogin,
+        onError: (error) => {
+            console.error("Error logging in:", error);
+        },
+        onSuccess: (data) => {
+            if (data.status === 200) {
+                console.log("Login successful:", data);
+                setUser(data.data);
+                router.push("/home");
+            }
+            if (data.status === 400 || data.status === 401) {
+                setFormError({ email: "Email or password is incorrect", password: "Email or password is incorrect" });
+            }
+        }
+    });
+
+
     const { user, setUser } = useAuth();
 
     const handleChangeEmail = (value: string) => {
@@ -34,23 +63,8 @@ export default function Page() {
     }
 
     const handleSubmit = () => {
-        execute({email: formData.email, password: formData.password});
+        loginMutation.mutate({email: formData.email, password: formData.password});
     }
-
-    useEffect(() => {
-        if (status === 200) {
-            setUser(data);
-            router.push("/home");
-        }
-
-        if (status === 400 || status === 401) {
-            setFormError({ email: "Email or password is incorrect", password: "Email or password is incorrect" });
-        }
-
-        if (status === 500) {
-            console.log("An error occurred. Please try again");
-        }
-    }, [loading]);
 
     return (
         <div className={styles.page}>
@@ -86,13 +100,13 @@ export default function Page() {
                 </div>
 
                 <div>
-                    {loading ?
-                    <Button appearance={"accent"} onClick={handleSubmit} disabled={loading}>
+                    {loginMutation.isPending ?
+                    <Button appearance={"accent"} disabled>
                         <Spinner size={"small"}/>
                         Submitting...     
                     </Button>
                     : 
-                    <Button appearance={"accent"} onClick={handleSubmit} disabled={loading}>
+                    <Button appearance={"accent"} onClick={handleSubmit}>
                         Login    
                     </Button>}
                 </div>

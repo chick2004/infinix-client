@@ -1,9 +1,6 @@
 "use client";
 
-import { useFetch, useAuth } from "@/hooks";
-import ClientLayout from "@/layouts/ClientLayout/ClientLayout";
-import { ProfileCard, ProfileMediaGalleryCard, CreatePostCard, PostCard, Skeleton, FriendListCard, GroupListCard, FollowingListCard } from "@/components";
-import styles from './page.module.scss';
+import { useAuth } from "@/hooks";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 

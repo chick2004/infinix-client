@@ -313,3 +313,13 @@
     display: flex;
     gap: 10px;
 }
+
+.emoji_picker_loading {
+    width: 360px;
+    height: 400px;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

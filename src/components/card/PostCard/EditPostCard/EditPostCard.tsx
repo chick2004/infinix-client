@@ -1,13 +1,21 @@
 "use client";
 
 import clsx from "clsx";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState, useEffect, useRef, useCallback, useReducer, memo } from "react";
 
-import { Button, Icon, Textarea, Spinner, EmojiPicker, Video, Surface } from "@/components";
-import { useRequest, useClickOutside } from "@/hooks";
+import { Button, Icon, Textarea, Spinner, Flyout, Video, Surface } from "@/components";
+import { useClickOutside } from "@/hooks";
+import { requestInit } from "@/lib";
+import { useMutation } from "@tanstack/react-query";
 import styles from "./EditPostCard.module.scss";
 import EditPostCardProps from "./EditPostCard.types";
+
+const EmojiPicker = dynamic(() => import('@/components').then(mod => ({ default: mod.EmojiPicker })), {
+    loading: () => <Flyout stroke shadow className={styles.emoji_picker_loading}><Spinner></Spinner></Flyout>,
+    ssr: false,
+});
 
 export default memo(function EditPostCard({ style, className, ref, post, handleClose }: EditPostCardProps) {
 
@@ -67,23 +75,37 @@ export default memo(function EditPostCard({ style, className, ref, post, handleC
     } , []);
 
 
-    const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + '/posts/' + post.id, "PUT");
-    
-    const handleSubmit = function() {
-        console.log("Submitting post edit", state);
-        execute(state);
+    //const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + '/posts/' + post.id, "PUT");
+    const mutateEditPost = async (payload: any) => {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/posts/' + post.id, requestInit("PUT", payload));
+        if (!response.ok) {
+            throw new Error("Failed to edit post");
+        }
+        return response.json();
     }
 
-    useEffect(() => {
-        if (status === 200) {
+    const editPostMutation = useMutation({
+        mutationFn: mutateEditPost,
+        onError: (error) => {
+            console.error("Error editing post:", error);
+        },
+        onSuccess: (data) => {
+            console.log("Post edited successfully:", data);
             handleClose?.();
         }
-    }, [status]);
+    });
+
+    const handleSubmit = function() {
+        console.log("Submitting post edit", state);
+        editPostMutation.mutate(state);
+    }
 
     const root = clsx(
         styles.section,
         className,
-        loading ? styles.disabled_section : ""
+        {
+            [styles.disabled_section]: editPostMutation.isPending
+        }
     );
 
     return (
@@ -167,7 +189,7 @@ export default memo(function EditPostCard({ style, className, ref, post, handleC
                         <Button appearance={"standard"} onClick={handleClose}>
                             Cancel
                         </Button>
-                        {loading ? (
+                        {editPostMutation.isPending ? (
                             <Button appearance={"accent"}>
                                 Save
                                 <Spinner></Spinner>

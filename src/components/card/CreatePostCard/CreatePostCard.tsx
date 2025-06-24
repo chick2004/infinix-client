@@ -5,7 +5,9 @@ import dynamic from 'next/dynamic';
 import { useState, useEffect, useReducer , useRef, useCallback, memo } from "react";
 
 import { Button, Icon, Textarea, Spinner, Flyout } from "@/components";
-import { useRequest, useClickOutside, useMotion, MotionName } from "@/hooks";
+import { useClickOutside, useMotion, MotionName } from "@/hooks";
+import { requestInit } from "@/lib";
+import { useMutation } from "@tanstack/react-query";
 import styles from "./CreatePostCard.module.scss";
 
 const EmojiPicker = dynamic(() => import('@/components').then(mod => ({ default: mod.EmojiPicker })), {
@@ -40,7 +42,25 @@ export default memo(function CreatePostCard() {
 
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + '/posts', "POST");
+    const mutateCreatePost = async (payload: any) => {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/posts', requestInit("POST", payload));
+        if (!response.ok) {
+            throw new Error("Failed to create post");
+        }
+        return response.json();
+    }
+
+    const createPostMutation = useMutation({
+        mutationFn: mutateCreatePost,
+        onError: (error) => {
+            console.error("Error creating post:", error);
+        },
+        onSuccess: (data) => {
+            console.log("Post created successfully:", data);
+            dispatch({ type: "CLEAR" });
+        }
+    });
+
 
     const handleSubmit = function() {
         if (!state.content.trim() && state.medias.length === 0) {
@@ -50,14 +70,8 @@ export default memo(function CreatePostCard() {
             ...state,
             medias: state.medias.map(media => media.file),
         };
-        execute(postData);
+        createPostMutation.mutate(postData);
     }
-
-    useEffect(() => {
-        if (status === 200) {
-            dispatch({ type: "CLEAR" });
-        }
-    }, [status]);
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -83,7 +97,7 @@ export default memo(function CreatePostCard() {
     } , []);
 
     return (
-        <div className={`${styles.section} ${loading ? styles.disabled_section : ""}`}>
+        <div className={`${styles.section} ${createPostMutation.isPending ? styles.disabled_section : ""}`}>
             <div className={styles.avatar_container}>
                 <Image src={"/images/avatar.png"} alt={""} width={35} height={35}></Image>
             </div>
@@ -145,7 +159,7 @@ export default memo(function CreatePostCard() {
                             )}
                         </div>
                     </div>
-                    {loading ? (
+                    {createPostMutation.isPending ? (
                         <Button appearance={"accent"}>
                             Posting
                             <Spinner></Spinner>

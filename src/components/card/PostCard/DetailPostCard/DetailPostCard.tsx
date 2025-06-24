@@ -2,7 +2,8 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { useFetch } from "@/hooks";
+import { requestInit } from "@/lib";
+import { useQuery } from "@tanstack/react-query";
 import { Video, Button, Icon, Carousel, Skeleton, Surface, Card, Layer, Text } from "@/components"
 
 import DetailPostCardProps from "./DetailPostCard.types";
@@ -28,7 +29,22 @@ export default function DetailPostCard({ style, className, ref, post, handleClos
         setEditingComment(null);
     }
 
-    const { data: commentListData, loading: commentListLoading, error: commentListError, status: commentListStatus } = useFetch(process.env.NEXT_PUBLIC_API_URL + '/posts/' + post.id + '/comments');
+    const commentsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/posts/" + post.id + "/comments";    
+    const queryComments = async () => {
+        const response = await fetch(commentsQueryUrl, requestInit("GET"));
+        if (!response.ok) {
+            throw new Error("Failed to fetch comments");
+        }
+        return response.json();
+    }
+    const commentsQuery = useQuery({
+        queryKey: [commentsQueryUrl],
+        queryFn: queryComments,
+        refetchOnWindowFocus: false,
+        retry: true,
+        staleTime: 1000 * 60 * 5,
+    });
+
     return (
         <Surface className={root} style={style} ref={ref} stroke shadow>
             {Array.isArray(post.medias) && post.medias.length > 0 && (
@@ -51,8 +67,8 @@ export default function DetailPostCard({ style, className, ref, post, handleClos
                         <div className={styles.display_name_and_time}>
                             <Text type="body_strong" className={styles.user_display_name}>{post.user?.profile?.display_name}</Text>
                             <div className={styles.post_time_container}>
-                                <Text type="caption" color="secondary" className={styles.date}>{(new Date(post.created_at?.replace(" ", "T") || "")).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-                                <Text type="caption" color="secondary" className={styles.time}>{(new Date(post.created_at?.replace(" ", "T") || "")).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' })}</Text>
+                                <Text type="caption" color="secondary" className={styles.date}>{(new Date(post.created_at?.replace(" ", "T") || "")).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</Text>
+                                <Text type="caption" color="secondary" className={styles.time}>{(new Date(post.created_at?.replace(" ", "T") || "")).toLocaleDateString([], { year: "numeric", month: "2-digit", day: "2-digit" })}</Text>
                                 {post.visibility === "public" ? (
                                     <Icon name={"earth"} size={16} type={"regular"}></Icon>
                                 ) : post.visibility === "private" ? (
@@ -92,14 +108,14 @@ export default function DetailPostCard({ style, className, ref, post, handleClos
                     </div>
                 </Layer>
                 <div className={styles.comment_list}>
-                    {commentListLoading && (
+                    {commentsQuery.isPending && (
                         <>
                             <Skeleton animation={"pulse"} style={{ width: "100%", height: "60px", borderRadius: "4px" }}></Skeleton>
                             <Skeleton animation={"pulse"} style={{ width: "100%", height: "60px", borderRadius: "4px" }}></Skeleton>
                         </>
                     )}
-                    {Array.isArray(commentListData) && commentListData.length > 0 && (
-                        commentListData.map((comment: any) => (
+                    {Array.isArray(commentsQuery.data?.data) && commentsQuery.data.data.length > 0 && (
+                        commentsQuery.data.data.map((comment: any) => (
                             <CommentCard comment={comment} key={comment.id} onStartEdit={handleStartEditComment}></CommentCard>
                         ))
                     )}

@@ -1,10 +1,10 @@
 export default interface Profile {
 
-    id?: number;
+    id: number;
 
     user_id: number;
 
-    display_name?: string;
+    display_name: string;
 
     profile_photo?: string;
 
@@ -14,10 +14,10 @@ export default interface Profile {
 
     date_of_birth?: string;
 
-    gender: 'male' | 'female' | 'other';
+    gender?: 'male' | 'female' | 'other';
 
-    created_at?: string;
+    created_at: string;
 
-    updated_at?: string;
+    updated_at: string;
 
 }

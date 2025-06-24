@@ -28,7 +28,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                 content: "Hello, how are you?",
                 time: new Date(),
                 avatar: "/images/avatar.png",
-                is_own: true
+                is_own: true,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
             },
             {
                 id: 2,
@@ -38,7 +40,9 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                 content: "I'm good, thank you.",
                 time: new Date(),
                 avatar: "/images/avatar.png",
-                is_own: false
+                is_own: false,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
             }
         ]
     }

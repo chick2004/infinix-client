@@ -1,7 +1,7 @@
+
 import type { Metadata } from "next";
 import "./globals.css";
-
-import { AuthProvider } from "@/providers";
+import AppProvider from "./provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -9,12 +9,13 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode}) {
+
     return (
         <html lang="en">
             <body>
-                <AuthProvider>
+                <AppProvider>
                     {children}
-                </AuthProvider>
+                </AppProvider>
             </body>
         </html>
     );

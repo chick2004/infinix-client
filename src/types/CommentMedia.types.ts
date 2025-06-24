@@ -1,14 +1,14 @@
 export default interface CommentMedia {
 
-    id?: number;
+    id: number;
 
-    comment_id?: number;
+    comment_id: number;
 
-    path?: string;
+    path: string;
 
-    type?: string;
+    type: string;
 
-    create_at?: string;
+    create_at: string;
 
-    updated_at?: string;
+    updated_at: string;
 }

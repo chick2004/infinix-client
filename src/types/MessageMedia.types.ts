@@ -1,14 +1,14 @@
 export default interface MessageMedia {
 
-    id?: number;
+    id: number;
 
-    message_id?: number;
+    message_id: number;
 
-    path?: string;
+    path: string;
 
-    type?: string;
+    type: string;
 
-    create_at?: string;
+    create_at: string;
 
-    updated_at?: string;
+    updated_at: string;
 }

@@ -3,7 +3,8 @@
 import dynamic from 'next/dynamic';
 import Image from "next/image";
 import { useState, useEffect, useRef, useReducer } from "react";
-import { useRequest } from "@/hooks";
+import { requestInit } from "@/lib";
+import { useMutation } from "@tanstack/react-query";
 
 import { Button, Icon, Textarea, Spinner } from "@/components";
 import { useClickOutside } from "@/hooks";
@@ -26,10 +27,26 @@ export default function CreateCommentCard({ style, className, ref, post_id, edit
         setIsOpenEmojiPickerCard(false);
     });
 
-    const { data, loading, error, status, execute } = useRequest(
-        editting_comment ? process.env.NEXT_PUBLIC_API_URL + "/comments/" + editting_comment.id : process.env.NEXT_PUBLIC_API_URL + "/posts/" + post_id + "/comments",
-        editting_comment ? "PUT" : "POST"
-    );
+    const mutateCreateComment = async (payload: any) => {
+        const response = await fetch(editting_comment ? process.env.NEXT_PUBLIC_API_URL + "/comments/" + editting_comment.id : process.env.NEXT_PUBLIC_API_URL + "/posts/" + post_id + "/comments", requestInit(editting_comment ? "PUT" : "POST", payload));
+        if (!response.ok) {
+            throw new Error("Failed to create comment");
+        }
+        return response.json();
+    }
+
+    const createCommentMutation = useMutation({
+        mutationFn: mutateCreateComment,
+        onError: (error) => {
+            console.error("Error creating comment:", error);
+        },
+        onSuccess: (data) => {
+            console.log("Comment created successfully:", data);
+            dispatch({ type: "CLEAR" });
+            onEndEdit?.();
+        }
+    });
+
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -70,15 +87,8 @@ export default function CreateCommentCard({ style, className, ref, post_id, edit
         if (payload.remove_media === false) {
             delete payload.remove_media;
         }
-        execute({ ...payload, media: state.media ? [state.media.file] : [] });
+        createCommentMutation.mutate({ ...payload, media: state.media ? [state.media.file] : [] });
     }
-
-    useEffect(() => {
-        if (status === 200) {
-            dispatch({ type: "CLEAR" });
-            onEndEdit?.();
-        }
-    }, [status]);
 
     useEffect(() => {
         if (editting_comment) {
@@ -98,7 +108,7 @@ export default function CreateCommentCard({ style, className, ref, post_id, edit
                 {state.media.url && (
                     <div className={styles.media_item}>
                         <Image src={state.media.url} alt={"media"} width={75} height={75} style={{objectFit: "cover"}} />
-                        <button onClick={() => dispatch({type: "SET_MEDIA"})}>
+                        <button onClick={() => dispatch({type: "REMOVE_MEDIA"})}>
                             <Icon name={"dismiss"} type={"regular"} size={16} />
                         </button>
                     </div>
@@ -129,7 +139,7 @@ export default function CreateCommentCard({ style, className, ref, post_id, edit
                     </div>
                 </div>
                 <div className={styles.button_right}>
-                    {editting_comment ? loading ? (
+                    {editting_comment ? createCommentMutation.isPending ? (
                         <>
                             <Button>
                                 Cancel
@@ -149,7 +159,7 @@ export default function CreateCommentCard({ style, className, ref, post_id, edit
                                 <Icon name={"send"} type={"filled"} size={20} />
                             </Button>
                         </>
-                    ) : loading ? (
+                    ) : createCommentMutation.isPending ? (
                         <Button appearance={"accent"}>
                             Sending
                             <Spinner></Spinner>

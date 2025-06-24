@@ -5,11 +5,13 @@ import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { useState, useEffect, useMemo } from "react";
 
-import { useAuth, useRequest } from "@/hooks";
+import { useAuth } from "@/hooks";
+
+import { requestInit } from "@/lib";
+import { useMutation } from "@tanstack/react-query";
 
 import { Field, Input, Button, Spinner } from "@/components";
 import styles from "./page.module.css";
-import { E } from "vitest/dist/chunks/reporters.d.CqBhtcTq.js";
 
 interface StepProps {
     formData: any;
@@ -77,7 +79,35 @@ const EmailStep = ({formData, setFormData, onNextStep, onPreviousStep}: StepProp
 
     const [formError, setFormError] = useState<FormError>({});
 
-    const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/verify-email", "POST");
+    //const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/verify-email", "POST");
+
+    const mutateEmail = async (data: {email: string}) => {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/verify-email", requestInit("POST", data));
+        if (!response.ok) {
+            throw new Error("Failed to send verification code");
+        }
+        return response.json();
+    }
+
+    const emailMutation = useMutation({
+        mutationFn: mutateEmail,
+        onError: (error) => {
+            console.error("Error sending verification code:", error);
+        },
+        onSuccess: (data) => {
+            if (data.status === 200) {
+                onNextStep?.();
+            }
+            if (data.status === 400) {
+                setFormError({ email: "Email is already taken" });
+            }
+            if (data.status === 500) {
+                setFormError({ email: "An error occurred. Please try again" });
+            }
+        }
+    });
+        
+
 
     const handleChange = (value: string) => {
         setFormData({...formData, email: value});
@@ -89,22 +119,8 @@ const EmailStep = ({formData, setFormData, onNextStep, onPreviousStep}: StepProp
             return;
         }
         setFormError({});
-        execute({email: formData.email});
+        emailMutation.mutate({email: formData.email});
     }
-
-    useEffect(() => {
-        if (status === 200) {
-            onNextStep?.();
-        }
-
-        if (status === 400) {
-            setFormError({...formError, email: "Email is already taken"});
-        }
-
-        if (status === 500) {
-            setFormError({...formError, email: "An error occurred. Please try again"});
-        }
-    }, [status]);
 
     return (
         <div className={styles.form}>
@@ -131,13 +147,13 @@ const EmailStep = ({formData, setFormData, onNextStep, onPreviousStep}: StepProp
             </div>
             <div>
                 <Button appearance="standard" onClick={onPreviousStep}>Back</Button>
-                {loading ?
-                    <Button appearance={"accent"} onClick={handleSubmit} disabled={loading}>
+                {emailMutation.isPending ?
+                    <Button appearance={"accent"} disabled>
                         <Spinner size={"small"}/>
                         Sending...     
                     </Button>
                     : 
-                    <Button appearance={"accent"} onClick={handleSubmit} disabled={loading}>
+                    <Button appearance={"accent"} onClick={handleSubmit}>
                         Send code    
                     </Button>}
             </div>
@@ -148,7 +164,33 @@ const EmailStep = ({formData, setFormData, onNextStep, onPreviousStep}: StepProp
 const VerifyCodeStep = ({formData, setFormData, onNextStep, onPreviousStep}: StepProps) => {
 
     const [formError, setFormError] = useState<FormError>({});
-    const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/verify-code", "POST");
+    //const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/verify-code", "POST");
+
+    const mutateCode = async (data: {code: string, email: string}) => {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/verify-code", requestInit("POST", data));
+        if (!response.ok) {
+            throw new Error("Failed to verify code");
+        }
+        return response.json();
+    }
+
+    const codeMutation = useMutation({
+        mutationFn: mutateCode,
+        onError: (error) => {
+            console.error("Error verifying code:", error);
+        },
+        onSuccess: (data) => {
+            if (data.status === 200) {
+                onNextStep?.();
+            }
+            if (data.status === 400) {
+                setFormError({ code: "Code is invalid" });
+            }
+            if (data.status === 500) {
+                setFormError({ code: "An error occurred. Please try again" });
+            }
+        }
+    });
 
     const handleChange = (value: string) => {
         setFormData({...formData, code: value});
@@ -160,22 +202,8 @@ const VerifyCodeStep = ({formData, setFormData, onNextStep, onPreviousStep}: Ste
             return;
         }
         setFormError({});
-        execute({code: formData.code, email: formData.email});
+        codeMutation.mutate({code: formData.code, email: formData.email});
     }
-
-    useEffect(() => {
-        if (status === 200) {
-            onNextStep?.();
-        }
-
-        if (status === 400) {
-            setFormError({...formError, code: "Code is invalid"});
-        }
-
-        if (status === 500) {
-            setFormError({...formError, code: "An error occurred. Please try again"});
-        }
-    }, [status]);
 
     return (
         <div className={styles.form}>
@@ -202,13 +230,13 @@ const VerifyCodeStep = ({formData, setFormData, onNextStep, onPreviousStep}: Ste
             </div>
             <div>
                 <Button appearance="standard" onClick={onPreviousStep}>Back</Button>
-                {loading ?
-                    <Button appearance={"accent"} onClick={handleSubmit} disabled={loading}>
+                {codeMutation.isPending ?
+                    <Button appearance={"accent"} disabled>
                         <Spinner size={"small"}/>
                         Verifying...     
                     </Button>
                     : 
-                    <Button appearance={"accent"} onClick={handleSubmit} disabled={loading}>
+                    <Button appearance={"accent"} onClick={handleSubmit}>
                         Verify    
                     </Button>}
             </div>
@@ -221,7 +249,32 @@ const SetPasswordStep = ({formData, setFormData}: StepProps) => {
     const { setUser } = useAuth();
     
     const [formError, setFormError] = useState<FormError>({});
-    const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/register", "POST");
+    //const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/register", "POST");
+    
+    const mutateRegister = async (data: {email: string, password: string, code: string, display_name: string}) => {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/register", requestInit("POST", data));
+        if (!response.ok) {
+            throw new Error("Failed to register");
+        }
+        return response.json();
+    }
+
+    const registerMutation = useMutation({
+        mutationFn: mutateRegister,
+        onError: (error) => {
+            console.error("Error registering:", error);
+        },
+        onSuccess: (data) => {
+            if (data.status === 200) {
+                setUser(data.data);
+                router.push("/home");
+            }
+            if (data.status === 400 || data.status === 500) {
+                setFormError({ password: "An error occurred. Please try again" });
+            }
+        }
+    });
+    
     const router = useRouter();
 
     const handleChangePassword = (value: string) => {
@@ -242,19 +295,8 @@ const SetPasswordStep = ({formData, setFormData}: StepProps) => {
             return;
         }
         setFormError({});
-        execute({email: formData.email, password: formData.password, code: formData.code, display_name: formData.display_name});
+        registerMutation.mutate({email: formData.email, password: formData.password, code: formData.code, display_name: formData.display_name});
     }
-
-    useEffect(() => {
-        if (status === 200) {
-            setUser(data);
-            router.push("/home");
-        }
-
-        if (status === 400 || status === 500) {
-            setFormError({ password: "An error occurred. Please try again" });
-        }
-    }, [loading]);
 
     return (
         <div className={styles.form}>
@@ -285,13 +327,13 @@ const SetPasswordStep = ({formData, setFormData}: StepProps) => {
                 </p>
             </div>
             <div>
-                {loading ?
-                    <Button appearance={"accent"} onClick={handleSubmit} disabled={loading}>
+                {registerMutation.isPending ?
+                    <Button appearance={"accent"} disabled>
                         <Spinner size={"small"}/>
                         Creating...     
                     </Button>
                     : 
-                    <Button appearance={"accent"} onClick={handleSubmit} disabled={loading}>
+                    <Button appearance={"accent"} onClick={handleSubmit}>
                         Create    
                     </Button>}
             </div>

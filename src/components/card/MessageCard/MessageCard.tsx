@@ -1,26 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import clsx from "clsx";
+import { useState, useRef } from "react";
 
-import { Icon } from "@/components";
+import { Icon, Flyout } from "@/components";
+import { useMotion, MotionName } from "@/hooks";
+import type { Message } from "@/types";
+import MessageCardProps from "./MessageCard.types";
+import styles from "./MessageCard.module.scss";
 
-import MessageProps from "./Message.types";
-import styles from "./Message.module.scss";
+export default function MessageCard({ style, className, ref, message, is_own, onReply }: MessageCardProps) {
 
-export default function Message({ content = "this is a message", time = new Date, is_own = true, style }: MessageProps) {
-
-    const sectionClassName = `${styles.section} ${is_own ? styles.own: ""}`;
+    const root = clsx(
+        styles.section,
+        className,
+        {
+            [styles.own]: is_own
+        }
+    );
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(content);
+        navigator.clipboard.writeText(message.content || "");
     }
+
+
+
     
     return (
-        <div className={sectionClassName} style={style}>
-            <p className={styles.content}>{content}</p>
+        <div className={root} style={style} ref={ref}>
+            <p className={styles.content}>{message.content}</p>
             <div className={styles.flyout_container}>
-                <div className={styles.flyout}>
-                    <div className={styles.flyout_button}>
+                <Flyout stroke shadow className={styles.flyout}>
+                    <div className={styles.flyout_button} onClick={() => onReply && onReply(message)}>
                         <Icon name={"arrow_reply"} size={20} type={"regular"}></Icon>
                         Reply this message
                     </div>
@@ -36,7 +47,7 @@ export default function Message({ content = "this is a message", time = new Date
                         <Icon name={"pin"} size={20} type={"regular"}></Icon>
                         Pin
                     </div>
-                </div>
+                </Flyout>
             </div>
         </div>
     );

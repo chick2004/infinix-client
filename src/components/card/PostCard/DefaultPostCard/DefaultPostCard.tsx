@@ -40,13 +40,13 @@ export default memo(function DefaultPostCard({ style, className, ref, post, hand
         <Layer stroke className={root} style={style} ref={ref}>
             <div className={styles.header}>
                 <div className={styles.avatar_container}>
-                    <Image src={post.user?.profile?.profile_photo ? process.env.NEXT_PUBLIC_SERVER_URL + "/" + post.user?.profile?.profile_photo : "/images/avatar.png"} width={40} height={40} alt="Avatar" />
+                    <Image src={post.user.profile.profile_photo ? process.env.NEXT_PUBLIC_SERVER_URL + "/" + post.user?.profile?.profile_photo : "/images/avatar.png"} width={40} height={40} alt="Avatar" />
                 </div>
                 <div className={styles.info}>
-                    <div className={styles.display_name}>{post.user?.profile?.display_name}</div>
+                    <div className={styles.display_name}>{post.user.profile.display_name}</div>
                     <div className={styles.post_info_container}>
-                        <p className={styles.date}>{(new Date(post.created_at?.replace(" ", "T") || "")).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                        <p className={styles.time}>{(new Date(post.created_at?.replace(" ", "T") || "")).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' })}</p>
+                        <p className={styles.date}>{(new Date(post.created_at.replace(" ", "T") || "")).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                        <p className={styles.time}>{(new Date(post.created_at.replace(" ", "T") || "")).toLocaleDateString([], { year: 'numeric', month: '2-digit', day: '2-digit' })}</p>
                         {post.visibility === "public" ? (
                             <Icon name={"earth"} size={16} type={"regular"}></Icon>
                         ) : post.visibility === "private" ? (
