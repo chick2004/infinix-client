@@ -1,7 +1,13 @@
 "use client";
 import { useContext, createContext } from "react";
 
-export const AuthContext = createContext<{ user: any; setUser: React.Dispatch<React.SetStateAction<any>>} | null >(null);
+export interface AuthContextType {
+    user: any;
+    setUser: React.Dispatch<React.SetStateAction<any>>;
+    refetchUser: () => void;
+}
+
+export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const useAuth = () => {
     const context = useContext(AuthContext);

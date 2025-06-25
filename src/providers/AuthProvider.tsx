@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, setUser}}>
+        <AuthContext.Provider value={{ user, setUser, refetchUser: userQuery.refetch }}>
             {children}
         </AuthContext.Provider>
     );

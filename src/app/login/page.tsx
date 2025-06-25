@@ -24,15 +24,15 @@ export default function Page() {
     const [formData, setFormData] = useState({email: "", password: ""});
     const [formError, setFormError] = useState<FormError>({});
     
-    //const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/login", "POST");
-    
-    const mutateLogin = async (data: { email: string, password: string }) => {
+    const mutateLogin = async (data: {email: string, password: string}) => {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/login", requestInit("POST", data));
         if (!response.ok) {
             throw new Error("Failed to login");
         }
         return response.json();
     }
+
+    const { refetchUser  } = useAuth();
 
     const loginMutation = useMutation({
         mutationFn: mutateLogin,
@@ -41,9 +41,8 @@ export default function Page() {
         },
         onSuccess: (data) => {
             if (data.status === 200) {
-                console.log("Login successful:", data);
-                setUser(data.data);
-                router.push("/home");
+                refetchUser();
+                router.push("/home"); // push ngay sau khi setUser
             }
             if (data.status === 400 || data.status === 401) {
                 setFormError({ email: "Email or password is incorrect", password: "Email or password is incorrect" });
@@ -51,8 +50,6 @@ export default function Page() {
         }
     });
 
-
-    const { user, setUser } = useAuth();
 
     const handleChangeEmail = (value: string) => {
         setFormData({...formData, email: value});
@@ -63,7 +60,7 @@ export default function Page() {
     }
 
     const handleSubmit = () => {
-        loginMutation.mutate({email: formData.email, password: formData.password});
+        loginMutation.mutate(formData);
     }
 
     return (

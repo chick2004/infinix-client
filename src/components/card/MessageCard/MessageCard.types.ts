@@ -12,4 +12,6 @@ export default interface MessageCardProps {
     is_own: boolean;
 
     onReply?: (message: Message) => void;
+
+    onEdit?: (message: Message) => void;
 }

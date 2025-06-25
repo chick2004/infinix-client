@@ -41,13 +41,13 @@
         width: 100%;
         height: 100%;
         overflow: scroll;
-        padding-bottom: 120px;
+        padding: 20px 20px 120px 20px;
         //padding: 20px;
 
         .group_and_time {
 
             .time_label {
-                margin-bottom: 10px;
+                margin-bottom: 20px;
                 display: flex;
                 justify-self: center;
                 padding: 2px 4px;
@@ -58,7 +58,7 @@
             }
 
             .message_group {
-                margin-bottom: 10px;
+                margin-bottom: 20px;
             }
         }
     }

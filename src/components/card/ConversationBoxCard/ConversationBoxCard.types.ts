@@ -9,4 +9,8 @@ export default interface ConversationBoxCardProps {
 
     conversation: Conversation;
 
+    is_expanded: boolean;
+
+    onToggleExpand?: () => void;
+
 }

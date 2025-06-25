@@ -13,7 +13,7 @@ import CreateMessageCard from "./CreateMessageCard/CreateMessageCard";
 import ConversationBoxCardProps from "./ConversationBoxCard.types";
 import styles from "./ConversationBoxCard.module.scss";
 
-export default function ConversationBoxCard({ style, className, ref, conversation}: ConversationBoxCardProps) {
+export default function ConversationBoxCard({ style, className, ref, conversation, is_expanded, onToggleExpand}: ConversationBoxCardProps) {
     
     const root = clsx(
         styles.root,
@@ -68,16 +68,15 @@ export default function ConversationBoxCard({ style, className, ref, conversatio
             setGroupedMessages(groupedMessages);
         }
     }, [messagesQuery.data]);
-
-    const [isExpanded, setIsExpanded] = useState(true);
     const [replyingMessage, setReplyingMessage] = useState<Message | null>(null);
+    const [edittingMessage, setEdittingMessage] = useState<Message | null>(null);
     
     return (
         <Layer stroke className={root} style={style} ref={ref}>
             <Card className={styles.header}>
-                <Image src={"/images/avatar.png"} alt="profile-photo" width={45} height={45}></Image>
+                <Image src={conversation.image || "/images/avatar.png"} alt="profile-photo" width={45} height={45}></Image>
                 <div className={styles.info}>
-                    <Text type="body_strong">Châu Thành Cường</Text>
+                    <Text type="body_strong">{conversation.name}</Text>
                     <Text type="body">Online</Text>
                 </div>
                 <div className={styles.actions}>
@@ -90,8 +89,8 @@ export default function ConversationBoxCard({ style, className, ref, conversatio
                     <Button appearance={"subtle"}>
                         <Icon name={"more_horizontal"} type={"filled"}></Icon>
                     </Button>
-                    <Button appearance={"subtle"} onClick={() => setIsExpanded(!isExpanded)}>
-                        {isExpanded ? <Icon name={"panel_left_contract"} type={"filled"}></Icon> : <Icon name={"panel_right_contract"} type={"filled"}></Icon>}
+                    <Button appearance={"subtle"} onClick={onToggleExpand}>
+                        {is_expanded ? <Icon name={"panel_left_contract"} type={"filled"}></Icon> : <Icon name={"panel_right_contract"} type={"filled"}></Icon>}
                     </Button>
                 </div>
             </Card>
@@ -107,12 +106,12 @@ export default function ConversationBoxCard({ style, className, ref, conversatio
                                     {new Date(group.time).toLocaleString([], { hour: "2-digit", minute: "2-digit" })}
                                 </Text>
                             )}
-                            <MessageGroupCard className={styles.message_group} group={group} onReply={(message) => setReplyingMessage(message)} />
+                            <MessageGroupCard className={styles.message_group} group={group} onReply={(message) => setReplyingMessage(message)} onEdit={(message) => setEdittingMessage(message)}/>
                         </div>
                     );
                 })}
             </div>
-            <CreateMessageCard conversation_id={conversation.id} reply_to={replyingMessage} onEndReply={() => setReplyingMessage(null)}></CreateMessageCard>
+            <CreateMessageCard conversation_id={conversation.id} reply_to={replyingMessage} onEndReply={() => setReplyingMessage(null)} editting_message={edittingMessage} onEndEdit={() => setEdittingMessage(null)}></CreateMessageCard>
         </Layer>
     );
 }

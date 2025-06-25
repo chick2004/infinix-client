@@ -8,7 +8,7 @@ export interface Message {
 
     user: User;
 
-    reply_to?: number;
+    reply_to?: Message;
 
     is_edited?: boolean;
 

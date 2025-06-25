@@ -8,4 +8,6 @@ export default interface MessageGroupProps  {
     className?: string;
 
     onReply?: (message: Message) => void;
+
+    onEdit?: (message: Message) => void;
 }

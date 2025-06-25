@@ -33,8 +33,8 @@ export default function ProfileCard({ style, className, ref, user, is_owner }: P
         onError: (error) => {
             console.error("Error fetching cookie:", error);
         },
-        onSuccess: () => {
-            router.push("/chat/" + createConversationMutation.data.id);
+        onSuccess: (data) => {
+            router.push("/chat/" + data.data.id);
         }
     });
 
@@ -59,7 +59,7 @@ export default function ProfileCard({ style, className, ref, user, is_owner }: P
 
     const handleCreateConversation = async () => {
         if (!user || is_owner) return;
-        if (conversationQuery.data) {
+        if (conversationQuery.data?.data) {
             router.push("/chat/" + conversationQuery.data.data.id);
         } else {
             createConversationMutation.mutate({ with_user: user.id });

@@ -4,8 +4,9 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, memo } from "react";
-
-import { Icon, Button, MediaBox, Layer, Flyout} from "@/components";
+import { requestInit } from "@/lib";
+import { useMutation } from "@tanstack/react-query";
+import { Icon, Button, MediaBox, Layer, Flyout, Spinner} from "@/components";
 import { useClickOutside, useMotion, MotionName } from "@/hooks";
 
 import DefaultPostCardProps from "./DefaultPostCard.types";
@@ -23,6 +24,61 @@ function renderWithTags(text: string) {
 
 export default memo(function DefaultPostCard({ style, className, ref, post, handleOpenDeletePost, handleOpenDetailPost, handleOpenEditPost }: DefaultPostCardProps) {
     
+    const mutateBookmarkPost = async () => {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/posts/" + post.id + "/bookmark", requestInit("POST"));
+        if (!response.ok) {
+            throw new Error("Failed to bookmark post");
+        }
+        return response.json();
+    };
+    const bookmarkPostMutation = useMutation({
+        mutationFn: mutateBookmarkPost,
+        onError: (error) => {
+            console.error("Error bookmarking post:", error);
+        },
+        onSuccess: (data) => {
+            if (data.status === 200) {
+                post.is_bookmarked = false;
+            }
+            if (data.status === 201) {
+                post.is_bookmarked = true;
+            }
+        }
+    });
+
+    const mutateLikePost = async () => {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/posts/" + post.id + "/like", requestInit("POST"));
+        if (!response.ok) {
+            throw new Error("Failed to like post");
+        }
+        return response.json();
+    };
+
+    const likePostMutation = useMutation({
+        mutationFn: mutateLikePost,
+        onError: (error) => {
+            console.error("Error liking post:", error);
+        },
+        onSuccess: (data) => {
+            if (data.status === 200) {
+                post.is_liked = false;
+                post.like_count -= 1;
+            }
+            if (data.status === 201) {
+                post.is_liked = true;
+                post.like_count += 1;
+            }
+        }
+    });
+
+    const handleBookmarkPost = () => {
+        bookmarkPostMutation.mutate();
+    }
+
+    const handleLikePost = () => {
+        likePostMutation.mutate();
+    }
+
     const [isOpenActions, setIsOpenActions] = useState(false);
     const actionsRef = useRef<HTMLDivElement>(null);
     
@@ -86,23 +142,45 @@ export default memo(function DefaultPostCard({ style, className, ref, post, hand
 
             <div className={styles.footer}>
                 <div className={styles.footer_left}>
-                    <Button appearance={"subtle"}>
-                        100
-                        <Icon name={"heart"} size={20} type={"regular"}></Icon>
-                    </Button>
+                    {likePostMutation.isPending ? (
+                        <Button appearance={"subtle"}>
+                            {""}
+                            <Spinner></Spinner>
+                        </Button>
+                    ) : post.is_liked ? (
+                        <Button appearance={"subtle"} onClick={handleLikePost}>
+                            {post.like_count > 0 ? post.like_count + "" : ""}
+                            <Icon name={"heart"} size={20} type={"filled"} style={{color: "red"}}></Icon>
+                        </Button>
+                    ) : (
+                        <Button appearance={"subtle"} onClick={handleLikePost}>
+                            {post.like_count > 0 ? post.like_count + "" : ""}
+                            <Icon name={"heart"} size={20} type={"regular"}></Icon>
+                        </Button>
+                    )}
                     <Button appearance={"subtle"} onClick={handleOpenDetailPost}>
-                        100
+                        {post.comment_count > 0 ? post.comment_count + "" : ""}
                         <Icon name={"chat_empty"} size={20} type={"regular"}></Icon>
                     </Button>
                     <Button appearance={"subtle"}>
-                        100
+                        {post.share_count > 0 ? post.share_count + "" : ""}
                         <Icon name={"share"} size={20} type={"regular"}></Icon>
                     </Button>
                 </div>
                 <div className={styles.footer_right}>
-                    <Button appearance={"subtle"}>
-                        <Icon name={"bookmark"} size={20} type={"regular"}></Icon>
-                    </Button>
+                    {bookmarkPostMutation.isPending ? (
+                        <Button appearance={"subtle"}> 
+                            <Spinner></Spinner>
+                        </Button>
+                    ) : (
+                        <Button appearance={"subtle"} onClick={handleBookmarkPost}> 
+                            {post.is_bookmarked ? (
+                                <Icon name={"bookmark"} size={20} type={"filled"} style={{color: "var(--accent-default)"}}></Icon>
+                            ) : (
+                                <Icon name={"bookmark"} size={20} type={"regular"}></Icon>
+                            )}
+                        </Button>
+                    )}
                 </div>
             </div>
         </Layer>

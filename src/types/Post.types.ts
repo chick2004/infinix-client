@@ -18,6 +18,16 @@ export default interface Post {
 
     deleted_at?: string | null;
 
+    like_count: number;
+
+    is_liked: boolean;
+
+    comment_count: number;
+
+    share_count: number;
+
+    is_bookmarked: boolean;
+
     user: User;
 
 }

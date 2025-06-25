@@ -10,6 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useClickOutside } from "@/hooks";
 import CreateMessageCardProps from "./CreateMessageCard.types";
 import styles from "./CreateMessageCard.module.scss";
+import { on } from "events";
 
 
 const EmojiPicker = dynamic(() => import('@/components').then(mod => ({ default: mod.EmojiPicker })), {
@@ -17,7 +18,7 @@ const EmojiPicker = dynamic(() => import('@/components').then(mod => ({ default:
     ssr: false,
 });
 
-export default function CreateMessageCard({ style, className, ref, conversation_id, reply_to, onEndReply }: CreateMessageCardProps) {
+export default function CreateMessageCard({ style, className, ref, conversation_id, reply_to, onEndReply, editting_message, onEndEdit }: CreateMessageCardProps) {
     
     const root = clsx(
         styles.root,
@@ -49,15 +50,22 @@ export default function CreateMessageCard({ style, className, ref, conversation_
     }
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    // Sync reply_to_message_id with prop reply_to
     useEffect(() => {
         dispatch({ type: "SET_REPLY_TO_MESSAGE_ID", payload: reply_to ? reply_to.id : null });
     }, [reply_to]);
 
+    useEffect(() => {
+        if (editting_message) {
+            dispatch({ type: "SET_CONTENT", payload: editting_message.content || "" });
+        } else {
+            dispatch({ type: "SET_CONTENT", payload: "" });
+        }
+    }, [editting_message]);
+
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     const mutateCreateMessage = async (payload: any) => {
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/conversations/" + state.conversation_id + "/messages", requestInit("POST", payload));
+        const response = await fetch(editting_message ? process.env.NEXT_PUBLIC_API_URL + "/messages/" + editting_message.id : process.env.NEXT_PUBLIC_API_URL + "/conversations/" + state.conversation_id + "/messages", requestInit(editting_message ? "PUT" : "POST", payload));
         if (!response.ok) {
             throw new Error("Failed to create message");
         }
@@ -69,6 +77,7 @@ export default function CreateMessageCard({ style, className, ref, conversation_
         onSuccess: (data) => {
             dispatch({ type: "CLEAR" });
             onEndReply?.();
+            onEndEdit?.();
         },
         onError: (error) => {
             console.error("Error creating message:", error);
@@ -105,6 +114,9 @@ export default function CreateMessageCard({ style, className, ref, conversation_
             <div className={styles.reply_message}>
                 <Icon name={"arrow_reply"} size={16} type={"filled"} />
                 <p>{reply_to.content}</p>
+                <button className={styles.clear_reply}onClick={() => { dispatch({ type: "SET_REPLY_TO_MESSAGE_ID", payload: null }); onEndReply?.(); }}>
+                    <Icon name={"dismiss"} type={"regular"} size={16} />
+                </button>
             </div>
         )}
         <div className={styles.media_list}>
@@ -136,11 +148,31 @@ export default function CreateMessageCard({ style, className, ref, conversation_
                 </div>
             </div>
             <div className={styles.button_right}>
-                {createMessageMutation.isPending ? (
+                {createMessageMutation.isPending ? editting_message ? (
+                    <>
+                        <Button>
+                            Cancel
+                        </Button>
+                        <Button appearance={"accent"}>
+                            Saving
+                            <Spinner></Spinner>
+                        </Button>
+                    </>
+                ) : (
                     <Button appearance={"accent"}>
-                        Send
+                        Sending
                         <Spinner></Spinner>
                     </Button>
+                ) : editting_message ? (
+                    <>
+                        <Button onClick={onEndEdit}>
+                            Cancel
+                        </Button>
+                        <Button appearance={"accent"} onClick={handleSubmit}>
+                            Save
+                            <Icon name={"send"} type={"regular"} size={20} />
+                        </Button>
+                    </>
                 ) : (
                     <Button appearance={"accent"} onClick={handleSubmit}>Send<Icon name={"send"} type={"regular"} size={20} /></Button>
                 )}

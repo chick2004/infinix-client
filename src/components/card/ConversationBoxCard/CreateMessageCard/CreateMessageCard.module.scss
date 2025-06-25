@@ -13,6 +13,7 @@
         gap: 5px;
 
         p {
+            flex: 1;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -22,6 +23,23 @@
         :first-child {
             transform: scaleX(-1);
             color: var(--accent-default);
+        }
+
+        .clear_reply {
+            padding: 2px;
+            border-radius: 4px;
+            border: 1px solid var(--subtle-transparent);
+            background-color: transparent;
+            cursor: pointer;
+
+            i {
+                color: var(--text-primary);
+            }
+
+            &:hover {
+                background-color: var(--subtle-secondary);
+                border-color: var(--subtle-secondary);
+            }
         }
     }
 
@@ -72,7 +90,7 @@
         align-items: center;
         justify-content: space-between;
 
-        .button_left {
+        .button_left, .button_right {
             display: flex;
             align-items: center;
             gap: 5px;

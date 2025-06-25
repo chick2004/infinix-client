@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import Image from "next/image";
+import Link from "next/link";
 import { Conversation } from "@/types";
 import { Layer, Text, DropdownSearch, Button, Icon, Skeleton} from "@/components";
 import { useAuth } from "@/hooks";
@@ -57,10 +58,10 @@ export default function ConversationListCard({ style, className, ref, conversati
                     </>
                 ) : Array.isArray(conversationsQuery.data?.data) && conversationsQuery.data.data.length > 0 && (
                     conversationsQuery.data.data.map((conversation: Conversation, index: number) => (
-                        <div className={styles.conversation} key={index}>
+                        <Link href={"/chat/" + conversation.id} className={styles.conversation} key={index}>
                             <Image src={conversation.image || "/images/avatar.png"} width={45} height={45} alt={"avatar"}></Image>
                             <div className={styles.info}>
-                                <Text type="body_strong">{conversation.name}</Text>
+                                <Text type="body_strong">{conversation.is_group ? "[group]" : ""} {conversation.name}</Text>
                                 <div className={styles.last_message}>
                                     <Text color="secondary">{conversation.last_message?.content}</Text>
                                     <Text type="caption">{conversation.last_message?.created_at}</Text>
@@ -69,7 +70,7 @@ export default function ConversationListCard({ style, className, ref, conversati
                             <Button appearance={"subtle"}>
                                 <Icon name={"more_horizontal"} type={"regular"}></Icon>
                             </Button>
-                        </div>
+                        </Link>
                     ))
                 )}
             </div>

@@ -12,4 +12,8 @@ export default interface CreateMessageCardProps {
     reply_to?: Message | null;
 
     onEndReply?: () => void;
+    
+    editting_message?: Message | null;
+
+    onEndEdit?: () => void;
 }

@@ -170,9 +170,7 @@
     flex-direction: column;
     gap: 20px;
     padding: 20px;
-    background-color: var(--card-background-tertiary);
     border-radius: 8px;
-    border: 1px inset var(--card-stroke-default);
     width: 400px;
 }
 

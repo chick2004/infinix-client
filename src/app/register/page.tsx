@@ -246,7 +246,7 @@ const VerifyCodeStep = ({formData, setFormData, onNextStep, onPreviousStep}: Ste
 
 const SetPasswordStep = ({formData, setFormData}: StepProps) => {
 
-    const { setUser } = useAuth();
+    const { refetchUser } = useAuth();
     
     const [formError, setFormError] = useState<FormError>({});
     //const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/register", "POST");
@@ -266,7 +266,7 @@ const SetPasswordStep = ({formData, setFormData}: StepProps) => {
         },
         onSuccess: (data) => {
             if (data.status === 200) {
-                setUser(data.data);
+                refetchUser();
                 router.push("/home");
             }
             if (data.status === 400 || data.status === 500) {
