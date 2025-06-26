@@ -27,12 +27,6 @@ export default function Page() {
         enabled: !!user,
     });
 
-    useEffect(() => {
-        if (bookmarksQuery.data?.data) {
-            console.log("Bookmarks fetched successfully:", bookmarksQuery.data.data);
-        }
-    }, [bookmarksQuery.data?.data]);
-
     return (
         <ClientLayout>
             <div className={styles.page}>

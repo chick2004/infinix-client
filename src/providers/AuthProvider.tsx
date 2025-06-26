@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
         if (!response.ok) {
             throw new Error("Failed to fetch cookie");
         }
-        console.log("Cookie initialized successfully:");
     }
 
     const cookieMutation = useMutation({
@@ -39,7 +38,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
             throw new Error("Failed to fetch user");
         }
         const data = response.json();
-        console.log("User fetched successfully:", data);
         return data;
     }
 
@@ -78,7 +76,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, setUser, refetchUser: userQuery.refetch }}>
+        <AuthContext.Provider value={{ user, refetchUser: userQuery.refetch }}>
             {children}
         </AuthContext.Provider>
     );

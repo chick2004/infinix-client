@@ -25,7 +25,7 @@ function renderWithTags(text: string) {
 export default memo(function DefaultPostCard({ style, className, ref, post, handleOpenDeletePost, handleOpenDetailPost, handleOpenEditPost }: DefaultPostCardProps) {
     
     const mutateBookmarkPost = async () => {
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/posts/" + post.id + "/bookmark", requestInit("POST"));
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/users/" + post.user.id + "/bookmarks", requestInit("POST", {post_id: post.id}));
         if (!response.ok) {
             throw new Error("Failed to bookmark post");
         }

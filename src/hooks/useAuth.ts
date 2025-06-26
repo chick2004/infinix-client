@@ -3,7 +3,6 @@ import { useContext, createContext } from "react";
 
 export interface AuthContextType {
     user: any;
-    setUser: React.Dispatch<React.SetStateAction<any>>;
     refetchUser: () => void;
 }
 
