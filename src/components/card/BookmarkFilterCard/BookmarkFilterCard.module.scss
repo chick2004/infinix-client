@@ -1,0 +1,46 @@
+.root {
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+    width: 100%;
+
+    .grid {
+        display: grid;
+        grid-template-areas: 
+            "search search"
+            "type sort"
+            "from from"
+            "to to";
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        width: 100%;
+
+        .filter_search {
+            grid-area: search;
+        }
+
+        .filter_type {
+            grid-area: type;
+            * {
+                width: 100%;
+            }
+        }
+
+        .filter_sort {
+            grid-area: sort;
+            * {
+                width: 100%;
+            }
+        }
+
+        .filter_from {
+            grid-area: from;
+        }
+
+        .filter_to {
+            grid-area: to;
+        }
+    }
+}

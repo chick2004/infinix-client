@@ -41,8 +41,8 @@ export default memo(function Header() {
                     <Icon name="chat_multiple" size={24} type={pathname === "/chat" ? "filled" : "regular"}/>
                 </Link>
 
-                <Link href="/bookmarks" className={pathname === "/bookmarks" ? styles.active : ""} onClick={() => setShowNotifications(false)}>
-                    <Icon name="bookmark" size={24} type={pathname === "/bookmarks" ? "filled" : "regular"}/>
+                <Link href="/bookmark" className={pathname === "/bookmark" ? styles.active : ""} onClick={() => setShowNotifications(false)}>
+                    <Icon name="bookmark" size={24} type={pathname === "/bookmark" ? "filled" : "regular"}/>
                 </Link>
 
                 <Link href="/setting" className={pathname === "/setting" ? styles.active : ""} onClick={() => setShowNotifications(false)}>

@@ -48,7 +48,7 @@ export default function Select(props: SelectProps) {
     return (
         <div style={style} className={`${styles.select} ${className}`} ref={containerRef}>
             <div className={`${styles.select_group} ${disabled ? styles.disabled : ""} ${isOpen ? styles.opened : ""}`} onClick={handleClick}>
-                {labelValue}
+                <span className={styles.label}>{labelValue}</span>
                 <button type="button" className={styles.select_button}>
                     <Icon name="chevron_down" size={16} type="regular"></Icon>
                 </button>
