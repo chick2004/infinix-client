@@ -95,9 +95,9 @@ export default memo(function DefaultPostCard({ style, className, ref, post, hand
     return (
         <Layer stroke className={root} style={style} ref={ref}>
             <div className={styles.header}>
-                <div className={styles.avatar_container}>
+                <Link href={"profile/" + post.user.id}  className={styles.avatar_container}>
                     <Image src={post.user.profile.profile_photo ? process.env.NEXT_PUBLIC_SERVER_URL + "/" + post.user?.profile?.profile_photo : "/images/avatar.png"} width={40} height={40} alt="Avatar" />
-                </div>
+                </Link>
                 <div className={styles.info}>
                     <div className={styles.display_name}>{post.user.profile.display_name}</div>
                     <div className={styles.post_info_container}>

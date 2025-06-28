@@ -75,6 +75,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
         );
     }
 
+    if (user && (pathname === "/login" || pathname === "/register")) {
+        router.push("/");
+    }
+
     return (
         <AuthContext.Provider value={{ user, refetchUser: userQuery.refetch }}>
             {children}
