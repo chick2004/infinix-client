@@ -7,6 +7,8 @@ export default interface MessageGroupProps  {
 
     className?: string;
 
+    show_display_name?: boolean;
+
     onReply?: (message: Message) => void;
 
     onEdit?: (message: Message) => void;

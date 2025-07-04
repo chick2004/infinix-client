@@ -27,6 +27,7 @@ export { default as EmojiPicker } from './card/EmojiPicker/EmojiPicker';
 export { default as FollowingListCard } from './card/FollowingListCard/FollowingListCard';
 export { default as FriendListCard } from './card/FriendListCard/FriendListCard';
 export { default as GroupListCard } from './card/GroupListCard/GroupListCard';
+export { default as FriendRequestListCard } from './card/FriendRequestListCard/FriendRequestListCard';
 export { default as MediaBox } from './card/MediaBox/MediaBox';
 export { default as LoadingPage } from './card/LoadingPage/LoadingPage';
 export { default as MessageCard } from './card/MessageCard/MessageCard';

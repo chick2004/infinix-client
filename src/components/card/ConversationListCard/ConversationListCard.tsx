@@ -3,11 +3,15 @@
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { createPortal } from 'react-dom';
 import { Conversation } from "@/types";
-import { Layer, Text, DropdownSearch, Button, Icon, Skeleton} from "@/components";
+import { Layer, Text, DropdownSearch, Button, Icon, Skeleton, Surface, Field, Input} from "@/components";
 import { useAuth } from "@/hooks";
+import { useMotion, MotionName } from "@/hooks/useMotion";
 import { requestInit } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
+import CreateConversationCard from "./CreateConversationCard/CreateConversationCard";
 import ConversationListCardProps from "./ConversationListCard.types";
 import styles from "./ConversationListCard.module.scss";
 
@@ -18,8 +22,11 @@ export default function ConversationListCard({ style, className, ref, conversati
         className
     );
 
+    const [isShowCreateConversationModal, setIsShowCreateConversationModal] = useState(false);
+
+    const { shouldRender, animationStyle } = useMotion(isShowCreateConversationModal, { appear: MotionName.SCALE_UP_IN, disappear: MotionName.SCALE_DOWN_OUT });
+
     const { user } = useAuth();
-    
     const conversationsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user.id + "/conversations";
     const queryConversations = async () => {
         const response = await fetch(conversationsQueryUrl, requestInit("GET"));
@@ -28,7 +35,6 @@ export default function ConversationListCard({ style, className, ref, conversati
         }
         return response.json();
     }
-
     const conversationsQuery = useQuery({
         queryKey: [conversationsQueryUrl],
         queryFn: queryConversations,
@@ -41,7 +47,7 @@ export default function ConversationListCard({ style, className, ref, conversati
         <Layer stroke className={root} style={style} ref={ref}>
             <div className={styles.header}>
                 <Text type="body_strong">Conversations</Text>
-                <Button appearance={"subtle"}>
+                <Button appearance={"subtle"} onClick={() => setIsShowCreateConversationModal(true)}>
                     <Icon name={"chat_add"} type={"regular"}></Icon>
                 </Button>
                 <Button appearance={"subtle"}>
@@ -74,6 +80,11 @@ export default function ConversationListCard({ style, className, ref, conversati
                     ))
                 )}
             </div>
+            {shouldRender && createPortal(
+                <div className={styles.shadow}>
+                    <CreateConversationCard style={animationStyle} onClose={() => setIsShowCreateConversationModal(false)}></CreateConversationCard>
+                </div>, document.getElementById('modal-root')!
+            )}
         </Layer>
     );
 }

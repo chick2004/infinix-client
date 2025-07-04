@@ -5,6 +5,7 @@ import DetailPost from "./DetailPostCard/DetailPostCard";
 import EditPostCard from "./EditPostCard/EditPostCard";
 import DefaultPostCard from "./DefaultPostCard/DefaultPostCard";
 import { useClickOutside, useMotion, MotionName } from "@/hooks";
+import { createPortal } from 'react-dom';
 
 import PostCardProps from "./PostCard.types";
 import styles from "./PostCard.module.scss";
@@ -31,12 +32,12 @@ export default memo(function PostCard(props: PostCardProps) {
         <>
             <DefaultPostCard {...props} handleOpenEditPost={() => setIsOpenEdit(true)} handleOpenDetailPost={() => {setIsOpenDetail(true)}}></DefaultPostCard>
 
-            {shouldRenderDetailCard && (
-                <DetailPost {...props} className={styles.post_detail_container} style={animationStyleDetailCard} ref={postDetailRef} handleClose={() => {setIsOpenDetail(false)}}></DetailPost>
+            {shouldRenderDetailCard && createPortal(
+                <DetailPost {...props} className={styles.post_detail_container} style={animationStyleDetailCard} ref={postDetailRef} handleClose={() => {setIsOpenDetail(false)}}></DetailPost>, document.getElementById('modal-root')!
             )}
 
-            {shouldRenderEditCard && (
-                <EditPostCard {...props} className={styles.post_edit_container} style={animationStyleEditCard} ref={postEditRef} handleClose={() => setIsOpenEdit(false)}></EditPostCard>
+            {shouldRenderEditCard && createPortal(
+                <EditPostCard {...props} className={styles.post_edit_container} style={animationStyleEditCard} ref={postEditRef} handleClose={() => setIsOpenEdit(false)}></EditPostCard>, document.getElementById('modal-root')!
             )}
         </>
     );

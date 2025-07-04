@@ -106,7 +106,7 @@ export default function ConversationBoxCard({ style, className, ref, conversatio
                                     {new Date(group.time).toLocaleString([], { hour: "2-digit", minute: "2-digit" })}
                                 </Text>
                             )}
-                            <MessageGroupCard className={styles.message_group} group={group} onReply={(message) => setReplyingMessage(message)} onEdit={(message) => setEdittingMessage(message)}/>
+                            <MessageGroupCard show_display_name={conversation.is_group} className={styles.message_group} group={group} onReply={(message) => setReplyingMessage(message)} onEdit={(message) => setEdittingMessage(message)}/>
                         </div>
                     );
                 })}

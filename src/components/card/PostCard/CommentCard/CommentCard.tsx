@@ -26,9 +26,9 @@ export default function CommentCard({ style, className, ref, comment, onStartEdi
                 {comment.media && (
                     <div className={styles.comment_media}>
                         {comment.media.type?.startsWith("image/") ? (
-                            <Image src={process.env.NEXT_PUBLIC_API_URL + "/media" + comment.media.path} alt={`media`} width={100} height={100} style={{objectFit: "cover"}}/>
+                            <Image src={comment.media.path} alt={`media`} width={100} height={100} style={{objectFit: "cover"}}/>
                         ) :  (
-                            <Video src={process.env.NEXT_PUBLIC_API_URL + "/media" + comment.media.path} controls autoPlay muted loop style={{objectFit: "cover", width: "100px", height: "100px"}}/>
+                            <Video src={process.env.NEXT_PUBLIC_API_URL + "/media" + comment.media.path.replace(process.env.NEXT_PUBLIC_API_URL + "", "")} controls autoPlay muted loop style={{objectFit: "cover", width: "100px", height: "100px"}}/>
                         )}
                     </div>
                 )}

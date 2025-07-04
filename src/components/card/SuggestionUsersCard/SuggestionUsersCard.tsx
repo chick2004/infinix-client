@@ -4,9 +4,9 @@ import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
 
-import { Button, Skeleton, Layer } from "@/components";
+import { Button, Skeleton, Layer, Spinner } from "@/components";
 import { requestInit } from "@/lib";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 import SuggestionUsersCardProps from "./SuggestionUsersCard.types";
 import styles from "./SuggestionUsersCard.module.scss";
@@ -34,6 +34,23 @@ export default function SuggestionUsersCard({ style, className, ref }: Suggestio
         staleTime: 1000 * 60 * 5,
     });
 
+    const mutateFollow = async (user_id: string) => {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/users/" + user_id + "/follow", requestInit("POST"));
+        if (!response.ok) {
+            throw new Error("Failed to follow user");
+        }
+        return response.json();
+    }
+    const followMutation = useMutation({
+        mutationFn: mutateFollow,
+        onSuccess: () => {
+            usersQuery.refetch();
+        },
+        onError: (error) => {
+            console.error("Error following user:", error);
+        }
+    });
+
     return (
         <Layer stroke className={root} style={style} ref={ref}>
             <div className={styles.title_bar}>
@@ -42,9 +59,9 @@ export default function SuggestionUsersCard({ style, className, ref }: Suggestio
             </div>
                 {usersQuery.isPending ? (
                     <>
-                        <Skeleton animation={"pulse"} style={{width: "100%", height: "24px", borderRadius: "4px"}}></Skeleton>
-                        <Skeleton animation={"pulse"} style={{width: "100%", height: "24px", borderRadius: "4px"}}></Skeleton>
-                        <Skeleton animation={"pulse"} style={{width: "100%", height: "24px", borderRadius: "4px"}}></Skeleton>
+                        <Skeleton animation={"pulse"} style={{width: "100%", height: "60px", borderRadius: "4px"}}></Skeleton>
+                        <Skeleton animation={"pulse"} style={{width: "100%", height: "60px", borderRadius: "4px"}}></Skeleton>
+                        <Skeleton animation={"pulse"} style={{width: "100%", height: "60px", borderRadius: "4px"}}></Skeleton>
                     </>
                 ) : (
                     Array.isArray(usersQuery.data?.data) ? usersQuery.data.data : []).slice(0, 3).map((user: any) => {
@@ -57,7 +74,15 @@ export default function SuggestionUsersCard({ style, className, ref }: Suggestio
                                     <p className={styles.display_name}>{user.profile.display_name}</p>
                                     <p className={styles.username}>{user.username}</p>
                                 </div>
-                                <Button appearance={"standard"}>Follow</Button>
+                                {followMutation.isPending && followMutation.variables == user.id ? (
+                                    <Button appearance={"standard"}>
+                                        <Spinner></Spinner>
+                                    </Button>
+                                ) : (
+                                    <Button appearance={"standard"} onClick={() => followMutation.mutate(user.id)}>
+                                        Follow
+                                    </Button>
+                                )}
                             </Link>
                         );
                     }

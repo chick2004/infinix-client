@@ -1,0 +1,50 @@
+.root {
+    border-radius: 8px;
+    padding: 10px;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0px 5px;
+
+        .title {
+            margin-bottom: 10px;
+        }
+    }
+
+    .list {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px;
+
+            .avatar {
+                border-radius: 50px;
+                border: 1px solid var(--card-stroke-default);
+                object-fit: cover;
+            }
+
+            .info {
+                width: 100%;
+                display: flex;
+                gap: 5px;
+                align-items: center;
+
+                .display_name {
+                    width: 100%;
+                }
+
+                .actions {
+                    display: flex;
+                    gap: 10px;
+                }
+            }
+        }
+    }
+}

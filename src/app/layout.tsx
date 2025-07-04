@@ -15,6 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode}) {
             <body>
                 <AppProvider>
                     {children}
+                    <div id="modal-root"/>
                 </AppProvider>
             </body>
         </html>

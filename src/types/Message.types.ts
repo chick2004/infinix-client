@@ -1,6 +1,6 @@
 import type MessageMedia from './MessageMedia.types';
 import type User from './User.types';
-export interface Message {
+export default interface Message {
 
     id: number;
 
@@ -24,19 +24,4 @@ export interface Message {
 
     updated_at: string;
     
-}
-
-export interface MessageGroup {
-
-    avatar: string;
-
-    user_displayname: string;
-
-    user_id: number;
-
-    messages: Message[];
-
-    time: Date;
-
-    is_own: boolean;
 }

@@ -16,3 +16,13 @@
     scrollbar-width: none;
     height: 100%;
 }
+
+.post_list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: scroll;
+    scrollbar-width: none;
+    height: 100%;
+    min-height: 0px;
+}

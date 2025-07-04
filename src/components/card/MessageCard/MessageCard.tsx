@@ -88,7 +88,7 @@ export default function MessageCard({ style, className, ref, message, is_own, on
                 <Card stroke shadow className={`${styles.medias} ${message.medias.length > 1 ? styles.multi_media : ""}`}>
                     {message.medias.slice(0, 3).map((media, index) => (
                         <div key={index} className={styles.media}>
-                            <Image src={process.env.NEXT_PUBLIC_API_URL + "/media" + media.path} alt={`Media ${index + 1}`} className={styles.media_image} fill />
+                            <Image src={media.path} alt={`Media ${index + 1}`} className={styles.media_image} fill />
                         </div>
                     ))}
                 </Card>

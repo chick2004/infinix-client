@@ -1,7 +1,9 @@
 export type { default as Post } from './Post.types';
 export type { default as PostMedia } from './PostMedia.types';
 export type { default as Conversation } from './Conversation.types';
-export type * from './Message.types';
+export type { default as FriendRequest } from './FriendRequest.types';
+export type { default as Message } from './Message.types';
+export type { default as MessageGroup } from './MessageGroup.types';
 export type { default as MessageMedia } from './MessageMedia.types';
 export type { default as User } from './User.types';
 export type { default as Profile } from './Profile.types';

@@ -1,0 +1,47 @@
+.root {
+    width: 400px;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .create_conversation_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .create_conversation_image {
+        display: flex;
+        justify-content: center;
+
+        .image_container {
+            position: relative;
+            width: fit-content;
+            img {
+                border-radius: 50%;
+                border: 1px solid var(--card-stroke-default);
+            }
+
+            button {
+                position: absolute;
+                right: 0px;
+                top: 0px;
+                padding: 5px;
+                background-color: var(--control-on-image-fill-default);
+                border-radius: 50%;
+                border: 1px solid var(--card-stroke-default);
+                cursor: pointer;
+                color: var(--text-primary);
+            }
+        }
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        align-items: center;
+    }
+}

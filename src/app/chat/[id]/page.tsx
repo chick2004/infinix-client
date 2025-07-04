@@ -47,7 +47,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                 <div className={mainClassname}>
                     <div className={styles.center}>
                         {conversationQuery.isPending ? (
-                            <Skeleton style={{ width: "100%", height: "100%", borderRadius: "8px"}}></Skeleton>
+                            <Skeleton animation="pulse" style={{ width: "100%", height: "100%", borderRadius: "8px"}}></Skeleton>
                         ) : (
                             <ConversationBoxCard conversation={conversationQuery.data.data} is_expanded={isExpanded} onToggleExpand={toggleExpand} style={{ width: "100%", height: "100%"}}></ConversationBoxCard>
                         )}
@@ -56,7 +56,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                         <div className={styles.conversation_detail_container}>
 
                             <div className={styles.user_infomation_container}>
-                                <Image src={"/images/avatar.png"} alt={"avatar"} width={100} height={100}></Image>
+                                <Image src={conversationQuery.data.data.image ?? "/images/avatar.png"} alt={"avatar"} width={100} height={100}></Image>
                                 <div className={styles.user_infomation_displayname_container}>
                                     <div className={styles.user_infomation_displayname}>John Doe</div>
                                     <div className={styles.user_infomation_username}>@chick2004</div>

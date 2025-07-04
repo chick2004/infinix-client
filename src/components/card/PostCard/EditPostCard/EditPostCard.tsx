@@ -112,7 +112,7 @@ export default memo(function EditPostCard({ style, className, ref, post, handleC
         <Surface stroke shadow ref={ref} style={style} className={root}>
             <div className={styles.header}>
                 <div className={styles.avatar_container}>
-                    <Image src={"/images/avatar.png"} width={40} height={40} alt="Avatar" />
+                    <Image src={post.user.profile.profile_photo || "/images/avatar.png"} width={40} height={40} alt="Avatar" />
                 </div>
                 <div className={styles.info}>
                     <div className={styles.display_name}>{"props.user_display_name"}</div>

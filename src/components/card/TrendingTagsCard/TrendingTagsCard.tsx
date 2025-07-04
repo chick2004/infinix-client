@@ -43,9 +43,9 @@ export default function TrendingTagsCard({ style, className, ref }: TrendingTags
             </div>
                 {tagsQuery.isPending ? (
                     <>
-                        <Skeleton animation={"pulse"} style={{width: "100%", height: "24px", borderRadius: "4px"}}></Skeleton>
-                        <Skeleton animation={"pulse"} style={{width: "100%", height: "24px", borderRadius: "4px"}}></Skeleton>
-                        <Skeleton animation={"pulse"} style={{width: "100%", height: "24px", borderRadius: "4px"}}></Skeleton>
+                        <Skeleton animation={"pulse"} style={{width: "100%", height: "60px", borderRadius: "4px"}}></Skeleton>
+                        <Skeleton animation={"pulse"} style={{width: "100%", height: "60px", borderRadius: "4px"}}></Skeleton>
+                        <Skeleton animation={"pulse"} style={{width: "100%", height: "60px", borderRadius: "4px"}}></Skeleton>
                     </>
                 ) : (
                     Array.isArray(tagsQuery.data?.data) ? tagsQuery.data.data : []).slice(0, 5).map((tag: any) => {

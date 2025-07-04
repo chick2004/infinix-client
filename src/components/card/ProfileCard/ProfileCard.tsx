@@ -18,6 +18,24 @@ export default function ProfileCard({ style, className, ref, user, is_owner }: P
         className
     );
 
+    const mutateCreateFriendRequest = async () => {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/friend-requests", requestInit("POST", {receiver_id: user.id}));
+        if (!response.ok) {
+            throw new Error("Failed to create friend request");
+        }
+        return response.json();
+    }
+    const createFriendRequestMutation = useMutation({
+        mutationFn: mutateCreateFriendRequest,
+        onError: (error) => {
+            console.error("Error creating friend request:", error);
+        },
+        onSuccess: () => {
+            // Optionally handle success, e.g., show a notification
+            console.log("Friend request sent successfully");
+        }
+    });
+
     const mutateCreateConversation = async (data: { with_user: number | undefined }) => {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/conversations", requestInit("POST", data));
 
@@ -27,7 +45,6 @@ export default function ProfileCard({ style, className, ref, user, is_owner }: P
 
         return response.json();
     }
-
     const createConversationMutation = useMutation({
         mutationFn: mutateCreateConversation,
         onError: (error) => {
@@ -48,7 +65,6 @@ export default function ProfileCard({ style, className, ref, user, is_owner }: P
 
         return response.json();
     }
-
     const conversationQuery = useQuery({
         queryKey: [conversationQueryUrl],
         queryFn: queryConversation,
@@ -64,6 +80,11 @@ export default function ProfileCard({ style, className, ref, user, is_owner }: P
         } else {
             createConversationMutation.mutate({ with_user: user.id });
         }
+    }
+
+    const handleCreateFriendRequest = async () => {
+        if (!user || is_owner) return;
+        createFriendRequestMutation.mutate();
     }
 
     return (
@@ -102,10 +123,22 @@ export default function ProfileCard({ style, className, ref, user, is_owner }: P
                     </Button>
                 ) : (
                     <>
-                        <Button appearance="accent">
-                            <Icon name="person_add" size={20} />
-                            Add friend
-                        </Button>
+                        {user.is_sent_friend_request ? (
+                            <Button appearance="accent" onClick={handleCreateFriendRequest} disabled={createFriendRequestMutation.isPending} >
+                                <Icon name="person_add" size={20} />
+                                Sent request
+                            </Button>
+                        ) : user.is_friend ? (
+                            <Button appearance="accent" onClick={handleCreateConversation} disabled={createConversationMutation.isPending} >
+                                <Icon name="chat" size={20} />
+                                Message
+                            </Button>
+                        ) : (
+                            <Button appearance="accent" onClick={handleCreateFriendRequest} disabled={createFriendRequestMutation.isPending} >
+                                <Icon name="person_add" size={20} />
+                                Add friend
+                            </Button>
+                        )}
                         <div className={styles.group}>
                             <Button appearance="standard" onClick={handleCreateConversation}>
                                     <Icon name="chat" size={20} />

@@ -19,4 +19,8 @@ export default interface User {
 
     deleted_at: string | null;
 
+    is_friend?: boolean;
+
+    is_sent_friend_request?: boolean;
+
 }

@@ -52,9 +52,9 @@ export default function DetailPostCard({ style, className, ref, post, handleClos
                     {Array.isArray(post.medias) && post.medias.length > 1 ? (
                         <Carousel medias={post.medias}></Carousel>
                     ) : post.medias[0].type.startsWith("image/") ? (
-                        <Image src={process.env.NEXT_PUBLIC_API_URL + "/media" + post.medias[0].path} alt={`media`} fill style={{objectFit: "contain"}}/>
+                        <Image src={post.medias[0].path} alt={`media`} fill style={{objectFit: "contain"}}/>
                     ) : post.medias[0].type.startsWith("video/") ? (
-                        <Video src={process.env.NEXT_PUBLIC_API_URL + "/media"+ post.medias[0].path} controls autoPlay muted loop style={{objectFit: "contain", height: "100%", width: "100%"}}/>
+                        <Video src={process.env.NEXT_PUBLIC_API_URL + "/media"+ post.medias[0].path.replace(process.env.NEXT_PUBLIC_API_URL + "", "")} controls autoPlay muted loop style={{objectFit: "contain", height: "100%", width: "100%"}}/>
                     ) : (
                         <></>
                     )}
@@ -63,7 +63,7 @@ export default function DetailPostCard({ style, className, ref, post, handleClos
             <div className={styles.content_container}>
                 <Layer className={styles.content_header}>
                     <div className={styles.user_info}>
-                        <Image className={styles.avatar} src={post.user?.profile?.profile_photo ? process.env.NEXT_PUBLIC_SERVER_URL + "/" + post.user?.profile?.profile_photo : "/images/avatar.png"} width={40} height={40} alt="Avatar" />
+                        <Image className={styles.avatar} src={post.user.profile.profile_photo || "/images/avatar.png"} width={40} height={40} alt="Avatar" />
                         <div className={styles.display_name_and_time}>
                             <Text type="body_strong" className={styles.user_display_name}>{post.user?.profile?.display_name}</Text>
                             <div className={styles.post_time_container}>

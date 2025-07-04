@@ -13,6 +13,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.80.10",
     "@tanstack/react-query-devtools": "^5.81.2",
+    "@tanstack/react-virtual": "^3.13.12",
     "clsx": "^2.1.1",
     "next": "15.2.4",
     "react": "^19.0.0",
