@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, forwardRef, useRef } from "react";
+import clsx from "clsx";
+import { useState, useEffect, useRef } from "react";
 import { Icon, Slider } from "@/components";
 import VideoProps from "./Video.types";
 import styles from "./Video.module.scss";
 
-export default function Video({ style, className, src, controls = true, autoPlay = true, loop = false, muted = true, poster }: VideoProps) {
+export default function Video({ style, className, ref, src, controls = true, autoPlay = true, loop = true, muted = true, poster }: VideoProps) {
   
     const [videoUrl, setVideoUrl] = useState<string>("");
     const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -90,11 +91,16 @@ export default function Video({ style, className, src, controls = true, autoPlay
             video.currentTime = (val / 100) * video.duration;
         }
     };
+
+    const root = clsx(
+        styles.root,
+        className
+    )
   
     return (
-        <div className={`${styles.video_container} ${className}`} style={style}>
+        <div className={root} style={style} ref={ref}>
             { videoUrl ? (
-                <video className={styles.video} src={videoUrl} poster={poster} ref={videoRef} autoPlay={autoPlay}></video>
+                <video className={styles.video} src={videoUrl} poster={poster} ref={videoRef} autoPlay={autoPlay} loop={loop}></video>
             ) : (
                 <div className={styles.video_placeholder}>Loading...</div>
             )}

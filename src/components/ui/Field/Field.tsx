@@ -1,13 +1,11 @@
-import { useId, useMemo } from "react";
+import clsx from "clsx";
+import { useId } from "react";
 import React from "react";
 import { Icon } from "@/components";
-
 import FieldProps from "./Field.types";
 import styles from "./Field.module.scss";
 
-export default function Field(props: FieldProps) {
-
-    const { style, className, label, validation_state = "info", validation_message, children } = props;
+export default function Field({ style, className, ref, label, validation_state = "info", validation_message, children }: FieldProps) {
 
     const id = useId();
 
@@ -18,10 +16,15 @@ export default function Field(props: FieldProps) {
         info: <Icon name="info" size={16} type="filled" className={styles.info_color}/>
     }
 
-    const validationIcon = useMemo(() => validation_icons[validation_state], [validation_state]);
+    const validationIcon = validation_icons[validation_state];
+
+    const root = clsx(
+        styles.root,
+        className
+    );
 
     return (
-        <div style={style}  className={`${styles.field} ${className}`}>
+        <div style={style}  className={root} ref={ref}>
             {label && <label className={styles.label} htmlFor={id}>{label}</label>}
             {children && React.isValidElement(children) && React.cloneElement(children as React.ReactElement<any>, { id })}
             {validation_message && (

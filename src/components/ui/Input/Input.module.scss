@@ -42,6 +42,11 @@
         background-color: unset;
         color: var(--text-primary);
     }
+
+    
+    input::-ms-reveal, input::-ms-clear, input::-webkit-search-cancel-button, input::-webkit-calendar-picker-indicator {
+        display: none;
+    }
 }
 
 .input_button {
@@ -59,9 +64,6 @@
     }
 }
 
-input::-ms-reveal, input::-ms-clear, input::-webkit-search-cancel-button, input::-webkit-calendar-picker-indicator {
-    display: none;
-}
 
 .input_group input::-webkit-outer-spin-button, .input_group  input::-webkit-inner-spin-button {
     appearance: none;

@@ -122,7 +122,7 @@ export default memo(function DefaultPostCard({ style, className, ref, post, hand
                                 <Icon name={"edit"} size={16}></Icon>
                                 Edit this post
                             </div>
-                            <div className={styles.post_actions_item}> 
+                            <div className={styles.post_actions_item} onClick={handleOpenDeletePost}> 
                                 <Icon name={"delete"} size={16}></Icon>
                                 Delete this post
                             </div>

@@ -1,3 +1,13 @@
+.root {
+    padding: 0px 8px 0px 4px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    cursor: pointer;
+    font-family: var(--font-family);
+    color: var(--text-primary)
+}
+
 .checkbox {
     appearance: none;
     width: 18px;
@@ -56,12 +66,3 @@
     }
 }
 
-.label {
-    padding: 0px 8px 0px 4px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    cursor: pointer;
-    font-family: var(--font-family);
-    color: var(--text-primary)
-}

@@ -4,10 +4,9 @@ import clsx from "clsx";
 import Image from "next/image";
 import { requestInit } from "@/lib";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Layer, Spinner, Button, Text, Icon } from "@/components";
+import { Layer, Button, Text, Icon } from "@/components";
 import ProfileCardProps from "./ProfileCard.types";
 import styles from "./ProfileCard.module.scss";
-import { useEffect } from "react";
 
 export default function ProfileCard({ style, className, ref, user, is_owner }: ProfileCardProps) {
 

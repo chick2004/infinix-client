@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import RadioGroupProps from "./RadioGroup.types";
 import styles from "./RadioGroup.module.scss";

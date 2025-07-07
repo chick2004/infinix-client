@@ -4,13 +4,12 @@ import clsx from "clsx";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState, useReducer, useRef, useCallback, useEffect } from "react";
-import { Layer, Flyout, Text, Button, Icon, Card, Textarea, Spinner } from "@/components";
+import { Flyout, Button, Icon, Card, Textarea, Spinner } from "@/components";
 import { requestInit } from "@/lib";
 import { useMutation } from "@tanstack/react-query";
 import { useClickOutside } from "@/hooks";
 import CreateMessageCardProps from "./CreateMessageCard.types";
 import styles from "./CreateMessageCard.module.scss";
-import { on } from "events";
 
 
 const EmojiPicker = dynamic(() => import('@/components').then(mod => ({ default: mod.EmojiPicker })), {
@@ -32,7 +31,14 @@ export default function CreateMessageCard({ style, className, ref, conversation_
         reply_to_message_id: reply_to ? reply_to.id : null,
     }
 
-    const reducer = (state: typeof initialState, action: any) => {
+    type Action =
+        | { type: "SET_CONTENT"; payload: string }
+        | { type: "ADD_MEDIA"; payload: { file: File; url: string } }
+        | { type: "REMOVE_MEDIA"; payload: number }
+        | { type: "CLEAR" }
+        | { type: "SET_REPLY_TO_MESSAGE_ID"; payload: number | null };
+
+    const reducer = (state: typeof initialState, action: Action) => {
         switch (action.type) {
             case "SET_CONTENT":
                 return { ...state, content: action.payload };
@@ -64,7 +70,7 @@ export default function CreateMessageCard({ style, className, ref, conversation_
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-    const mutateCreateMessage = async (payload: any) => {
+    const mutateCreateMessage = async (payload: { content: string; medias: File[]; conversation_id: number; reply_to_message_id: number | null }) => {
         const response = await fetch(editting_message ? process.env.NEXT_PUBLIC_API_URL + "/messages/" + editting_message.id : process.env.NEXT_PUBLIC_API_URL + "/conversations/" + state.conversation_id + "/messages", requestInit(editting_message ? "PUT" : "POST", payload));
         if (!response.ok) {
             throw new Error("Failed to create message");
@@ -74,7 +80,7 @@ export default function CreateMessageCard({ style, className, ref, conversation_
 
     const createMessageMutation = useMutation({
         mutationFn: mutateCreateMessage,
-        onSuccess: (data) => {
+        onSuccess: () => {
             dispatch({ type: "CLEAR" });
             onEndReply?.();
             onEndEdit?.();
@@ -109,7 +115,7 @@ export default function CreateMessageCard({ style, className, ref, conversation_
     
 
     return (
-    <Card className={styles.root} style={style} ref={ref}>
+    <Card className={root} style={style} ref={ref}>
         {reply_to && (
             <div className={styles.reply_message}>
                 <Icon name={"arrow_reply"} size={16} type={"filled"} />

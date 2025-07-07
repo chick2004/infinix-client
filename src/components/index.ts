@@ -16,8 +16,6 @@ export { default as Skeleton } from './ui/Skeleton/Skeleton';
 
 export { default as Carousel } from './utility/Carousel/Carousel';
 export { default as Video } from './utility/Video/Video';
-export { default as AcrylicCard } from './utility/AcrylicCard/AcrylicCard';
-export { default as MicaCard } from './utility/MicaCard/MicaCard';
 
 export { default as BookmarkFilterCard } from './card/BookmarkFilterCard/BookmarkFilterCard';
 export { default as ConversationBoxCard } from './card/ConversationBoxCard/ConversationBoxCard';

@@ -2,12 +2,12 @@
 
 import clsx from "clsx";
 import Image from "next/image";
-import { useState, useReducer, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import type { Message, MessageGroup } from "@/types";
 import { requestInit } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
-import { Layer, Text, Button, Icon, Card, Textarea, MessageCard, MessageGroupCard } from "@/components";
+import { Layer, Text, Button, Icon, Card, MessageGroupCard } from "@/components";
 import { useAuth } from "@/hooks";
 import CreateMessageCard from "./CreateMessageCard/CreateMessageCard";
 import ConversationBoxCardProps from "./ConversationBoxCard.types";

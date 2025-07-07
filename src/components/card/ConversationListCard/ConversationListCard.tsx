@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { createPortal } from 'react-dom';
 import { Conversation } from "@/types";
-import { Layer, Text, DropdownSearch, Button, Icon, Skeleton, Surface, Field, Input} from "@/components";
+import { Layer, Text, DropdownSearch, Button, Icon, Skeleton } from "@/components";
 import { useAuth } from "@/hooks";
 import { useMotion, MotionName } from "@/hooks/useMotion";
 import { requestInit } from "@/lib";
@@ -15,7 +15,7 @@ import CreateConversationCard from "./CreateConversationCard/CreateConversationC
 import ConversationListCardProps from "./ConversationListCard.types";
 import styles from "./ConversationListCard.module.scss";
 
-export default function ConversationListCard({ style, className, ref, conversations }: ConversationListCardProps) {
+export default function ConversationListCard({ style, className, ref }: ConversationListCardProps) {
 
     const root = clsx(
         styles.root,

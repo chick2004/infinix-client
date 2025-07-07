@@ -137,19 +137,20 @@
 .media_gallery {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    gap: 5px;
+    overflow: hidden;
+    padding: 0px;
 }
 
-.media_gallery_item {  position: relative;
+.media_gallery_item {
     width: 100%;
-    padding-top: 100%;
-    overflow: hidden;
-    border-radius: 4px;
-    border: 1px inset var(--card-stroke-default);
+    aspect-ratio: 1 / 1;
 }
 
 .media_gallery_item img {
     object-fit: cover;
+    border: 1px inset var(--card-stroke-default);
+    border-radius: 4px;
 }
 
 .notification_dialog_container{

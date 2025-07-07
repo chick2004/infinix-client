@@ -4,6 +4,8 @@ export default interface FieldProps {
 
     className?: string;
 
+    ref?: React.Ref<HTMLDivElement>;
+
     label?: string;
 
     validation_state?: "success" | "warning" | "error" | "info";

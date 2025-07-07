@@ -1,9 +1,9 @@
 "use client";
-import { useEffect } from 'react';
 import { requestInit } from '@/lib';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks';
 import { ClientLayout } from '@/layouts';
+import type { Post } from '@/types';
 import { BookmarkFilterCard, PostCard } from '@/components';
 import styles from './page.module.scss';
 
@@ -39,7 +39,7 @@ export default function Page() {
                             <div>Loading...</div>
                         ) : (
                             Array.isArray(bookmarksQuery.data?.data) ? (
-                                bookmarksQuery.data.data.map((post: any, index: number) => (
+                                bookmarksQuery.data.data.map((post: Post, index: number) => (
                                     <PostCard key={index} post={post}></PostCard>
                                 ))
                             ) : (

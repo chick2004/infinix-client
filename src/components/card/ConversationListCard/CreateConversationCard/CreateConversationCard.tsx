@@ -22,7 +22,7 @@ export default function CreateConversationCard({ style, className, ref, onClose 
         is_group: true,
     });
 
-    const mutateCreateConversation = async (value: any) => {
+    const mutateCreateConversation = async (value: { name: string; image: File | null; is_group: boolean }) => {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/conversations", requestInit("POST", value));
         if (!response.ok) {
             throw new Error("Failed to create conversation");

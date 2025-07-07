@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
-import type { User, Conversation } from "@/types";
+import type { Conversation } from "@/types";
 import { requestInit } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks";

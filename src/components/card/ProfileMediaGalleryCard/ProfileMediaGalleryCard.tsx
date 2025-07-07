@@ -1,7 +1,7 @@
 
 import clsx from "clsx";
 import Image from "next/image";
-import { Layer, Card, Button, Text, Icon } from "@/components";
+import { Layer, Text } from "@/components";
 import ProfileMediaGalleryCardProps from "./ProfileMediaGalleryCard.types";
 import styles from "./ProfileMediaGalleryCard.module.scss";
 

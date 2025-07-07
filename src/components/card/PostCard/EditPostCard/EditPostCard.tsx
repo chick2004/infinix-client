@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useState, useEffect, useRef, useCallback, useReducer, memo } from "react";
+import { useState, useRef, useCallback, useReducer, memo } from "react";
 
 import { Button, Icon, Textarea, Spinner, Flyout, Video, Surface } from "@/components";
 import { useClickOutside } from "@/hooks";

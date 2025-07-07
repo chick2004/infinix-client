@@ -1,5 +1,6 @@
 "use client";
 
+import clsx from "clsx";
 import dynamic from 'next/dynamic';
 import Image from "next/image";
 import { useState, useEffect, useRef, useReducer } from "react";
@@ -10,8 +11,6 @@ import { Button, Icon, Textarea, Spinner } from "@/components";
 import { useClickOutside } from "@/hooks";
 import CreateCommentCardProps from "./CreateCommentCard.types";
 import styles from "./CreateCommentCard.module.scss";
-import { use } from 'chai';
-import { on } from 'events';
 
 const EmojiPicker = dynamic(() => import('@/components').then(mod => ({ default: mod.EmojiPicker })), {
     loading: () => <div className={styles.emoji_picker_loading}><Spinner></Spinner></div>,
@@ -102,8 +101,13 @@ export default function CreateCommentCard({ style, className, ref, post_id, edit
         }
     }, [editting_comment]);
 
+    const root = clsx(
+        styles.root,
+        className
+    );
+
     return (
-        <div className={styles.comment_input}>
+        <div className={root} style={style} ref={ref}>
             <div className={styles.media_list}>
                 {state.media.url && (
                     <div className={styles.media_item}>

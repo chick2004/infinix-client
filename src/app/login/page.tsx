@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import { useState, useEffect, useMemo } from "react";
+import { useState } from "react";
 
 import { Field, Input, Button, Spinner } from "@/components";
 import styles from "./page.module.css";
@@ -93,7 +93,7 @@ export default function Page() {
                     </p>
                 </div>
                 <div>
-                    <p className={styles.register_link}>Don"t have an account? <span><Link href={"/register"} className="text-accent-default link">Create new</Link></span></p>
+                    <p className={styles.register_link}>Don&apos;t have an account? <span><Link href={"/register"} className="text-accent-default link">Create new</Link></span></p>
                 </div>
 
                 <div>

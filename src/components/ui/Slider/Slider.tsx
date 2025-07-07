@@ -30,6 +30,6 @@ export default function Slider({ className, style, direction = "horizontal", min
     }
 
     return (
-        <input style={style} className={`${styles.input} ${className} ${direction == "horizontal" ? styles.horizontal : styles.vertical}`} type="range" min={min} max={max} step={step} ref={ref} onChange={handleChange} value={infernalValue}/>
+        <input style={style} className={`${styles.input} ${className} ${direction == "horizontal" ? styles.horizontal : styles.vertical}`} type="range" min={min} max={max} step={step} ref={ref} onChange={handleChange} value={infernalValue} disabled={disabled}/>
     )
 }

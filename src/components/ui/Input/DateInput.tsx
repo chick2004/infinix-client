@@ -84,7 +84,6 @@ export function DateInput(props: InputProps) {
 
 
     const startDateIndex = new Date(viewingYear, viewingMonth, 1).getDay();
-    const endDateIndex = new Date(viewingYear, viewingMonth + 1, 0).getDay();
 
     return (
         <div>

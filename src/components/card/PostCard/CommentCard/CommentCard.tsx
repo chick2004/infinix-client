@@ -1,12 +1,13 @@
 import clsx from "clsx";
 import Image from "next/image";
-
+import { useAuth } from "@/hooks";
 import { Video, Card, Text } from "@/components";
-
 import CommentCardProps from "./CommentCard.types";
 import styles from "./CommentCard.module.scss";
 
 export default function CommentCard({ style, className, ref, comment, onStartEdit}: CommentCardProps) {
+
+    const { user } = useAuth();
 
     const root = clsx(
         styles.comment,
@@ -35,7 +36,10 @@ export default function CommentCard({ style, className, ref, comment, onStartEdi
                 <div className={styles.comment_time_and_reply}>
                     <Text type="caption" color="secondary" className={styles.comment_time}>1h ago</Text>
                     <Text type="caption" color="secondary" className={styles.comment_button}>Reply</Text>
-                    <Text type="caption" color="secondary" className={styles.comment_button} onClick={() => { onStartEdit?.(comment); }}>Edit</Text>
+                    { user?.id === comment.user.id && (
+                        <Text type="caption" color="secondary" className={styles.comment_button} onClick={() => { onStartEdit?.(comment); }}>Edit</Text>
+                    )}
+                    
                 </div>
             </div>
         </div>

@@ -2,11 +2,11 @@
 
 import { use } from "react";
 import { useAuth } from "@/hooks";
-
+import type { Post } from "@/types";
 import { requestInit } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
 import ClientLayout from "@/layouts/ClientLayout/ClientLayout";
-import { ProfileCard, ProfileMediaGalleryCard, CreatePostCard, PostCard, Skeleton, FriendListCard, GroupListCard, FollowingListCard } from "@/components";
+import { ProfileCard, ProfileMediaGalleryCard, CreatePostCard, PostCard, Skeleton } from "@/components";
 import styles from './page.module.scss';
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
@@ -67,7 +67,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                             <Skeleton animation={"pulse"} style={{width: "100%", height: "128px", borderRadius: "4px"}}></Skeleton>
                         </>
                     ) : (
-                        Array.isArray(postsQuery.data?.data) && postsQuery.data.data.length > 0 && postsQuery.data.data.map((postData: any) => (
+                        Array.isArray(postsQuery.data?.data) && postsQuery.data.data.length > 0 && postsQuery.data.data.map((postData: Post) => (
                             <PostCard key={postData.id} post={postData}></PostCard>
                         ))
                     )}

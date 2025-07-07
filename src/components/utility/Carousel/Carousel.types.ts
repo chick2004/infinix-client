@@ -1,9 +1,13 @@
-import { Media } from "@/types";
+import type { PostMedia } from "@/types";
 export default interface CarouselProps {
 
-    medias: Media[];
+    medias: PostMedia[];
 
     className?: string;
+
+    style?: React.CSSProperties;
+    
+    ref?: React.Ref<HTMLDivElement>;
 
     autoPlay?: boolean;
 

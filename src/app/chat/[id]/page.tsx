@@ -7,7 +7,6 @@ import { ClientLayout } from "@/layouts";
 import { requestInit } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
 import { Dialog, Button, Icon, ConversationListCard, ConversationBoxCard, Checkbox, Skeleton } from "@/components";
-import { useAuth } from "@/hooks";
 import styles from './page.module.css';
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
@@ -78,6 +77,11 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                                     <Icon name={"pin"} size={20} type={"regular"}></Icon>
                                     <p>Pinned messages</p>
                                 </div>
+
+                                <div className={styles.conversation_setting}>
+                                    <Icon name={"person"} size={20} type={"regular"}></Icon>
+                                    <p>Members</p>
+                                </div>
                             </div>
 
                             <div className={styles.media_container}>
@@ -110,6 +114,11 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                                 <div className={styles.conversation_setting}>
                                     <Icon name={"delete"} size={20} type={"regular"}></Icon>
                                     <p>Delete this conversation</p>
+                                </div>
+                                
+                                <div className={styles.conversation_setting}>
+                                    <Icon name={"person_arrow_left"} size={20} type={"regular"}></Icon>
+                                    <p>Leave this conversation</p>
                                 </div>
                             </div>
 

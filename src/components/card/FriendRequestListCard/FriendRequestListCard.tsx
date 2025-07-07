@@ -4,7 +4,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { requestInit } from "@/lib";
-import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, Text, Button, Icon, Spinner } from "@/components";
 import { useAuth } from "@/hooks";
 import FriendRequestListCardProps from "./FriendRequestListCard.types";

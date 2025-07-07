@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { requestInit } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
-import { Video, Button, Icon, Carousel, Skeleton, Surface, Card, Layer, Text } from "@/components"
+import { Video, Button, Icon, Carousel, Skeleton, Surface, Layer, Text } from "@/components"
 
 import DetailPostCardProps from "./DetailPostCard.types";
 import styles from "./DetailPostCard.module.scss";
@@ -54,7 +54,7 @@ export default function DetailPostCard({ style, className, ref, post, handleClos
                     ) : post.medias[0].type.startsWith("image/") ? (
                         <Image src={post.medias[0].path} alt={`media`} fill style={{objectFit: "contain"}}/>
                     ) : post.medias[0].type.startsWith("video/") ? (
-                        <Video src={process.env.NEXT_PUBLIC_API_URL + "/media"+ post.medias[0].path.replace(process.env.NEXT_PUBLIC_API_URL + "", "")} controls autoPlay muted loop style={{objectFit: "contain", height: "100%", width: "100%"}}/>
+                        <Video src={process.env.NEXT_PUBLIC_API_URL + "/media"+ post.medias[0].path.replace(process.env.NEXT_PUBLIC_SERVER_URL + "", "")} controls autoPlay muted loop style={{objectFit: "contain", height: "100%", width: "100%"}}/>
                     ) : (
                         <></>
                     )}

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 
 import { useAuth } from "@/hooks";
 
@@ -14,8 +14,8 @@ import { Field, Input, Button, Spinner } from "@/components";
 import styles from "./page.module.css";
 
 interface StepProps {
-    formData: any;
-    setFormData: (data: any) => void;
+    formData: {display_name: string, email: string, password: string, code: string, confirm: string};
+    setFormData: (data: {display_name: string, email: string, password: string, code: string, confirm: string}) => void;
     onNextStep?: () => void;
     onPreviousStep?: () => void;
 }
@@ -355,10 +355,10 @@ export default function Page() {
 
     const steps = useMemo(() => {
         return [
-            <DisplayNameStep formData={formData} setFormData={setFormData} onNextStep={handleNextStep} />,
-            <EmailStep formData={formData} setFormData={setFormData} onNextStep={handleNextStep} onPreviousStep={handlePreviousStep}/>,
-            <VerifyCodeStep formData={formData} setFormData={setFormData} onNextStep={handleNextStep} onPreviousStep={handlePreviousStep}/>,
-            <SetPasswordStep formData={formData} setFormData={setFormData}/>,
+            <DisplayNameStep formData={formData} setFormData={setFormData} onNextStep={handleNextStep} key="displayName" />,
+            <EmailStep formData={formData} setFormData={setFormData} onNextStep={handleNextStep} onPreviousStep={handlePreviousStep} key="email" />,
+            <VerifyCodeStep formData={formData} setFormData={setFormData} onNextStep={handleNextStep} onPreviousStep={handlePreviousStep} key="verifyCode" />,
+            <SetPasswordStep formData={formData} setFormData={setFormData} key="setPassword" />,
         ];
     }, [formData]);
 

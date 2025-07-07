@@ -4,6 +4,8 @@ export default interface CheckboxProps {
 
     className?: string;
 
+    ref?: React.Ref<HTMLLabelElement>;
+
     label?: string;
 
     checked?: boolean;

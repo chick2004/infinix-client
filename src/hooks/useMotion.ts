@@ -12,9 +12,9 @@ const EASING_FUNCTION_1 = 'cubic-bezier(.1, .9, .2, 1)';
 const EASING_FUNCTION_2 = 'cubic-bezier(.1, .25, .75, .9)';
 
 const DURATION_1 = 167;
-const DURATION_2 = 267;
+// const DURATION_2 = 267;
 const DURATION_3 = 367;
-const DURATION_4 = 467;
+// const DURATION_4 = 467;
 
 type MotionDistance = 10 | 20 | 40 | 400;
 

@@ -8,7 +8,6 @@ import { DropdownSearch, Icon, Input, Button, Textarea, Switch, Select, Collapse
 
 import { ClientLayout } from "@/layouts";
 import styles from './page.module.css';
-import { optimizeImage } from "next/dist/server/image-optimizer";
 
 interface TabProps {
     openedDropdown: string;

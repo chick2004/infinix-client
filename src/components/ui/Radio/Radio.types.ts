@@ -4,6 +4,8 @@ export default interface RadioProps {
 
     className?: string;
 
+    ref?: React.Ref<HTMLLabelElement>;
+
     name?: string;
 
     label?: string;

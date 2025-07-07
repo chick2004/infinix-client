@@ -2,12 +2,12 @@
 
 import Image from "next/image";
 import dynamic from 'next/dynamic';
-import { useState, useEffect, useReducer , useRef, useCallback, memo } from "react";
+import { useState, useReducer , useRef, useCallback, memo } from "react";
 
 import { Button, Icon, Textarea, Spinner, Flyout } from "@/components";
 import { useClickOutside, useMotion, MotionName } from "@/hooks";
 import { requestInit } from "@/lib";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient  } from "@tanstack/react-query";
 import styles from "./CreatePostCard.module.scss";
 
 const EmojiPicker = dynamic(() => import('@/components').then(mod => ({ default: mod.EmojiPicker })), {
@@ -23,7 +23,14 @@ export default memo(function CreatePostCard() {
         medias: [] as { file: File, url: string }[],
     };
 
-    const reducer = (state: typeof initialState, action: any) => {
+    type Action =
+        | { type: "SET_CONTENT"; payload: string }
+        | { type: "SET_VISIBILITY"; payload: "public" | "private" | "friends" }
+        | { type: "ADD_MEDIA"; payload: { file: File; url: string } }
+        | { type: "REMOVE_MEDIA"; payload: number }
+        | { type: "CLEAR" };
+
+    const reducer = (state: typeof initialState, action: Action) => {
         switch (action.type) {
             case "SET_CONTENT":
                 return { ...state, content: action.payload };
@@ -42,22 +49,37 @@ export default memo(function CreatePostCard() {
 
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const mutateCreatePost = async (payload: any) => {
+    const queryClient = useQueryClient();
+    const postQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/posts"
+    const mutateCreatePost = async (payload: { content: string; visibility: "public" | "private" | "friends"; medias: File[] }) => {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/posts', requestInit("POST", payload));
         if (!response.ok) {
             throw new Error("Failed to create post");
         }
         return response.json();
     }
-
     const createPostMutation = useMutation({
         mutationFn: mutateCreatePost,
         onError: (error) => {
             console.error("Error creating post:", error);
         },
         onSuccess: (data) => {
-            console.log("Post created successfully:", data);
-            dispatch({ type: "CLEAR" });
+            if (data.status == 201) {
+                dispatch({ type: "CLEAR" });
+                queryClient.setQueryData([postQueryUrl], (oldData: any) => {
+                    if (!oldData) return;
+                    return {
+                        ...oldData,
+                        pages: [
+                            {
+                                data: [data.data, ...oldData.pages[0].data],
+                                meta: oldData.pages[0].meta,
+                            },
+                            ...oldData.pages.slice(1),
+                        ],
+                    };
+                });
+            }
         }
     });
 
@@ -68,6 +90,7 @@ export default memo(function CreatePostCard() {
         }
         const postData = {
             ...state,
+            visibility: state.visibility as "public" | "private" | "friends",
             medias: state.medias.map(media => media.file),
         };
         createPostMutation.mutate(postData);

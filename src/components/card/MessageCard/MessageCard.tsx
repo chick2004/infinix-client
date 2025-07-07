@@ -2,11 +2,10 @@
 
 import clsx from "clsx";
 import Image from "next/image";
-import { useState, useRef } from "react";
-
+import { useRef } from "react";
+import { requestInit } from "@/lib";
+import { useMutation } from "@tanstack/react-query";
 import { Icon, Flyout, Text, Card } from "@/components";
-import { useMotion, MotionName } from "@/hooks";
-import type { Message } from "@/types";
 import MessageCardProps from "./MessageCard.types";
 import styles from "./MessageCard.module.scss";
 
@@ -20,11 +19,40 @@ export default function MessageCard({ style, className, ref, message, is_own, on
         }
     );
 
+    const menuRef = useRef<HTMLDivElement>(null);
+
     const handleCopy = () => {
         navigator.clipboard.writeText(message.content || "");
     }
+    const handleReply = () => {
+        if (onReply) {
+            onReply(message);
+        }
+    }
+    const handleEdit = () => {
+        if (onEdit) {
+            onEdit(message);
+        }
+    }
+    const handlePin = () => {
+        pinMessageMutation.mutate();
+    }
 
-
+    const mutatePinMessage = async () => {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/messages/" + message.id + "/pin", requestInit("POST"));
+        if (!response.ok) { 
+            throw new Error("Failed to pin message");
+        }
+        return response.json();
+    }
+    const pinMessageMutation = useMutation({
+        mutationFn: mutatePinMessage,
+        onSuccess: () => {
+        },
+        onError: (error) => {
+            console.error("Error pinning message:", error);
+        }
+    });
 
     
     return (
@@ -57,9 +85,9 @@ export default function MessageCard({ style, className, ref, message, is_own, on
                         <Text type="caption" color="secondary" className={styles.edited_text} appearance={is_own ? "text_on_accent" : "text"}>*edited</Text>
                     )}
                     
-                    <div className={styles.flyout_container}>
+                    <div className={styles.flyout_container} ref={menuRef}>
                         <Flyout stroke shadow className={styles.flyout}>
-                            <div className={styles.flyout_button} onClick={() => onReply && onReply(message)}>
+                            <div className={styles.flyout_button} onClick={handleReply}>
                                 <Icon name={"arrow_reply"} size={20} type={"regular"}></Icon>
                                 Reply
                             </div>
@@ -69,17 +97,16 @@ export default function MessageCard({ style, className, ref, message, is_own, on
                             </div>
                             {is_own && (
                                 <>
-                                    <div className={styles.flyout_button} onClick={() => onEdit && onEdit(message)}>
+                                    <div className={styles.flyout_button} onClick={handleEdit}>
                                         <Icon name={"edit"} size={20} type={"regular"}></Icon>
                                         Edit
                                     </div>
-                                    <div className={styles.flyout_button}>
-                                        <Icon name={"pin"} size={20} type={"regular"}></Icon>
-                                        Pin
-                                    </div>
                                 </>
                             )}
-                            
+                            <div className={styles.flyout_button} onClick={handlePin}>
+                                <Icon name={"pin"} size={20} type={"regular"}></Icon>
+                                Pin
+                            </div>
                         </Flyout>
                     </div>
                 </div>

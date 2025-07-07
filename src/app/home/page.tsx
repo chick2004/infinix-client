@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useMemo, useCallback } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { requestInit } from "@/lib";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual"
@@ -28,7 +28,7 @@ export default function Page() {
         queryKey: [postQueryUrl],
         queryFn: ({ pageParam }) => queryPosts({ pageParam }),
         initialPageParam: 1,
-        getNextPageParam: (lastPage, allPages) => {
+        getNextPageParam: (lastPage) => {
             const nextPage = lastPage.meta.current_page + 1;
             return nextPage <= lastPage.meta.last_page ? nextPage : undefined;
         },
