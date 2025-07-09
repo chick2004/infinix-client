@@ -14,7 +14,7 @@ export default function Page() {
         if (user) {
         router.replace(`/profile/${user.id}`);
         }
-    }, [user]);
+    }, [user, router]);
     
     return null
 }

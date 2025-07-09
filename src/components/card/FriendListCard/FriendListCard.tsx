@@ -19,7 +19,7 @@ export default function FriendListCard({ style, className, ref }: FriendListCard
     );
 
     const { user } = useAuth();
-    const friendsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user.id + "/friends";
+    const friendsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user?.id + "/friends";
     const queryFriends = async () => {
         const response = await fetch(friendsQueryUrl, requestInit("GET"));
         if (!response.ok) {

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import dynamic from 'next/dynamic';
 import { useState, useReducer , useRef, useCallback, memo } from "react";
-
+import type { Post, ApiPaginatedResponse, InfiniteQueryData } from "@/types";
 import { Button, Icon, Textarea, Spinner, Flyout } from "@/components";
 import { useClickOutside, useMotion, MotionName } from "@/hooks";
 import { requestInit } from "@/lib";
@@ -23,12 +23,7 @@ export default memo(function CreatePostCard() {
         medias: [] as { file: File, url: string }[],
     };
 
-    type Action =
-        | { type: "SET_CONTENT"; payload: string }
-        | { type: "SET_VISIBILITY"; payload: "public" | "private" | "friends" }
-        | { type: "ADD_MEDIA"; payload: { file: File; url: string } }
-        | { type: "REMOVE_MEDIA"; payload: number }
-        | { type: "CLEAR" };
+    type Action = { type: "SET_CONTENT"; payload: string } | { type: "SET_VISIBILITY"; payload: "public" | "private" | "friends" } | { type: "ADD_MEDIA"; payload: { file: File; url: string } } | { type: "REMOVE_MEDIA"; payload: number } | { type: "CLEAR" };
 
     const reducer = (state: typeof initialState, action: Action) => {
         switch (action.type) {
@@ -51,7 +46,7 @@ export default memo(function CreatePostCard() {
 
     const queryClient = useQueryClient();
     const postQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/posts"
-    const mutateCreatePost = async (payload: { content: string; visibility: "public" | "private" | "friends"; medias: File[] }) => {
+    const mutateCreatePost = async (payload: { content: string; visibility: "public" | "private" | "friends"; medias: File[] }): Promise<ApiPaginatedResponse<Post>> => {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/posts', requestInit("POST", payload));
         if (!response.ok) {
             throw new Error("Failed to create post");
@@ -66,7 +61,7 @@ export default memo(function CreatePostCard() {
         onSuccess: (data) => {
             if (data.status == 201) {
                 dispatch({ type: "CLEAR" });
-                queryClient.setQueryData([postQueryUrl], (oldData: any) => {
+                queryClient.setQueryData([postQueryUrl], (oldData: InfiniteQueryData<ApiPaginatedResponse<Post>>) => {
                     if (!oldData) return;
                     return {
                         ...oldData,

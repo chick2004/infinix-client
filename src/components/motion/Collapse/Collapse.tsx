@@ -27,7 +27,7 @@ export default function Collapse({ children, visible, duration = 300 }: {childre
                 setHeight(0);
             });
         }
-    }, [visible]);
+    }, [visible, duration, height]);
 
     return (
         <div ref={ref} style={{ height: height, overflow: "hidden", transition: `height ${duration}ms ease`, scrollbarWidth: "none" }}>

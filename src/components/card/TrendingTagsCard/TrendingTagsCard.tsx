@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import Link from "next/link";
+import type { Tag } from "@/types";
 import { Icon, Button, Skeleton, Layer } from "@/components";
 import { requestInit } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
@@ -48,7 +49,7 @@ export default function TrendingTagsCard({ style, className, ref }: TrendingTags
                         <Skeleton animation={"pulse"} style={{width: "100%", height: "60px", borderRadius: "4px"}}></Skeleton>
                     </>
                 ) : (
-                    Array.isArray(tagsQuery.data?.data) ? tagsQuery.data.data : []).slice(0, 5).map((tag: any) => {
+                    Array.isArray(tagsQuery.data?.data) ? tagsQuery.data.data : []).slice(0, 5).map((tag: Tag) => {
                         return (
                             <Link href={""} key={tag.id} className={styles.tag_bar}>
                                 <div>

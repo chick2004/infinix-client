@@ -1,4 +1,8 @@
-export const objectToFormData = (obj: Record<string, any>, formData: FormData = new FormData(), parentKey?: string): FormData => {
+interface Payload {
+    [key: string]: string | number | boolean | File | Payload | Payload[] | object | null | undefined;
+}
+
+export const objectToFormData = (obj: Payload, formData: FormData = new FormData(), parentKey?: string): FormData => {
     if (obj && typeof obj === 'object' && !(obj instanceof File)) {
         Object.keys(obj).forEach(key => {
             const value = obj[key];
@@ -11,29 +15,29 @@ export const objectToFormData = (obj: Record<string, any>, formData: FormData = 
                     objectToFormData({ [`${index}`]: item }, formData, fullKey);
                 });
             } else if (typeof value === 'object' && value !== null) {
-                objectToFormData(value, formData, fullKey);
+                objectToFormData(value as Record<string, Payload>, formData, fullKey);
             } else if (value !== undefined && value !== null && value !== '') {
-                formData.append(fullKey, value.toString());
+                formData.append(fullKey, String(value));
             }
         });
     }
     return formData;
 };
 
-export const requestInit = (method: string, payload?: Record<string, any>) => {
+export const requestInit = (method: string, payload?: Payload) => {
 
     const header = {
         "X-XSRF-TOKEN": decodeURIComponent(document.cookie.split("; ").find(row => row.startsWith("XSRF-TOKEN="))?.split("=")[1] || ""),
         "Accept": "application/json"
-    }
+    };
 
     const init: RequestInit = {
         method: method === "GET" ? "GET" : "POST",
         headers: header,
         credentials: 'include',
-        body: method === 'GET' ? null : objectToFormData({ ...payload, _method: method })
+        body: method === 'GET' ? null : objectToFormData({ ...payload, _method: method }),
     };
 
     return init;
-}
+};
 

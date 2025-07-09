@@ -9,7 +9,7 @@ import ClientLayout from "@/layouts/ClientLayout/ClientLayout";
 import { ProfileCard, ProfileMediaGalleryCard, CreatePostCard, PostCard, Skeleton } from "@/components";
 import styles from './page.module.scss';
 
-export default function Page({ params }: { params: Promise<{ id: string }> }) {
+export default function Page({ params }: { params: Promise<{ id: number }> }) {
 
     const { id } = use(params);
     const { user } = useAuth();
@@ -54,12 +54,12 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                     {userQuery.isPending ? (
                         <Skeleton animation={"pulse"} style={{width: "100%", height: "384px", borderRadius: "8px"}}></Skeleton>
                     ) : (
-                        <ProfileCard user={userQuery.data.data} is_owner={id == user.id ? true : false}></ProfileCard>
+                        <ProfileCard user={userQuery.data.data} is_owner={id == user?.id ? true : false}></ProfileCard>
                     )}
                     <ProfileMediaGalleryCard></ProfileMediaGalleryCard>
                 </div>
                 <div className={styles.right}>
-                    {id == user.id && <CreatePostCard></CreatePostCard>}
+                    {id == user?.id && <CreatePostCard></CreatePostCard>}
                     {postsQuery.isPending ? (
                         <>
                             <Skeleton animation={"pulse"} style={{width: "100%", height: "128px", borderRadius: "4px"}}></Skeleton>

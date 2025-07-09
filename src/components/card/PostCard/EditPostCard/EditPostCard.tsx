@@ -28,8 +28,14 @@ export default memo(function EditPostCard({ style, className, ref, post, handleC
 
     const [currentMedias, setCurrentMedias] = useState<{ file: File | undefined, url: string, type: string, isNewMedia: boolean, id: number | undefined }[]>(post.medias?.map(media => ({ file: undefined, url: process.env.NEXT_PUBLIC_API_URL + "/media" + media.path, type: media.type, isNewMedia: false, id: Number(media.id) })) || []);
 
+    type Action =
+        | { type: "SET_CONTENT"; payload: string }
+        | { type: "SET_VISIBILITY"; payload: string }
+        | { type: "ADD_MEDIA"; payload: File }
+        | { type: "REMOVE_MEDIA"; payload: number }
+        | { type: "REMOVE_OLD_MEDIA"; payload: number };
 
-    const reducer = (state: typeof initialState, action: any) => {
+    const reducer = (state: typeof initialState, action: Action) => {
         switch (action.type) {
             case "SET_CONTENT":
                 return { ...state, content: action.payload };
@@ -74,9 +80,7 @@ export default memo(function EditPostCard({ style, className, ref, post, handleC
         });
     } , []);
 
-
-    //const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + '/posts/' + post.id, "PUT");
-    const mutateEditPost = async (payload: any) => {
+    const mutateEditPost = async (payload: { content: string; visibility: string; medias: File[]; deleted_medias: number[]; }) => {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/posts/' + post.id, requestInit("PUT", payload));
         if (!response.ok) {
             throw new Error("Failed to edit post");

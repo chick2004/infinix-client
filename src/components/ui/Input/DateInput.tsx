@@ -41,7 +41,7 @@ export function DateInput(props: InputProps) {
         if (onChange) {
             onChange(newDate.toISOString());
         }
-    }, [date, month, year]);
+    }, [date, month, year, onChange]);
 
     const handleMonthChange = (action: "increment" | "decrement") => {
         if (action === "increment") {

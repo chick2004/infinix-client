@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import SliderProps from "./Slider.type";
 import styles from "./Slider.module.scss";
 
@@ -9,18 +9,19 @@ export default function Slider({ className, style, direction = "horizontal", min
     const ref = useRef<HTMLInputElement>(null);
     const [infernalValue, setInternalValue] = useState(value);
 
-    useEffect(() => {
-        setInternalValue(value);
-        updateRange(value);
-    }, [value]);
 
-    const updateRange = (newValue: number) => {
+    const updateRange = useCallback((newValue: number) => {
         const percent = ((newValue - min) / (max - min)) * 100;
         if (ref.current) {
             const linear_direction = direction === "horizontal" ? "to right" : "to top";
             ref.current.style.background = `linear-gradient(${linear_direction}, var(--accent-default) ${percent}%, var(--control-strong-stroke-default) ${percent}%)`;
         }
-    }
+    }, [min, max, direction]);
+    
+    useEffect(() => {
+        setInternalValue(value);
+        updateRange(value);
+    }, [value, updateRange]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = parseFloat(event.target.value);

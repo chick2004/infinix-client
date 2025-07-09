@@ -1,8 +1,9 @@
 "use client";
+import type { User } from "@/types";
 import { useContext, createContext } from "react";
 
 export interface AuthContextType {
-    user: any;
+    user: User | null;
     refetchUser: () => void;
 }
 

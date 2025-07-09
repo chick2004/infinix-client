@@ -11,7 +11,7 @@ export default function Page() {
 
     const { user } = useAuth();
 
-    const conversationsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user.id + "/conversations";
+    const conversationsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user?.id + "/conversations";
     const queryConversations = async () => {
         const response = await fetch(conversationsQueryUrl, requestInit("GET"));
         if (!response.ok) {

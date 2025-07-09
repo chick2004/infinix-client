@@ -47,13 +47,13 @@ class Animation {
     }
 }
 
-function clearAnimation(): React.CSSProperties {
-    return {
-        animationName: "none",
-        animationDuration: "0ms",
-        animationTimingFunction: "none",
-    }
-}
+// function clearAnimation(): React.CSSProperties {
+//     return {
+//         animationName: "none",
+//         animationDuration: "0ms",
+//         animationTimingFunction: "none",
+//     }
+// }
 
 function createMotionStyle(name: MotionName, distance: MotionDistance = 10): Animation  {
     switch (name) {
@@ -107,7 +107,7 @@ export function useMotion(visible: boolean, { appear, appearDistance = 20,  disa
                 setShouldRender(false);
             }
         }
-    }, [visible, appear, disappear]);
+    }, [visible, appear, disappear, appearDistance, disappearDistance]);
   
     return {
         shouldRender,

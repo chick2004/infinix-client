@@ -27,7 +27,7 @@ export default function ConversationListCard({ style, className, ref }: Conversa
     const { shouldRender, animationStyle } = useMotion(isShowCreateConversationModal, { appear: MotionName.SCALE_UP_IN, disappear: MotionName.SCALE_DOWN_OUT });
 
     const { user } = useAuth();
-    const conversationsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user.id + "/conversations";
+    const conversationsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user?.id + "/conversations";
     const queryConversations = async () => {
         const response = await fetch(conversationsQueryUrl, requestInit("GET"));
         if (!response.ok) {

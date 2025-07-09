@@ -19,7 +19,7 @@ export default function GroupListCard({ style, className, ref }: GroupListCardPr
     );
 
     const { user } = useAuth();
-    const groupsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user.id + "/group-conversations"; // Replace "1" with the actual user ID
+    const groupsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user?.id + "/group-conversations"; // Replace "1" with the actual user ID
     const queryGroups = async () => {
         const response = await fetch(groupsQueryUrl, requestInit("GET"));
         if (!response.ok) {

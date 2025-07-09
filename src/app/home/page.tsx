@@ -60,7 +60,8 @@ export default function Page() {
     });
 
     useEffect(() => {
-        const [lastItem] = [...virtualizer.getVirtualItems()].reverse();
+        const virtualItems = virtualizer.getVirtualItems();
+        const [lastItem] = [...virtualItems].reverse();
 
         if (!lastItem) {
             return;
@@ -69,7 +70,7 @@ export default function Page() {
         if (lastItem.index >= allPosts.length - 1 && postQuery.hasNextPage && !postQuery.isFetchingNextPage) {
             postQuery.fetchNextPage();
         }
-    }, [postQuery.hasNextPage, postQuery.fetchNextPage, postQuery.isFetchingNextPage, allPosts.length, virtualizer.getVirtualItems()]);
+    }, [postQuery, allPosts, virtualizer]);
 
     useEffect(() => {
         if (!parentRef.current) return;
@@ -92,7 +93,7 @@ export default function Page() {
         }
     }, [allPosts.length, virtualizer]);
 
-    const friendRequestsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user.id + "/friend-requests";
+    const friendRequestsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user?.id + "/friend-requests";
     const queryFriendRequests = async () => {
         const response = await fetch(friendRequestsQueryUrl, requestInit("GET"));
         if (!response.ok) {

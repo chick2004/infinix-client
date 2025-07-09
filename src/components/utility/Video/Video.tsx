@@ -31,7 +31,7 @@ export default function Video({ style, className, ref, src, controls = true, aut
             }).catch((error) => {
                 console.error('Error fetching video:', error);
             });
-    }, []);
+    }, [src]);
 
     useEffect(() => {
         const video = videoRef.current;
@@ -62,7 +62,7 @@ export default function Video({ style, className, ref, src, controls = true, aut
             video.removeEventListener('timeupdate', updateProgress);
             video.removeEventListener('ended', handleEnded);
         };
-    }, [videoUrl]);
+    }, [videoUrl, volume]);
 
     const handleVolumeChange = (val: number) => {
         setVolume(val);

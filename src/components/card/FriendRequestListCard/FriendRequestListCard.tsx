@@ -7,6 +7,7 @@ import { requestInit } from "@/lib";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, Text, Button, Icon, Spinner } from "@/components";
 import { useAuth } from "@/hooks";
+import { ApiResponse, FriendRequest } from "@/types";
 import FriendRequestListCardProps from "./FriendRequestListCard.types";
 import styles from "./FriendRequestListCard.module.scss";
 
@@ -18,7 +19,7 @@ export default function FriendRequestListCard({ style, className, ref, friend_re
     );
 
     const { user } = useAuth();
-    const friendRequestsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user.id + "/friend-requests";
+    const friendRequestsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user?.id + "/friend-requests";
     const queryClient = useQueryClient();
 
     const mutateAcceptFriendRequest = async (friend_request_id: number) => {
@@ -33,11 +34,11 @@ export default function FriendRequestListCard({ style, className, ref, friend_re
     const acceptFriendRequestMutation = useMutation({
         mutationFn: mutateAcceptFriendRequest,
         onSuccess: (_, id) => {
-            queryClient.setQueryData([friendRequestsQueryUrl], (oldData: any) => {
+            queryClient.setQueryData([friendRequestsQueryUrl], (oldData: ApiResponse<FriendRequest[]>) => {
                 if (!oldData) return oldData;
                 return {
                     ...oldData,
-                    data: oldData.data.filter((request: any) => request.id !== id)
+                    data: oldData.data.filter((request: FriendRequest) => request.id !== id)
                 };
             });
         },
@@ -55,11 +56,11 @@ export default function FriendRequestListCard({ style, className, ref, friend_re
     const rejectFriendRequestMutation = useMutation({
         mutationFn: mutateRejectFriendRequest,
         onSuccess: (_, id) => {
-            queryClient.setQueryData([friendRequestsQueryUrl], (oldData: any) => {
+            queryClient.setQueryData([friendRequestsQueryUrl], (oldData: ApiResponse<FriendRequest[]>) => {
                 if (!oldData) return oldData;
                 return {
                     ...oldData,
-                    data: oldData.data.filter((request: any) => request.id !== id)
+                    data: oldData.data.filter((request: FriendRequest) => request.id !== id)
                 };
             });
         }

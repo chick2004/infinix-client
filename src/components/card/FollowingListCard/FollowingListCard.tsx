@@ -20,7 +20,7 @@ export default function FollowingListCard({ style, className, ref }: FollowingLi
     );
 
     const { user } = useAuth();
-    const usersQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user.id + "/following";
+    const usersQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user?.id + "/following";
     const queryUsers = async () => {
         const response = await fetch(usersQueryUrl, requestInit("GET"));
         if (!response.ok) {

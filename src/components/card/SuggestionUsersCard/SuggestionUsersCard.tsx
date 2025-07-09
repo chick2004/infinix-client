@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
-
+import type { User } from "@/types";
 import { Button, Skeleton, Layer, Spinner } from "@/components";
 import { requestInit } from "@/lib";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -34,7 +34,7 @@ export default function SuggestionUsersCard({ style, className, ref }: Suggestio
         staleTime: 1000 * 60 * 5,
     });
 
-    const mutateFollow = async (user_id: string) => {
+    const mutateFollow = async (user_id: number) => {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/users/" + user_id + "/follow", requestInit("POST"));
         if (!response.ok) {
             throw new Error("Failed to follow user");
@@ -64,7 +64,7 @@ export default function SuggestionUsersCard({ style, className, ref }: Suggestio
                         <Skeleton animation={"pulse"} style={{width: "100%", height: "60px", borderRadius: "4px"}}></Skeleton>
                     </>
                 ) : (
-                    Array.isArray(usersQuery.data?.data) ? usersQuery.data.data : []).slice(0, 3).map((user: any) => {
+                    Array.isArray(usersQuery.data?.data) ? usersQuery.data.data : []).slice(0, 3).map((user: User) => {
                         return (
                             <Link href={""} key={user.id} className={styles.user}>
                                 <div className={styles.user_image}>

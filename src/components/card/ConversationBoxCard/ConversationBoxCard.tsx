@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import type { Message, MessageGroup } from "@/types";
 import { requestInit } from "@/lib";
@@ -39,7 +39,7 @@ export default function ConversationBoxCard({ style, className, ref, conversatio
     });
 
     const [groupedMessages, setGroupedMessages] = useState<Array<MessageGroup>>([]);
-    const groupMessagesBySender = (messages: Array<Message>) => {
+    const groupMessagesBySender = useCallback((messages: Array<Message>) => {
         const grouped = [];
         const TIME_LIMIT = 5 * 60 * 1000;
         let currentGroup: MessageGroup | null = null;
@@ -52,7 +52,7 @@ export default function ConversationBoxCard({ style, className, ref, conversatio
             const isTimeExceeded = prevMessage && (new Date(message.created_at.replace(" ", "T")).getTime() - new Date(prevMessage.created_at.replace(" ", "T")).getTime()) > TIME_LIMIT;
 
             if (!currentGroup || isDifferentSender || isTimeExceeded) {
-                currentGroup = { avatar: message.user.profile.profile_photo || "/images/avatar.png", user_displayname: message.user.profile.display_name, user_id: message.user.id, messages: [], time: new Date(message.created_at.replace(" ", "T")), is_own: message.user.id == user.id };
+                currentGroup = { avatar: message.user.profile.profile_photo || "/images/avatar.png", user_displayname: message.user.profile.display_name, user_id: message.user.id, messages: [], time: new Date(message.created_at.replace(" ", "T")), is_own: message.user.id == user?.id };
                 grouped.push(currentGroup);
             }
 
@@ -60,14 +60,14 @@ export default function ConversationBoxCard({ style, className, ref, conversatio
         }
 
         return grouped;
-    };
+    }, [user?.id]);
 
     useEffect(() => {
         if (messagesQuery.data) {
             const groupedMessages = groupMessagesBySender(messagesQuery.data.data);
             setGroupedMessages(groupedMessages);
         }
-    }, [messagesQuery.data]);
+    }, [messagesQuery.data, groupMessagesBySender]);
     const [replyingMessage, setReplyingMessage] = useState<Message | null>(null);
     const [edittingMessage, setEdittingMessage] = useState<Message | null>(null);
     

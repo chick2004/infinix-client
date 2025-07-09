@@ -26,7 +26,44 @@ export default function CreateCommentCard({ style, className, ref, post_id, edit
         setIsOpenEmojiPickerCard(false);
     });
 
-    const mutateCreateComment = async (payload: any) => {
+    const initialState = {
+        content: "",
+        post_id: post_id,
+        reply_to_comment_id: undefined as number | undefined,
+        media:  {} as { file: File | undefined, type: string, url: string } | undefined,
+        remove_media: false as boolean | undefined,
+    }
+
+    type Action = 
+        | { type: "SET_CONTENT"; payload: string }
+        | { type: "SET_REPLY_TO_COMMENT_ID"; payload?: number }
+        | { type: "SET_MEDIA"; payload?: { file: File | undefined, type: string, url: string } }
+        | { type: "REMOVE_MEDIA" }
+        | { type: "CLEAR" }
+        | { type: "SET_ALL"; payload: typeof initialState };
+
+    const reducer = (state: typeof initialState, action: Action) => {
+        switch (action.type) {
+            case "SET_CONTENT":
+                return { ...state, content: action.payload };
+            case "SET_REPLY_TO_COMMENT_ID":
+                return { ...state, reply_to_comment_id: action.payload };
+            case "SET_MEDIA":
+                return { ...state, media: action.payload, remove_media: false };
+            case "REMOVE_MEDIA":
+                return { ...state, media: undefined, remove_media: true };
+            case "CLEAR":
+                return { ...initialState };
+            case "SET_ALL":
+                return { ...state, ...action.payload };
+            default:
+                return state;
+        }
+    }
+
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+    const mutateCreateComment = async (payload: { content: string, post_id: number, reply_to_comment_id: number | undefined, media: File | undefined, remove_media: boolean | undefined}) => {
         const response = await fetch(editting_comment ? process.env.NEXT_PUBLIC_API_URL + "/comments/" + editting_comment.id : process.env.NEXT_PUBLIC_API_URL + "/posts/" + post_id + "/comments", requestInit(editting_comment ? "PUT" : "POST", payload));
         if (!response.ok) {
             throw new Error("Failed to create comment");
@@ -49,35 +86,6 @@ export default function CreateCommentCard({ style, className, ref, post_id, edit
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-    const initialState = {
-        content: "",
-        post_id: post_id,
-        reply_to_comment_id: undefined,
-        media:  {} as { file: File, type: string, url: string },
-        remove_media: false as boolean | undefined,
-    }
-
-    const reducer = (state: typeof initialState, action: any) => {
-        switch (action.type) {
-            case "SET_CONTENT":
-                return { ...state, content: action.payload };
-            case "SET_REPLY_TO_COMMENT_ID":
-                return { ...state, reply_to_comment_id: action.payload };
-            case "SET_MEDIA":
-                return { ...state, media: action.payload, remove_media: false };
-            case "REMOVE_MEDIA":
-                return { ...state, media: {}, remove_media: true };
-            case "CLEAR":
-                return { ...initialState };
-            case "SET_ALL":
-                return { ...state, ...action.payload };
-            default:
-                return state;
-        }
-    }
-
-    const [state, dispatch] = useReducer(reducer, initialState);
-
     const handleSubmit = () => {
         if (state.content.trim() === "" && state.media) {
             return;
@@ -86,7 +94,7 @@ export default function CreateCommentCard({ style, className, ref, post_id, edit
         if (payload.remove_media === false) {
             delete payload.remove_media;
         }
-        createCommentMutation.mutate({ ...payload, media: state.media ? [state.media.file] : [] });
+        createCommentMutation.mutate({ ...payload, media: state.media ? state.media.file : undefined });
     }
 
     useEffect(() => {
@@ -94,9 +102,12 @@ export default function CreateCommentCard({ style, className, ref, post_id, edit
             dispatch({
                 type: "SET_ALL",
                 payload: {
-                    content: editting_comment.content,
+                    content: editting_comment.content || "",
                     post_id: editting_comment.post_id,
-                    media: editting_comment.media ? { file: undefined, type: editting_comment.media.type, url: process.env.NEXT_PUBLIC_API_URL + "/media" + editting_comment.media.path } : {},                }
+                    media: editting_comment.media ? { file: undefined, type: editting_comment.media.type, url: process.env.NEXT_PUBLIC_API_URL + "/media" + editting_comment.media.path } : undefined,
+                    reply_to_comment_id: editting_comment.reply_to_comment_id,
+                    remove_media: false,
+                }
             });
         }
     }, [editting_comment]);
@@ -109,7 +120,7 @@ export default function CreateCommentCard({ style, className, ref, post_id, edit
     return (
         <div className={root} style={style} ref={ref}>
             <div className={styles.media_list}>
-                {state.media.url && (
+                {state.media?.url && (
                     <div className={styles.media_item}>
                         <Image src={state.media.url} alt={"media"} width={75} height={75} style={{objectFit: "cover"}} />
                         <button onClick={() => dispatch({type: "REMOVE_MEDIA"})}>
@@ -155,7 +166,7 @@ export default function CreateCommentCard({ style, className, ref, post_id, edit
                         </>
                     ) : (
                         <>
-                            <Button onClick={() => { dispatch({ type: "CLEAR" }); onEndEdit}}>
+                            <Button onClick={() => { dispatch({ type: "CLEAR" }); onEndEdit?.()}}>
                                 Cancel
                             </Button>
                             <Button appearance={"accent"} onClick={handleSubmit}>

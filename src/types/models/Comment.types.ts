@@ -4,11 +4,13 @@ export default interface Comment {
 
     id: number;
 
-    post_id: string;
+    post_id: number;
 
     content?: string;
 
     user: User;
 
-    media?: CommentMedia
+    media?: CommentMedia;
+
+    reply_to_comment_id?: number;
 }

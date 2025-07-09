@@ -31,13 +31,7 @@ export default function CreateMessageCard({ style, className, ref, conversation_
         reply_to_message_id: reply_to ? reply_to.id : null,
     }
 
-    type Action =
-        | { type: "SET_CONTENT"; payload: string }
-        | { type: "ADD_MEDIA"; payload: { file: File; url: string } }
-        | { type: "REMOVE_MEDIA"; payload: number }
-        | { type: "CLEAR" }
-        | { type: "SET_REPLY_TO_MESSAGE_ID"; payload: number | null };
-
+    type Action = { type: "SET_CONTENT"; payload: string } | { type: "ADD_MEDIA"; payload: { file: File; url: string } } | { type: "REMOVE_MEDIA"; payload: number } | { type: "CLEAR" } | { type: "SET_REPLY_TO_MESSAGE_ID"; payload: number | null };
     const reducer = (state: typeof initialState, action: Action) => {
         switch (action.type) {
             case "SET_CONTENT":

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { requestInit } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
 import { Video, Button, Icon, Carousel, Skeleton, Surface, Layer, Text } from "@/components"
-
+import type { Comment } from "@/types";
 import DetailPostCardProps from "./DetailPostCard.types";
 import styles from "./DetailPostCard.module.scss";
 import CommentCard from "../CommentCard/CommentCard";
@@ -21,12 +21,12 @@ export default function DetailPostCard({ style, className, ref, post, handleClos
         }
     );
 
-    const [edittingComment, setEditingComment] = useState<any>(null);
-    const handleStartEditComment = (comment: any) => {
+    const [edittingComment, setEditingComment] = useState<undefined | Comment>(undefined);
+    const handleStartEditComment = (comment: Comment) => {
         setEditingComment(comment);
     }
     const handleCloseEditComment = () => {
-        setEditingComment(null);
+        setEditingComment(undefined);
     }
 
     const commentsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/posts/" + post.id + "/comments";    
@@ -115,7 +115,7 @@ export default function DetailPostCard({ style, className, ref, post, handleClos
                         </>
                     )}
                     {Array.isArray(commentsQuery.data?.data) && commentsQuery.data.data.length > 0 && (
-                        commentsQuery.data.data.map((comment: any) => (
+                        commentsQuery.data.data.map((comment: Comment) => (
                             <CommentCard comment={comment} key={comment.id} onStartEdit={handleStartEditComment}></CommentCard>
                         ))
                     )}
