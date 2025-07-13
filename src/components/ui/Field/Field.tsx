@@ -24,7 +24,7 @@ export default function Field({ style, className, ref, label, validation_state =
     );
 
     return (
-        <div style={style}  className={root} ref={ref}>
+        <div style={style} className={root} ref={ref}>
             {label && <label className={styles.label} htmlFor={id}>{label}</label>}
             {children && React.isValidElement(children) && React.cloneElement(children, { id } as React.Attributes)}
             {validation_message && (

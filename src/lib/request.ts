@@ -15,7 +15,7 @@ export const objectToFormData = (obj: Payload, formData: FormData = new FormData
                     objectToFormData({ [`${index}`]: item }, formData, fullKey);
                 });
             } else if (typeof value === 'object' && value !== null) {
-                objectToFormData(value as Record<string, Payload>, formData, fullKey);
+                objectToFormData(value as Payload, formData, fullKey);
             } else if (value !== undefined && value !== null && value !== '') {
                 formData.append(fullKey, String(value));
             }

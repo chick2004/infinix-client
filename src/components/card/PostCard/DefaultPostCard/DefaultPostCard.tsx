@@ -6,7 +6,8 @@ import Link from "next/link";
 import { useState, useRef, memo } from "react";
 import { requestInit } from "@/lib";
 import { useMutation } from "@tanstack/react-query";
-import { Icon, Button, MediaBox, Layer, Flyout, Spinner} from "@/components";
+import { Icon, Button, Layer, Flyout, Spinner} from "@/components";
+import MediaBox from "./../MediaBox/MediaBox";
 import { useClickOutside, useMotion, MotionName } from "@/hooks";
 
 import DefaultPostCardProps from "./DefaultPostCard.types";

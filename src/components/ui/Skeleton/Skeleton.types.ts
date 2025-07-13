@@ -8,4 +8,6 @@ export default interface SkeletonProps {
 
     className?: string;
 
+    ref?: React.Ref<HTMLDivElement>;
+
 }

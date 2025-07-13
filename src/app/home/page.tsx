@@ -6,11 +6,9 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { useAuth } from "@/hooks";
 import ClientLayout from "@/layouts/ClientLayout/ClientLayout";
-
-import { Skeleton, TrendingTagsCard, SuggestionUsersCard, CreatePostCard, FriendRequestListCard, PostCard, FriendListCard, GroupListCard, FollowingListCard } from "@/components";
-
-
+import { Skeleton, Spinner, TrendingTagsCard, SuggestionUsersCard, CreatePostCard, FriendRequestListCard, PostCard, FriendListCard, GroupListCard, FollowingListCard } from "@/components";
 import styles from "./page.module.css";
+import { useCallback } from "react";
 
 export default function Page() {
 
@@ -40,58 +38,83 @@ export default function Page() {
         return postQuery.data?.pages.flatMap(page => page.data) ?? [];
     }, [postQuery.data]);
 
+
+    // const virtualizer = useVirtualizer({
+    //     count: allPosts.length + (postQuery.hasNextPage ? 1 : 0),
+    //     getScrollElement: () => parentRef.current,
+    //     estimateSize: () => 160,
+    //     measureElement: (el) => {
+    //         if (!el) return 160;
+    //         return ((el as HTMLElement).offsetHeight || el.getBoundingClientRect().height || 150) + 10;
+    //     },
+    //     overscan: 5,
+    // });
+
+    // useEffect(() => {
+    //     const virtualItems = virtualizer.getVirtualItems();
+    //     const [lastItem] = [...virtualItems].reverse();
+
+    //     if (!lastItem) {
+    //         return;
+    //     }
+
+    //     if (lastItem.index >= allPosts.length - 1 && postQuery.hasNextPage && !postQuery.isFetchingNextPage) {
+    //         postQuery.fetchNextPage();
+    //     }
+    // }, [postQuery, allPosts, virtualizer]);
+
+    // useEffect(() => {
+    //     if (!parentRef.current) return;
+
+    //     const resizeObserver = new ResizeObserver(() => {
+    //         virtualizer.measure();
+    //     });
+
+    //     const virtualItems = parentRef.current.querySelectorAll('[data-index]');
+    //     virtualItems.forEach(item => resizeObserver.observe(item));
+
+    //     return () => {
+    //         resizeObserver.disconnect();
+    //     };
+    // }, [virtualizer, allPosts.length]);
+
+    // useEffect(() => {
+    //     if (allPosts.length > 0) {
+    //         virtualizer.measure();
+    //     }
+    // }, [allPosts.length, virtualizer]);
+
     const parentRef = useRef<HTMLDivElement>(null);
+    const loaderRef = useRef<HTMLDivElement | null>(null);
 
-    const virtualizer = useVirtualizer({
-        count: allPosts.length + (postQuery.hasNextPage ? 1 : 0),
-        getScrollElement: () => parentRef.current,
-        estimateSize: () => 160,
-        measureElement: (el) => {
-            if (!el) return 160;
-            const rect = el.getBoundingClientRect();
-            if (el instanceof HTMLElement) {
-                const height = el.offsetHeight || rect.height || 150;
-                const totalHeight = height + 10;
-                return totalHeight;
+    const handleObserver = useCallback(
+        (entries: IntersectionObserverEntry[]) => {
+            const target = entries[0];
+            if (
+                target.isIntersecting &&
+                postQuery.hasNextPage &&
+                !postQuery.isFetchingNextPage
+            ) {
+                postQuery.fetchNextPage();
             }
-            return (rect.height || 150) + 10;
         },
-        overscan: 5,
-    });
+        [postQuery]
+    );
 
     useEffect(() => {
-        const virtualItems = virtualizer.getVirtualItems();
-        const [lastItem] = [...virtualItems].reverse();
-
-        if (!lastItem) {
-            return;
-        }
-
-        if (lastItem.index >= allPosts.length - 1 && postQuery.hasNextPage && !postQuery.isFetchingNextPage) {
-            postQuery.fetchNextPage();
-        }
-    }, [postQuery, allPosts, virtualizer]);
-
-    useEffect(() => {
-        if (!parentRef.current) return;
-
-        const resizeObserver = new ResizeObserver(() => {
-            virtualizer.measure();
-        });
-
-        const virtualItems = parentRef.current.querySelectorAll('[data-index]');
-        virtualItems.forEach(item => resizeObserver.observe(item));
+        const option = {
+            root: parentRef.current,
+            rootMargin: "0px",
+            threshold: 0.1,
+        };
+        const observer = new IntersectionObserver(handleObserver, option);
+        if (loaderRef.current) observer.observe(loaderRef.current);
 
         return () => {
-            resizeObserver.disconnect();
+            if (loaderRef.current) observer.unobserve(loaderRef.current);
+            observer.disconnect();
         };
-    }, [virtualizer, allPosts.length]);
-
-    useEffect(() => {
-        if (allPosts.length > 0) {
-            virtualizer.measure();
-        }
-    }, [allPosts.length, virtualizer]);
+    }, [handleObserver, allPosts.length]);
 
     const friendRequestsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user?.id + "/friend-requests";
     const queryFriendRequests = async () => {
@@ -125,24 +148,32 @@ export default function Page() {
                             <Skeleton animation={"pulse"} style={{width: "100%", height: "128px", borderRadius: "4px"}}></Skeleton>
                         </>
                     ) : (
-                        <div style={{ height: `${virtualizer.getTotalSize()}px`, width: '100%', position: 'relative' }}>
-                            {virtualizer.getVirtualItems().map((virtualItem) => {
-                                const isLoaderRow = virtualItem.index > allPosts.length - 1;
-                                const post = allPosts[virtualItem.index];
+                        // <div style={{ height: `${virtualizer.getTotalSize()}px`, width: '100%', position: 'relative' }}>
+                        //     {virtualizer.getVirtualItems().map((virtualItem) => {
+                        //         const isLoaderRow = virtualItem.index > allPosts.length - 1;
+                        //         const post = allPosts[virtualItem.index];
 
-                                return (
-                                    <div key={virtualItem.index} data-index={virtualItem.index} ref={(node) => virtualizer.measureElement(node)} style={{ position: 'absolute', top: 0, left: 0, width: '100%', transform: `translateY(${virtualItem.start}px)`, marginBottom: '10px' }}>
-                                        {isLoaderRow ? (
-                                            postQuery.hasNextPage ? (
-                                                <Skeleton animation={"pulse"} style={{ width: "100%", height: "128px", borderRadius: "4px" }} />
-                                            ) : null
-                                        ) : (
-                                            <PostCard post={post} />
-                                        )}
-                                    </div>
-                                );
-                            })}
-                        </div>
+                        //         return (
+                        //             <div key={virtualItem.index} data-index={virtualItem.index} ref={(node) => virtualizer.measureElement(node)} style={{ position: 'absolute', top: 0, left: 0, width: '100%', transform: `translateY(${virtualItem.start}px)`, marginBottom: '10px' }}>
+                        //                 {isLoaderRow ? (
+                        //                     postQuery.hasNextPage ? (
+                        //                         <Skeleton animation={"pulse"} style={{ width: "100%", height: "128px", borderRadius: "4px" }} />
+                        //                     ) : null
+                        //                 ) : (
+                        //                     <PostCard post={post} />
+                        //                 )}
+                        //             </div>
+                        //         );
+                        //     })}
+                        // </div>
+                        <>
+                            {allPosts.map((post, index) => (
+                                <PostCard key={index} post={post} />
+                            ))}
+                            {postQuery.hasNextPage && (
+                                <Spinner ref={loaderRef} style={{margin: "20px auto"}}></Spinner>
+                            )}
+                        </>
                     )}
                 </div>
                 <div className={styles.right}>

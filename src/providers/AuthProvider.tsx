@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
 
     useEffect(() => {
         cookieMutation.mutate();
-    }, [cookieMutation]);
+    }, []);
 
     if (!user && !["/login", "/register"].includes(pathname)) {
         return (

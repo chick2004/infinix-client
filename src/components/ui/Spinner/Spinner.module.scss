@@ -1,4 +1,4 @@
-.spinner {
+.root {
     position: relative;
 }
 
@@ -40,7 +40,7 @@
     }
 }
 
-.spinner {
+.root {
     animation: spin 1.3s cubic-bezier(.53,.21,.29,.67) infinite;
 }
 

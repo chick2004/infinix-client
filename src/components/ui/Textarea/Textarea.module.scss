@@ -1,4 +1,4 @@
-.component {
+.root {
     height: fit-content;
     border-radius: 4px;
     display: flex;
@@ -16,26 +16,26 @@
     position: relative;
 }
 
-.component:hover {
+.root:hover {
     background-color: var(--control-hover);
 }
 
-.component:focus-within{
+.root:focus-within{
     background-color: var(--control-input-active);
     border-bottom: 1px inset var(--accent-default);
 }
 
-.component.disabled {
+.root.disabled {
     background-color: var(--control-disabled);
     border: 1px inset var(--control-stroke-default);
     color: var(--text-disabled);
 }
 
-.component.disabled > textarea {
+.root.disabled > textarea {
     color: var(--text-disabled);
 }
 
-.component > textarea {
+.root > textarea {
     width: 100%;
     border: unset;
     outline: unset;

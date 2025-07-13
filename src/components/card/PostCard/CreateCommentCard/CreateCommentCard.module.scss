@@ -8,25 +8,25 @@
     height: fit-content;
 }
 
-.comment_input textarea {
+.root textarea {
     max-height: 200px;
 }
 
-.comment_input > * {
+.root > * {
     width: 100%;
 }
 
-.comment_input .buttons {
+.root .buttons {
     display: flex;
     gap: 5px;
     justify-content: space-between;
 }
 
-.comment_input .buttons .button_left {
+.root .buttons .button_left {
     display: flex;
 }
 
-.comment_input > :last-child {
+.root > :last-child {
     width: 100%;
 }
 

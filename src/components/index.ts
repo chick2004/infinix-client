@@ -26,10 +26,7 @@ export { default as FollowingListCard } from './card/FollowingListCard/Following
 export { default as FriendListCard } from './card/FriendListCard/FriendListCard';
 export { default as GroupListCard } from './card/GroupListCard/GroupListCard';
 export { default as FriendRequestListCard } from './card/FriendRequestListCard/FriendRequestListCard';
-export { default as MediaBox } from './card/MediaBox/MediaBox';
 export { default as LoadingPage } from './card/LoadingPage/LoadingPage';
-export { default as MessageCard } from './card/MessageCard/MessageCard';
-export { default as MessageGroupCard } from './card/MessageGroupCard/MessageGroupCard';
 export { default as NotificationsCard } from './card/NotificationsCard/NotificationsCard';
 export { default as PostCard } from './card/PostCard/PostCard';
 export { default as ProfileCard } from './card/ProfileCard/ProfileCard';

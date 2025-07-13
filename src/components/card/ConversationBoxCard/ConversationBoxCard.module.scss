@@ -42,14 +42,24 @@
         height: 100%;
         overflow: scroll;
         padding: 20px 20px 120px 20px;
+        display: flex;
+        flex-direction: column-reverse;
+        min-height: 0px;
+        gap: 20px;
+
         //padding: 20px;
 
         .group_and_time {
+            display: flex;
+            flex-direction: column;
+            justify-self: center;
+            align-items: center;
+            gap: 20px;
 
             .time_label {
-                margin-bottom: 20px;
                 display: flex;
                 justify-self: center;
+                align-items: center;
                 padding: 2px 4px;
                 border: 1px inset var(--subtle-secondary);
                 background-color: var(--subtle-secondary);
@@ -58,7 +68,6 @@
             }
 
             .message_group {
-                margin-bottom: 20px;
             }
         }
     }

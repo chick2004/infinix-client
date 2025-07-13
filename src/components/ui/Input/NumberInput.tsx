@@ -1,15 +1,12 @@
 "use client";
 
+import clsx from "clsx";
 import { useState } from "react";
-
 import { Icon } from "@/components";
-
 import InputProps from "./Input.types";
 import styles from "./Input.module.scss";
 
-export function NumberInput(props: InputProps) {
-
-    const { style, className, name, value = "", disabled = false, placeholder = "", onChange, min, max, step = 1 } = props;
+export function NumberInput({ style, className, ref, name, value = "", disabled = false, placeholder = "", onChange, min, max, step = 1 }: InputProps) {
     
     const [internalValue, setInternalValue] = useState<number>(value === "" ? 0 : Number(value));
 
@@ -20,12 +17,14 @@ export function NumberInput(props: InputProps) {
     }
 
     const handleChange =(e: React.ChangeEvent<HTMLInputElement>) => {
+        if (disabled) return;
         const newValue = clamp(Number(e.target.value));
         setInternalValue(newValue);
         onChange?.(String(newValue));
     }
 
     const handleIncrement = () => {
+        if (disabled) return;
         setInternalValue((prev) => {
             const newValue = clamp(prev + step);
             onChange?.(String(newValue));
@@ -34,6 +33,7 @@ export function NumberInput(props: InputProps) {
     }
 
     const handleDecrement = () => {
+        if (disabled) return;
         setInternalValue((prev) => {
             const newValue = clamp(prev - step);
             onChange?.(String(newValue));
@@ -41,8 +41,16 @@ export function NumberInput(props: InputProps) {
         });
     }
 
+    const root = clsx(
+        styles.root,
+        className,
+        {
+            [styles.disabled]: disabled
+        }
+    );
+
     return (
-        <div style={style} className={`${styles.input_group} ${className} ${disabled ? styles.disabled : ""}`}>
+        <div style={style} className={root} ref={ref}>
             <input type="number" value={internalValue} name={name} disabled={disabled} placeholder={placeholder} onChange={handleChange}
             />
             <button type="button" className={styles.input_button} onClick={handleIncrement}>

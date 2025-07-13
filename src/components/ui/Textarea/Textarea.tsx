@@ -1,13 +1,12 @@
 "use client";
 
+import clsx from "clsx";
 import { useState, useRef, useEffect } from "react";
 
 import TextareaProps from "./Textarea.types";
 import styles from "./Textarea.module.scss";
 
-export default function Textarea(props: TextareaProps) {
-
-    const { value = "", rows, placeholder, disabled = false, style, onChange } = props;
+export default function Textarea({ style, className, ref, value = "", rows, placeholder, disabled = false, onChange }: TextareaProps) {
 
     const [internalValue, setInternalValue] = useState(value);
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -32,9 +31,17 @@ export default function Textarea(props: TextareaProps) {
             textareaRef.current.style.height = textareaRef.current.scrollHeight + "px";
         }
     }, []);
+
+    const root  = clsx(
+        styles.root,
+        className,
+        {
+            [styles.disabled]: disabled
+        }
+    )
     
     return (
-        <div style={style} className={`${styles.component} ${props.className} ${disabled ? styles.disabled : ""}`}>
+        <div style={style} className={root}>
             <textarea className={styles.textarea} value={internalValue} rows={rows} onChange={handleChange} ref={textareaRef} spellCheck={false} disabled={disabled} placeholder={placeholder}></textarea>
         </div>
     )

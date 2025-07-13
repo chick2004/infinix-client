@@ -1,7 +1,8 @@
 import Image from "next/image";
 
 import clsx from "clsx";
-import { MessageCard, Text } from "@/components";
+import { Text } from "@/components";
+import MessageCard from "./../MessageCard/MessageCard";
 
 import MessageGroupCardProps from "./MessageGroupCard.types";
 import styles from "./MessageGroupCard.module.scss";

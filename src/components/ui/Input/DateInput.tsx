@@ -1,47 +1,37 @@
 "use client";
 
+import clsx from "clsx";
 import { useState, useEffect } from "react";
-
 import { Icon, Button } from "@/components";
 import { useMotion, MotionName } from "@/hooks";
-
 import InputProps from "./Input.types";
 import styles from "./Input.module.scss";
 
-const getDaysInMonth = (year: number, month: number) =>{
-    const date = new Date(year, month + 1, 0);
-    return date.getDate();
-}
-
-export function DateInput(props: InputProps) {
-
-    const { style, className, name, value = "", disabled = false, placeholder, onChange } = props;
+export function DateInput({ style, className, ref, name, value, disabled = false, placeholder, onChange }: InputProps) {
 
     const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
     const { shouldRender, animationStyle } = useMotion(showDatePicker, { appear: MotionName.SLIDE_DOWN_IN, appearDistance: 10, disappear: MotionName.SLIDE_UP_OUT, disappearDistance: 10});
     
     const today = new Date();
 
-    const [internalValue, setInternalValue] = useState<Date>(() => {
-        const date = new Date(value);
-        return isNaN(date.getTime()) ? today : date;
+    const [internalValue, setInternalValue] = useState<Date | undefined>(() => {
+        if (!value) {
+            return undefined
+        }
+        return new Date(value);
     });
-    const [date, setDate] = useState<number>(internalValue.getDate());
-    const [month, setMonth] = useState<number>(internalValue.getMonth());
-    const [year, setYear] = useState<number>(internalValue.getFullYear());
 
-    const [viewingMonth, setViewingMonth] = useState<number>(month);
-    const [viewingYear, setViewingYear] = useState<number>(year);
+    const [viewingMonth, setViewingMonth] = useState<number>(internalValue != undefined ? internalValue.getMonth() : today.getMonth());
+    const [viewingYear, setViewingYear] = useState<number>(internalValue != undefined ? internalValue.getFullYear() : today.getFullYear());
 
     const monthList = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     useEffect(() => {
-        const newDate = new Date(year, month, date);
-        setInternalValue(newDate);
+        setInternalValue(internalValue);
         if (onChange) {
-            onChange(newDate.toISOString());
+            onChange(internalValue?.toISOString() || "");
         }
-    }, [date, month, year, onChange]);
+    }, [internalValue, onChange]);
 
     const handleMonthChange = (action: "increment" | "decrement") => {
         if (action === "increment") {
@@ -52,7 +42,7 @@ export function DateInput(props: InputProps) {
                 setViewingMonth(viewingMonth + 1);
             }
         } else {
-            if (month === 0) {
+            if (viewingMonth === 0) {
                 setViewingMonth(11);
                 setViewingYear(viewingYear - 1);
             } else {
@@ -69,33 +59,52 @@ export function DateInput(props: InputProps) {
         }
     }
 
+    const handleClear = () => {
+        setInternalValue(undefined);
+        setViewingMonth(today.getMonth());
+        setViewingYear(today.getFullYear());
+        if (onChange) {
+            onChange("");
+        }
+    }
+
     const goToToday = () => {
         setViewingMonth(today.getMonth());
         setViewingYear(today.getFullYear());
     }
 
     const isSelectedDate = (_date: number) => {
-        return viewingYear === year && viewingMonth === month && _date === date;
+        return viewingYear === internalValue?.getFullYear() && viewingMonth === internalValue.getMonth() && _date === internalValue.getDate();
     }
 
     const isToday = (_date: number) => {
         return viewingYear === today.getFullYear() && viewingMonth === today.getMonth() && _date === today.getDate();
     }
 
+    const getDaysInMonth = (year: number, month: number) =>{
+        const date = new Date(year, month + 1, 0);
+        return date.getDate();
+    }
 
     const startDateIndex = new Date(viewingYear, viewingMonth, 1).getDay();
 
+    const root = clsx(
+        styles.root,
+        className,
+        styles.input_date,
+        { [styles.disabled]: disabled }
+    )
+
     return (
         <div>
-            <div style={style} className={`${styles.input_group} ${className} ${styles.input_date} ${disabled ? styles.disabled : ""}`} onClick={() => setShowDatePicker(!showDatePicker)}>
-                <input type="text" readOnly value={internalValue.toLocaleDateString("en-ES", {weekday: "short", year: "numeric", month: "short", day: "numeric"})} name={name} disabled={disabled} placeholder={placeholder}/>
+            <div style={style} className={root} ref={ref} onClick={() => setShowDatePicker(!showDatePicker)}>
+                <input type="text" readOnly value={internalValue?.toLocaleDateString("en-ES", {weekday: "short", year: "numeric", month: "short", day: "numeric"}) || ""} name={name} disabled={disabled} placeholder={placeholder}/>
                 <button type="button" className={styles.input_button}>
                     <Icon name="calendar" size={16} type="regular" />
                 </button>
             </div>
-            <div style={animationStyle}>
                 {shouldRender && (
-                    <div className={styles.date_picker}>
+                    <div className={styles.date_picker} style={animationStyle}>
                         <div className={styles.date_content}>
                             <div className={styles.date_header}>
                                 <span className={styles.date_header_title}>{monthList[viewingMonth]} {viewingYear}</span>
@@ -117,7 +126,7 @@ export function DateInput(props: InputProps) {
                                         <span key={index} className={styles.empty_date}></span>
                                     ))}
                                     {Array.from({ length: getDaysInMonth(viewingYear, viewingMonth) }, (_, index) => (
-                                        <button key={index} className={`${styles.date} ${isSelectedDate(index + 1) ? styles.selected_date : ""} ${isToday(index + 1) ? styles.today : ""}`} onClick={() => {setDate(index + 1); setMonth(viewingMonth); setYear(viewingYear); setShowDatePicker(false)}}>{index + 1}</button>
+                                        <button key={index} className={`${styles.date} ${isSelectedDate(index + 1) ? styles.selected_date : ""} ${isToday(index + 1) ? styles.today : ""}`} onClick={() => {setInternalValue(new Date(viewingYear, viewingMonth, index + 1)); setShowDatePicker(false)}}>{index + 1}</button>
                                     ))}
                                 </div>
                             </div>
@@ -140,6 +149,9 @@ export function DateInput(props: InputProps) {
                                 ))}
                             </div>
                             <div className={styles.today_button}>
+                                <Button appearance="subtle" onClick={handleClear} disabled={!internalValue}>
+                                    Clear
+                                </Button>
                                 <Button appearance="subtle" onClick={goToToday} disabled={viewingMonth === today.getMonth() && viewingYear === today.getFullYear()}>
                                     Go to today
                                 </Button>
@@ -147,7 +159,6 @@ export function DateInput(props: InputProps) {
                         </div>
                     </div>
                 )}
-            </div>
         </div>
     );
 }

@@ -4,6 +4,8 @@ export default interface TextareaProps {
 
     className?: string;
 
+    ref?: React.Ref<HTMLTextAreaElement>;
+
     value?: string;
 
     placeholder?: string;

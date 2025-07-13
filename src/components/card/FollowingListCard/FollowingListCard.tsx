@@ -43,6 +43,12 @@ export default function FollowingListCard({ style, className, ref }: FollowingLi
         );
     }
 
+    if (usersQuery.data.data?.length == 0) {
+        return (
+            <></>
+        )
+    }
+
     return (
         <Layer stroke className={root} style={style} ref={ref}>
             <div className={styles.title_bar}>

@@ -2,12 +2,13 @@
 
 import clsx from "clsx";
 import Image from "next/image";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 
 import type { Message, MessageGroup } from "@/types";
 import { requestInit } from "@/lib";
-import { useQuery } from "@tanstack/react-query";
-import { Layer, Text, Button, Icon, Card, MessageGroupCard } from "@/components";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { Layer, Text, Button, Icon, Card, Spinner } from "@/components";
+import MessageGroupCard from "./MessageGroupCard/MessageGroupCard";
 import { useAuth } from "@/hooks";
 import CreateMessageCard from "./CreateMessageCard/CreateMessageCard";
 import ConversationBoxCardProps from "./ConversationBoxCard.types";
@@ -23,18 +24,26 @@ export default function ConversationBoxCard({ style, className, ref, conversatio
     const { user } = useAuth();
 
     const messagesQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/conversations/" + conversation.id + "/messages";
-    const queryMessages = async () => {
-        const response = await fetch(messagesQueryUrl, requestInit("GET"));
+    const queryMessages = async ({ pageParam = 1 }) => {
+        const response = await fetch(messagesQueryUrl + "?page=" + pageParam, requestInit("GET"));
         if (!response.ok) {
             throw new Error("Failed to fetch messages");
         }
         return response.json();
     };
-    const messagesQuery = useQuery({
+    const messagesQuery = useInfiniteQuery({
         queryKey: [messagesQueryUrl],
-        queryFn: queryMessages,
-        refetchOnWindowFocus: false,
-        retry: true,
+        queryFn: ({ pageParam }) => queryMessages({ pageParam }),
+        initialPageParam: 1,
+        getNextPageParam: (lastPage) => {
+            const nextPage = lastPage.meta.current_page + 1;
+            return nextPage <= lastPage.meta.last_page ? nextPage : undefined;
+        },
+        getPreviousPageParam: (firstPage) => {
+            const prevPage = firstPage.meta.current_page - 1;
+            return prevPage >= 1 ? prevPage : undefined;
+        },
+        gcTime: 1000 * 60 * 5,
         staleTime: 1000 * 60 * 5,
     });
 
@@ -62,12 +71,46 @@ export default function ConversationBoxCard({ style, className, ref, conversatio
         return grouped;
     }, [user?.id]);
 
+    const allMessages = useMemo(() => {
+        return messagesQuery.data?.pages.flatMap(page => page.data) ?? [];
+    }, [messagesQuery.data]);
+
     useEffect(() => {
         if (messagesQuery.data) {
-            const groupedMessages = groupMessagesBySender(messagesQuery.data.data);
+            const groupedMessages = groupMessagesBySender(allMessages);
             setGroupedMessages(groupedMessages);
         }
     }, [messagesQuery.data, groupMessagesBySender]);
+
+    const parentRef = useRef<HTMLDivElement>(null);
+    const loaderRef = useRef<HTMLDivElement | null>(null);
+
+    const handleObserver = useCallback(
+        (entries: IntersectionObserverEntry[]) => {
+            const target = entries[0];
+            if (target.isIntersecting && messagesQuery.hasNextPage && !messagesQuery.isFetchingNextPage) {
+                messagesQuery.fetchNextPage();
+            }
+        },
+        [messagesQuery]
+    );
+
+    useEffect(() => {
+        const option = {
+            root: parentRef.current,
+            rootMargin: "0px",
+            threshold: 0.1,
+        };
+        const observer = new IntersectionObserver(handleObserver, option);
+        if (loaderRef.current) observer.observe(loaderRef.current);
+
+        return () => {
+            if (loaderRef.current) observer.unobserve(loaderRef.current);
+            observer.disconnect();
+        };
+    }, [handleObserver, allMessages.length]);
+    
+
     const [replyingMessage, setReplyingMessage] = useState<Message | null>(null);
     const [edittingMessage, setEdittingMessage] = useState<Message | null>(null);
     
@@ -95,12 +138,12 @@ export default function ConversationBoxCard({ style, className, ref, conversatio
                 </div>
             </Card>
             <div className={styles.message_list_container}>
-                {groupedMessages.map((group, index) => {
+                {groupedMessages.length > 0 && groupedMessages.map((group, index) => {
                     const prevGroup = groupedMessages[index - 1];
                     const showTimeLabel = !prevGroup || (new Date(group.time).getTime() - new Date(prevGroup.time).getTime()) > 5 * 60 * 1000;
 
                     return (
-                        <div className={styles.group_and_time} key={index}>
+                        <div key={index} className={styles.group_and_time}>
                             {showTimeLabel && (
                                 <Text type="caption" color="secondary" className={styles.time_label}>
                                     {new Date(group.time).toLocaleString([], { hour: "2-digit", minute: "2-digit" })}
@@ -110,6 +153,9 @@ export default function ConversationBoxCard({ style, className, ref, conversatio
                         </div>
                     );
                 })}
+                {messagesQuery.hasNextPage && (
+                    <Spinner ref={loaderRef} style={{margin: "20px auto"}}></Spinner>
+                )}
             </div>
             <CreateMessageCard conversation_id={conversation.id} reply_to={replyingMessage} onEndReply={() => setReplyingMessage(null)} editting_message={edittingMessage} onEndEdit={() => setEdittingMessage(null)}></CreateMessageCard>
         </Layer>

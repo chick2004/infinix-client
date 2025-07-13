@@ -5,7 +5,7 @@ import React, { useRef, useEffect, useState } from "react";
 export default function Collapse({ children, visible, duration = 300 }: {children: React.ReactNode, visible: boolean, duration?: number}) {
     
     const ref = useRef<HTMLDivElement>(null);
-    const [height, setHeight] = useState<string | number>(visible ? "auto" : 0);
+    const [height, setHeight] = useState<string | number>(visible ? "fit-content" : 0);
 
     useEffect(() => {
 

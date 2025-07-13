@@ -7,6 +7,7 @@ export type { default as MessageGroup } from './models/MessageGroup.types';
 export type { default as MessageMedia } from './models/MessageMedia.types';
 export type { default as User } from './models/User.types';
 export type { default as Profile } from './models/Profile.types';
+export type { default as Setting } from './models/Setting.types';
 export type { default as Tag } from './models/Tag.types';
 export type { default as Comment } from './models/Comment.types';
 export type { default as CommentMedia } from './models/CommentMedia.types';

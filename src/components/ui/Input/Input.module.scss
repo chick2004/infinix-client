@@ -1,4 +1,4 @@
-.input_group {
+.root {
     min-width: 200px;
     height: 32px;
     min-height: 32px;
@@ -25,57 +25,69 @@
         border-bottom: 1px inset var(--accent-default);
     }
     
-    &.disabled {
-        background-color: var(--control-disabled);
-        border: 1px inset var(--control-stroke-default);
-        color: var(--text-disabled);
-    }
-    
-    &.disabled > input {
-        color: var(--text-disabled);
-    }
-    
     input {
         width: 100%;
         border: unset;
         outline: unset;
         background-color: unset;
         color: var(--text-primary);
-    }
 
     
-    input::-ms-reveal, input::-ms-clear, input::-webkit-search-cancel-button, input::-webkit-calendar-picker-indicator {
-        display: none;
+        &::-ms-reveal, &::-ms-clear, &::-webkit-search-cancel-button, &::-webkit-calendar-picker-indicator, &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+            display: none;
+            appearance: none;
+            margin: 0;
+        }
+    }
+
+    .input_button {
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        background-color: unset;
+        border: 1px solid var(--subtle-transparent);
+        outline: none;
+        color: var(--text-secondary);
+
+        &:hover {
+            background-color: var(--subtle-secondary);
+            border-color: var(--subtle-secondary);
+        }
+    }
+    
+    &.disabled {
+        background-color: var(--control-disabled);
+        border: 1px inset var(--control-stroke-default);
+        color: var(--text-disabled);
+
+        input {
+            color: var(--text-disabled);
+        }
+
+        .input_button {
+            color: var(--text-disabled);
+
+            i {
+                color: var(--text-disabled);
+            }
+
+            &:hover {
+                border-color: var(--subtle-transparent);
+                background-color: var(--subtle-transparent);
+            }
+        }
     }
 }
 
-.input_button {
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 4px;
-    background-color: unset;
-    border: none;
-    outline: none;
-    color: var(--text-secondary);
-
-    &:hover {
-        background-color: var(--subtle-secondary);
-        box-shadow: inset 0px 0px 1px var(--subtle-secondary);
-    }
-}
-
-
-.input_group input::-webkit-outer-spin-button, .input_group  input::-webkit-inner-spin-button {
-    appearance: none;
-    margin: 0;
-}
-
-.input_date, .input_date input {
+.input_date {
+    position: relative;
     cursor: pointer !important;
-    user-select: none !important;
+    
+    input {   
+        cursor: pointer !important;
+    }
 }
 
-/* Date input styles */
 .date_picker {
     position: absolute;
     z-index: 1;
@@ -87,101 +99,142 @@
     box-shadow: 0px 8px 16px 0px var(--shadow-flyout);
     display: flex;
     flex-direction: row;
-}
+    
+    .input_button {
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        background-color: unset;
+        border: 1px solid var(--subtle-transparent);
+        outline: none;
+        color: var(--text-secondary);
 
-.date_content, .month_content {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    gap: 5px;
-}
+        &:hover {
+            background-color: var(--subtle-secondary);
+            border-color: var(--subtle-secondary);
+        }
+    }
 
-.date_content {
-    border-right: 1px solid var(--control-stroke-default);
-}
+    .date_content {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        gap: 5px;
+        border-right: 1px solid var(--control-stroke-default);
 
-.date_header, .month_header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 0px;
-}
+        .date_header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 0px;
 
-.date_header_title, .month_header_title {
-    width: 100%;
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0%;
-    font-weight: 600;
-}
+            .date_header_title {
+                width: 100%;
+            }
+        }
 
-.date_list_container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: fit-content;
-}
+        .date_list_container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: fit-content;
 
-.days_of_week,.dates_of_month {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    place-items: center;
-}
+            .days_of_week {
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+                gap: 5px;
+                place-items: center;
+                
+                .day {
+                    width: 28px;
+                    height: 28px;
+                }
+            }
+            
+            .dates_of_month {
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+                gap: 5px;
+                place-items: center;
 
-.dates_of_month .empty_date {
-    width: 28px;
-    height: 28px;
-}
+                .empty_date {
+                    width: 28px;
+                    height: 28px;
+                }
 
-.days_of_week .day, .dates_of_month .date, .month_list_container .month {
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0%;
-    font-weight: 400;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-    cursor: pointer;
-    border: 1px inset var(--subtle-transparent);
-    border-radius: 4px;
-    background: none;
-}
+                .date {
+                    width: 28px;
+                    height: 28px;
+                    user-select: none;
+                    cursor: pointer;
+                    border: 1px inset var(--subtle-transparent);
+                    border-radius: 4px;
+                    background: none;
 
-.dates_of_month .date:hover, .month_list_container .month:hover {
-    background-color: var(--subtle-secondary);
-    box-shadow: inset 0px 0px 1px var(--subtle-secondary);
-}
+                    &:hover {
+                        background-color: var(--subtle-secondary);
+                        box-shadow: inset 0px 0px 1px var(--subtle-secondary);
+                    }
+                }
 
-.month_list_container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    place-items: center;
-}
+                .selected_date {
+                    background-color: var(--accent-default) !important;
+                    color: var(--text-on-accent-primary) !important;
+                }
 
-.month_list_container .month {
-    width: fit-content;
-    height: fit-content;
-    padding: 8px;
-}
+                .today {
+                    border-color: var(--accent-default) !important;
+                }
+            }
+        }
+    }
+    
+    .month_content {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        gap: 5px;
 
-.today_button {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: end;
-}
+        .month_header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 0px;
 
-.selected_date {
-    background-color: var(--accent-default) !important;
-    color: var(--text-on-accent-primary) !important;
-}
+            .month_header_title {
+                width: 100%;
+            }
+        }
 
-.today {
-    border-color: var(--accent-default) !important;
+        .month_list_container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            place-items: center;
+
+            .month {
+                user-select: none;
+                cursor: pointer;
+                border: 1px inset var(--subtle-transparent);
+                border-radius: 4px;
+                background: none;
+                width: fit-content;
+                height: fit-content;
+                padding: 8px 10px;
+
+                &:hover {
+                    background-color: var(--subtle-secondary);
+                    box-shadow: inset 0px 0px 1px var(--subtle-secondary);
+                }
+            }
+        }
+
+        .today_button {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: end;
+        }
+    }
 }
