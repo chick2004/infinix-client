@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { requestInit } from "@/lib";
 import { useEffect } from "react";
-import { LoadingPage } from "@/components";
+import { LoadingPage } from "@/components"; 
 
 export default function Page() {
 
