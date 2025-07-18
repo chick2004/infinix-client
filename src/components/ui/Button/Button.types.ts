@@ -1,17 +1,6 @@
-export default interface ButtonProps {
-
-    style?: React.CSSProperties;
-
-    className?: string;
+import { ComponentPropsWithRef } from "react";
+export default interface ButtonProps extends ComponentPropsWithRef<"button"> {
 
     appearance?: "accent" | "standard" | "subtle" | "transparent";
-
-    type?: "button" | "submit" | "reset";
-
-    children: React.ReactNode;
-
-    disabled?: boolean;
-
-    onClick?: () => void;
 
 }

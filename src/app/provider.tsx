@@ -4,7 +4,7 @@ import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import { AuthProvider } from "@/providers";
+import { AuthProvider, RadioGroupProvider } from "@/providers";
 
 export default function AppProvider({ children }: { children: React.ReactNode}) {
 
@@ -13,7 +13,9 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
     return (
         <QueryClientProvider client={queryClient}>
             <AuthProvider>
-                {children}
+                <RadioGroupProvider>
+                    {children}
+                </RadioGroupProvider>
             </AuthProvider>
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>

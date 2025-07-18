@@ -365,9 +365,9 @@ export default function Page() {
     return (
         <div className={styles.page}>
             <div className={styles.container}>
-                <form action="" className={styles.form_container}>
+                <div className={styles.form_container}>
                     {steps[step - 1]}
-                </form>
+                </div>
             </div>
         </div>
     )

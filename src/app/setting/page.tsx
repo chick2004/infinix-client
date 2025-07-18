@@ -1,331 +1,26 @@
 "use client";
 
+import { createPortal } from "react-dom";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { requestInit } from "@/lib";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks";
 import { useMotion, MotionName } from "@/hooks";
-import { DropdownSearch, Icon, Input, Button, Textarea, Switch, Select, Collapse, Radio} from "@/components";
+import { DropdownSearch, Icon, Field, Input, Button, Spinner, Switch, Select, Collapse, Radio, UpdatePasswordCard} from "@/components";
 
 import { ClientLayout } from "@/layouts";
 import styles from './page.module.css';
-import { User, Setting, ApiResponse } from "@/types";
-
-    interface TabProps {
-        openedDropdown: string;
-        handleDropdownClick: (dropdown: string) => void;
-        style: React.CSSProperties;
-        formData?: any;
-        onUpdate?: (name: string, payload: any) => void;
-    }
-
-    const GeneralTab = ({ openedDropdown, handleDropdownClick, style, formData, onUpdate}: TabProps) => {
-
-        return (
-            <div className={styles.tab_content_card} style={style}>
-                <div className={styles.setting_group}>
-                    <div className={styles.setting_group_title}>Notification</div>
-                    <div className={styles.setting_group_item}>
-                        <div className={styles.setting_item_content}>
-                            <Icon name={"alert"}></Icon>
-                            <div className={styles.setting_item_desc_container}>
-                                <div className={styles.setting_item_title}>All notification</div>
-                                <div className={styles.setting_item_desc}>Allow all notification</div>
-                            </div>
-                            <Switch></Switch>
-                        </div>
-                    </div>
-                    <div className={styles.setting_group_item}>
-                        <div className={styles.setting_item_content}>
-                            <Icon name={"alert"}></Icon>
-                            <div className={styles.setting_item_desc_container}>
-                                <div className={styles.setting_item_title}>Sound</div>
-                                <div className={styles.setting_item_desc}>Notification sound</div>
-                            </div>
-                            <Select options={["sound 1", "sound 2", "sound 3"]}></Select>
-                        </div>
-                    </div>
-                    <div className={styles.setting_group_item}>
-                        <div className={styles.setting_item_content} onClick={() => handleDropdownClick("message_notification")}>
-                            <Icon name={"chat"}></Icon>
-                            <div className={styles.setting_item_desc_container}>
-                                <div className={styles.setting_item_title}>Message</div>
-                                <div className={styles.setting_item_desc}>Message notification</div>
-                            </div>
-                            <Button appearance={"subtle"}>
-                                {openedDropdown === "message_notification" ? <Icon name={"chevron_up"} size={20}></Icon> : <Icon name={"chevron_down"} size={20}></Icon>}
-                            </Button>
-                        </div>
-                        <Collapse visible={openedDropdown === "message_notification"}>
-                            <div className={styles.setting_item_dropdown}>
-                                <p className={styles.setting_item_option_title}>Message notification</p>
-                                <Switch></Switch>
-                            </div>
-                            <div className={styles.setting_item_dropdown}>
-                                <p className={styles.setting_item_option_title}>Group message notification</p>
-                                <Switch></Switch>
-                            </div>
-                        </Collapse>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-
-    const AccountTab = ({ openedDropdown, handleDropdownClick, style, formData, onUpdate}: TabProps) => {
-
-        const [displayName, setDisplayName] = useState(formData?.display_name || "");
-        const [bio, setBio] = useState(formData?.bio || "");
-        const [dateOfBirth, setDateOfBirth] = useState(formData?.date_of_birth || "");
-
-        return (
-            <div className={styles.tab_content_card} style={style}>
-                <div className={styles.profile_preview}>
-                    <div className={styles.profile_photo_container}>
-                        <div className={styles.cover_photo}>
-                            <Image src={formData?.cover_photo || "/images/splash1.webp"} alt={""} fill/>
-                        </div>
-                        <div className={styles.profile_photo}>
-                            <Image src={formData?.profile_photo || "/images/avatar.png"} alt={""} fill/>
-                        </div>
-                    </div>
-                    <div className={styles.info_container}>
-                        <div className={styles.display_name}>{formData?.display_name}</div>
-                        <div className={styles.bio}>{formData?.bio}</div>
-                    </div>
-                </div>
-                <div className={styles.setting_group}>
-                    <div className={styles.setting_group_title}>Personal Information</div>
-                    <div className={styles.setting_group_item}>
-                        <div className={styles.setting_item_content} onClick={() => handleDropdownClick("display_name")}>
-                            <Icon name={"contact_card"}></Icon>
-                            <div className={styles.setting_item_desc_container}>
-                                <div className={styles.setting_item_title}>Display name</div>
-                                <div className={styles.setting_item_desc}>{formData?.display_name}</div>
-                            </div>
-                            <Button appearance={"subtle"}>
-                                {openedDropdown === "display_name" ? <Icon name={"chevron_up"} size={20}></Icon> : <Icon name={"chevron_down"} size={20}></Icon>}
-                            </Button>
-                        </div>
-                        <Collapse visible={openedDropdown === "display_name"}>
-                            <div className={styles.setting_item_dropdown}>
-                                <Input onChange={setDisplayName} value={displayName}></Input>
-                                <Button appearance={"standard"} onClick={() => onUpdate?.("display_name", displayName)}>Save</Button>
-                            </div>
-                        </Collapse>
-                    </div>
-                    <div className={styles.setting_group_item}>
-                        <div className={styles.setting_item_content} onClick={() => handleDropdownClick("biography")}>
-                            <Icon name={"person_note"}></Icon>
-                            <div className={styles.setting_item_desc_container}>
-                                <div className={styles.setting_item_title}>Bio</div>
-                                <div className={styles.setting_item_desc}>{formData?.bio}</div>
-                            </div>
-                            <Button appearance={"subtle"}>
-                                {openedDropdown === "biography" ? <Icon name={"chevron_up"} size={20}></Icon> : <Icon name={"chevron_down"} size={20}></Icon>}
-                            </Button>
-                        </div>
-                        <Collapse visible={openedDropdown === "biography"}>
-                            <div className={styles.setting_item_dropdown}>
-                                <Textarea onChange={setBio} value={bio} style={{width: "200px"}}></Textarea>
-                                <Button appearance={"standard"} onClick={() => onUpdate?.("bio", bio)}>Save</Button>
-                            </div>
-                        </Collapse>
-                    </div>
-                    <div className={styles.setting_group_item}>
-                        <div className={styles.setting_item_content} onClick={() => handleDropdownClick("date_of_birth")}>
-                            <Icon name={"calendar"}></Icon>
-                            <div className={styles.setting_item_desc_container}>
-                                <div className={styles.setting_item_title}>Date of birth</div>
-                                <div className={styles.setting_item_desc}>{formData?.date_of_birth}</div>
-                            </div>
-                            <Button appearance={"subtle"}>
-                                {openedDropdown === "date_of_birth" ? <Icon name={"chevron_up"} size={20}></Icon> : <Icon name={"chevron_down"} size={20}></Icon>}
-                            </Button>
-                        </div>
-                        <Collapse visible={openedDropdown === "date_of_birth"}>
-                            <div className={styles.setting_item_dropdown}>
-                                <Input type="date" onChange={setDateOfBirth}></Input>
-                                <Button appearance={"standard"} onClick={() => onUpdate?.("date_of_birth", dateOfBirth)}>Save</Button>
-                            </div>
-                        </Collapse>
-                    </div>
-                </div>
-                <div className={styles.setting_group}>
-                    <div className={styles.setting_group_title}>Profile photo</div>
-                    <div className={styles.setting_group_item}>
-                        <div className={styles.setting_item_content} onClick={() => handleDropdownClick("profile_photo")}>
-                            <Icon name={"person_square"}></Icon>
-                            <div className={styles.setting_item_desc_container}>
-                                <div className={styles.setting_item_title}>Profile photo</div>
-                                <div className={styles.setting_item_desc}>Adjust your avatar</div>
-                            </div>
-                            <Button appearance={"subtle"}>
-                                {openedDropdown === "profile_photo" ? <Icon name={"chevron_up"} size={20}></Icon> : <Icon name={"chevron_down"} size={20}></Icon>}
-                            </Button>
-                        </div>
-                        <Collapse visible={openedDropdown === "profile_photo"}>
-                            <div className={styles.setting_item_dropdown}>
-                                <p className={styles.setting_item_option_title}>Take a photo</p>
-                                <Button appearance={"standard"}>Open camera</Button>
-                            </div>
-                            <div className={styles.setting_item_dropdown}>
-                                <p className={styles.setting_item_option_title}>Choose a file</p>
-                                <Button appearance={"standard"}>Browse files</Button>
-                            </div>
-                        </Collapse>
-                    </div>
-                    <div className={styles.setting_group_item}>
-                        <div className={styles.setting_item_content} onClick={() => handleDropdownClick("cover_photo")}>
-                            <Icon name={"image"}></Icon>
-                            <div className={styles.setting_item_desc_container}>
-                                <div className={styles.setting_item_title}>Cover photo</div>
-                                <div className={styles.setting_item_desc}>Adjust your cover photo</div>
-                            </div>
-                            <Button appearance={"subtle"}>
-                                {openedDropdown === "cover_photo" ? <Icon name={"chevron_up"} size={20}></Icon> : <Icon name={"chevron_down"} size={20}></Icon>}
-                            </Button>
-                        </div>
-                        <Collapse visible={openedDropdown === "cover_photo"}>
-                            <div className={styles.setting_item_dropdown}>
-                                <p className={styles.setting_item_option_title}>Take a photo</p>
-                                <Button appearance={"standard"}>Open camera</Button>
-                            </div>
-                            <div className={styles.setting_item_dropdown}>
-                                <p className={styles.setting_item_option_title}>Choose a file</p>
-                                <Button appearance={"standard"}>Browse files</Button>
-                            </div>
-                        </Collapse>
-                    </div>
-                </div>
-                <div className={styles.setting_group}>
-                    <div className={styles.setting_group_title}>Account Information</div>
-                    <div className={styles.setting_group_item}>
-                        <div className={styles.setting_item_content} onClick={() => handleDropdownClick("username")}>
-                            <Icon name={"contact_card"}></Icon>
-                            <div className={styles.setting_item_desc_container}>
-                                <div className={styles.setting_item_title}>Username</div>
-                                <div className={styles.setting_item_desc}>{formData?.username}</div>
-                            </div>
-                            <Button appearance={"subtle"}>
-                                {openedDropdown === "username" ? <Icon name={"chevron_up"} size={20}></Icon> : <Icon name={"chevron_down"} size={20}></Icon>}
-                            </Button>
-                        </div>
-                        <Collapse visible={openedDropdown === "username"}>
-                            <div className={styles.setting_item_dropdown}>
-                                <Input type="text"></Input>
-                                <Button appearance={"standard"}>Save</Button>
-                            </div>
-                        </Collapse>
-                    </div>
-                    <div className={styles.setting_group_item}>
-                        <div className={styles.setting_item_content}>
-                            <Icon name={"key"}></Icon>
-                            <div className={styles.setting_item_desc_container}>
-                                <div className={styles.setting_item_title}>Password</div>
-                                <div className={styles.setting_item_desc}>Change your password</div>
-                            </div>
-                            <Button appearance={"standard"}>
-                                Change
-                            </Button>
-                        </div>
-                    </div>
-                    <div className={styles.setting_group_item}>
-                        <div className={styles.setting_item_content} onClick={() => handleDropdownClick("phone_number")}>
-                            <Icon name={"phone"}></Icon>
-                            <div className={styles.setting_item_desc_container}>
-                                <div className={styles.setting_item_title}>Phone number</div>
-                                <div className={styles.setting_item_desc}>{formData?.phone_number}</div>
-                            </div>
-                            <Button appearance={"subtle"}>
-                                {openedDropdown === "phone_number" ? <Icon name={"chevron_up"} size={20}></Icon> : <Icon name={"chevron_down"} size={20}></Icon>}
-                            </Button>
-                        </div>
-                        <Collapse visible={openedDropdown === "phone_number"}>
-                            <div className={styles.setting_item_dropdown}>
-                                <Input type="text"></Input>
-                                <Button appearance={"standard"}>Save</Button>
-                            </div>
-                        </Collapse>
-                    </div>
-                    <div className={styles.setting_group_item}>
-                        <div className={styles.setting_item_content} onClick={() => handleDropdownClick("email")}>
-                            <Icon name={"mail"}></Icon>
-                            <div className={styles.setting_item_desc_container}>
-                                <div className={styles.setting_item_title}>Email</div>
-                                <div className={styles.setting_item_desc}>{formData?.email}</div>
-                            </div>
-                            <Button appearance={"subtle"}>
-                                {openedDropdown === "email" ? <Icon name={"chevron_up"} size={20}></Icon> : <Icon name={"chevron_down"} size={20}></Icon>}
-                            </Button>
-                        </div>
-                        <Collapse visible={openedDropdown === "email"}>
-                            <div className={styles.setting_item_dropdown}>
-                                <Input type="text"></Input>
-                                <Button appearance={"standard"}>Save</Button>
-                            </div>
-                        </Collapse>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-
-    const AppearanceTab = ({ openedDropdown, handleDropdownClick, style, formData, onUpdate}: TabProps) => {
-        
-        return (
-            <div className={styles.tab_content_card} style={style}>
-                <div className={styles.setting_group}>
-                    <div className={styles.setting_group_title}>Display</div>
-                    <div className={styles.setting_group_item}>
-                        <div className={styles.setting_item_content} onClick={() => handleDropdownClick("theme")}>
-                            <Icon name={"sparkle"}></Icon>
-                            <div className={styles.setting_item_desc_container}>
-                                <div className={styles.setting_item_title}>Theme</div>
-                                <div className={styles.setting_item_desc}>Custom the look and feel</div>
-                            </div>
-                            <Button appearance={"subtle"}>
-                                {openedDropdown === "theme" ? <Icon name={"chevron_up"} size={20}></Icon> : <Icon name={"chevron_down"} size={20}></Icon>}
-                            </Button>
-                        </div>
-                        <Collapse visible={openedDropdown === "theme"}>
-                            <div className={styles.setting_item_dropdown}>
-                                <div className={styles.theme_option_container}>
-                                    <div className={styles.theme_option}>
-                                        <div className={styles.theme_image_container}>
-                                            <Image src={"/images/theme_light.png"} alt={""} fill/>
-                                        </div>
-                                        <Radio name="theme" label="Light"></Radio>
-                                    </div>
-                                    <div className={styles.theme_option}>
-                                        <div className={styles.theme_image_container}>
-                                            <Image src={"/images/theme_dark.png"} alt={""} fill/>
-                                        </div>
-                                        <Radio name="theme" label="Dark"></Radio>
-                                    </div>
-                                </div>
-                            </div>
-                        </Collapse>
-                    </div>
-                    <div className={styles.setting_group_item}>
-                        <div className={styles.setting_item_content}>
-                            <Icon name={"local_language"}></Icon>
-                            <div className={styles.setting_item_desc_container}>
-                                <div className={styles.setting_item_title}>Language</div>
-                                <div className={styles.setting_item_desc}>Select the display language</div>
-                            </div>
-                            <Select options={["English", "Vietnamese"]}></Select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
+import { Setting, ApiResponse } from "@/types";
     
 export default function Page() {
 
+    const [updatingField, setUpdatingField] = useState<string | undefined>(undefined);
     const { user } = useAuth();
+    const [viewingUsername, setViewingUsername] = useState(user?.username);
+    const [viewingPhoneNumber, setViewingPhoneNumber] = useState(user?.phone_number);
+    const [viewingEmail, setViewingEmail] = useState(user?.email);
+    const [isShowingUpdatePassword, setIsShowingUpdatePassword] = useState(false);
     const settingsQueryUrl = process.env.NEXT_PUBLIC_API_URL + "/users/" + user?.id + "/settings";
     const querySettings = async () => {
         const response = await fetch(settingsQueryUrl, requestInit("GET"));
@@ -355,6 +50,19 @@ export default function Page() {
         language: "",
     });
 
+    const [formErrors, setFormErrors] = useState({
+        display_name: "",
+        bio: "",
+        date_of_birth: "",
+        profile_photo: "",
+        cover_photo: "",
+        username: "",
+        phone_number: "",
+        email: "",
+        theme: "",
+        language: "",
+    });
+
     useEffect(() => {
         if (settingsQuery.data?.data) {
             setFormData({...formData, theme: settingsQuery.data.data.theme, language: settingsQuery.data.data.language });
@@ -362,7 +70,7 @@ export default function Page() {
     }, [settingsQuery.data]);
 
     const [selectedTab, setSelectedTab] = useState("general");
-    const [openedDropdown, setOpenedDropdown] = useState<string>("");
+    const [openedDropdown, setOpenedDropdown] = useState<string | undefined>(undefined);
 
     const accountTabMotion = useMotion(selectedTab === "account", { appear: MotionName.SLIDE_UP_IN, appearDistance: 20 });
     const generalTabMotion = useMotion(selectedTab === "general", { appear: MotionName.SLIDE_UP_IN, appearDistance: 20 });
@@ -383,20 +91,39 @@ export default function Page() {
     const updateMutation = useMutation({
         mutationFn: mutateUpdate,
         onSuccess: (data, {name, payload}) => {
-            setFormData((prevData) => ({ ...prevData, [name]: payload }));
-            console.log("Update successful", data);
+            if (data.status !== 200) {
+                if (data.errors.username) {
+                    setFormErrors((prevErrors) => ({ ...prevErrors, username: "This username is already taken" }));
+                }
+            } else {
+                setFormErrors({ ...formErrors, [name]: "" });
+                setFormData((prevData) => ({ ...prevData, [name]: payload }));
+                setUpdatingField(undefined);
+                setOpenedDropdown(undefined);
+                if (name === "username") {
+                    setViewingUsername(payload);
+                } else if (name === "phone_number") {
+                    setViewingPhoneNumber(payload);
+                } else if (name === "email") {
+                    setViewingEmail(payload);
+                }
+            }
+
+            setUpdatingField(undefined);
         },
         onError: (error) => {
+            setUpdatingField(undefined);
             console.error("Update failed", error);
         }
     });
 
     const handleUpdate = (name: string, payload: any) => {
+        setUpdatingField(name);
         updateMutation.mutate({ name, payload });
         console.log("Update called", name, payload);
     }
 
-
+    const updatePasswordCardMotion = useMotion(isShowingUpdatePassword, { appear: MotionName.SCALE_UP_IN, appearDistance: 20 });
 
     return (
         <ClientLayout>
@@ -423,12 +150,181 @@ export default function Page() {
                         </div>
                     </div>
                     <div className={styles.right}>
-                        {generalTabMotion.shouldRender && <GeneralTab style={generalTabMotion.animationStyle} openedDropdown={openedDropdown} handleDropdownClick={handleDropdownClick} formData={formData} onUpdate={handleUpdate}></GeneralTab>}
-                        {accountTabMotion.shouldRender && <AccountTab style={accountTabMotion.animationStyle} openedDropdown={openedDropdown} handleDropdownClick={handleDropdownClick} formData={formData} onUpdate={handleUpdate}></AccountTab>}
-                        {appearanceTabMotion.shouldRender && <AppearanceTab style={appearanceTabMotion.animationStyle} openedDropdown={openedDropdown} handleDropdownClick={handleDropdownClick} formData={formData} onUpdate={handleUpdate}></AppearanceTab>}
+                        {generalTabMotion.shouldRender && (
+                            <div className={styles.tab_content_card} style={generalTabMotion.animationStyle}>
+                                <div className={styles.setting_group}>
+                                    <div className={styles.setting_group_title}>Notification</div>
+                                    <div className={styles.setting_group_item}>
+                                        <div className={styles.setting_item_content}>
+                                            <Icon name={"alert"}></Icon>
+                                            <div className={styles.setting_item_desc_container}>
+                                                <div className={styles.setting_item_title}>All notification</div>
+                                                <div className={styles.setting_item_desc}>Allow all notification</div>
+                                            </div>
+                                            <Switch></Switch>
+                                        </div>
+                                    </div>
+                                    <div className={styles.setting_group_item}>
+                                        <div className={styles.setting_item_content}>
+                                            <Icon name={"alert"}></Icon>
+                                            <div className={styles.setting_item_desc_container}>
+                                                <div className={styles.setting_item_title}>Sound</div>
+                                                <div className={styles.setting_item_desc}>Notification sound</div>
+                                            </div>
+                                            <Select options={["sound 1", "sound 2", "sound 3"]}></Select>
+                                        </div>
+                                    </div>
+                                    <div className={styles.setting_group_item}>
+                                        <div className={styles.setting_item_content} onClick={() => handleDropdownClick("message_notification")}>
+                                            <Icon name={"chat"}></Icon>
+                                            <div className={styles.setting_item_desc_container}>
+                                                <div className={styles.setting_item_title}>Message</div>
+                                                <div className={styles.setting_item_desc}>Message notification</div>
+                                            </div>
+                                            <Button appearance={"subtle"}>
+                                                {openedDropdown === "message_notification" ? <Icon name={"chevron_up"} size={20}></Icon> : <Icon name={"chevron_down"} size={20}></Icon>}
+                                            </Button>
+                                        </div>
+                                        <Collapse visible={openedDropdown === "message_notification"}>
+                                            <div className={styles.setting_item_dropdown}>
+                                                <p className={styles.setting_item_option_title}>Message notification</p>
+                                                <Switch></Switch>
+                                            </div>
+                                            <div className={styles.setting_item_dropdown}>
+                                                <p className={styles.setting_item_option_title}>Group message notification</p>
+                                                <Switch></Switch>
+                                            </div>
+                                        </Collapse>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        {accountTabMotion.shouldRender && (
+                            <div className={styles.tab_content_card} style={accountTabMotion.animationStyle}>
+                                <div className={styles.setting_group}>
+                                    <div className={styles.setting_group_title}>Account Information</div>
+                                    <div className={styles.setting_group_item}>
+                                        <div className={styles.setting_item_content} onClick={() => handleDropdownClick("username")}>
+                                            <Icon name={"contact_card"}></Icon>
+                                            <div className={styles.setting_item_desc_container}>
+                                                <div className={styles.setting_item_title}>Username</div>
+                                                <div className={styles.setting_item_desc}>{viewingUsername}</div>
+                                            </div>
+                                            <Button appearance={"subtle"}>
+                                                {openedDropdown === "username" ? <Icon name={"chevron_up"} size={20}></Icon> : <Icon name={"chevron_down"} size={20}></Icon>}
+                                            </Button>
+                                        </div>
+                                        <Collapse visible={openedDropdown === "username"}>
+                                            <div className={styles.setting_item_dropdown}>
+                                                <Field validation_message={formErrors?.username} validation_state={formErrors?.username ? "error" : undefined}>
+                                                    <Input type="text" value={formData.username} onChange={(value) => {setFormData({...formData, username: value})}}></Input>
+                                                </Field>
+                                                { updatingField === "username" ? (
+                                                    <Button appearance={"standard"}>
+                                                        <Spinner></Spinner>
+                                                        Saving...
+                                                    </Button>
+                                                ) : (
+                                                    <Button appearance={"standard"} onClick={() => {handleUpdate("username", formData.username)}}>Save</Button>
+                                                )}
+                                            </div>
+                                        </Collapse>
+                                    </div>
+                                    <div className={styles.setting_group_item}>
+                                        <div className={styles.setting_item_content}>
+                                            <Icon name={"key"}></Icon>
+                                            <div className={styles.setting_item_desc_container}>
+                                                <div className={styles.setting_item_title}>Password</div>
+                                                <div className={styles.setting_item_desc}>Change your password</div>
+                                            </div>
+                                            <Button appearance={"standard"} onClick={() => setIsShowingUpdatePassword(true)}>
+                                                Change
+                                            </Button>
+                                        </div>
+                                    </div>
+                                    <div className={styles.setting_group_item}>
+                                        <div className={styles.setting_item_content} onClick={() => handleDropdownClick("phone_number")}>
+                                            <Icon name={"phone"}></Icon>
+                                            <div className={styles.setting_item_desc_container}>
+                                                <div className={styles.setting_item_title}>Phone number</div>
+                                                <div className={styles.setting_item_desc}>{viewingPhoneNumber}</div>
+                                            </div>
+                                            <Button appearance={"standard"}>
+                                                Change
+                                            </Button>
+                                        </div>
+                                    </div>
+                                    <div className={styles.setting_group_item}>
+                                        <div className={styles.setting_item_content} onClick={() => handleDropdownClick("email")}>
+                                            <Icon name={"mail"}></Icon>
+                                            <div className={styles.setting_item_desc_container}>
+                                                <div className={styles.setting_item_title}>Email</div>
+                                                <div className={styles.setting_item_desc}>{viewingEmail}</div>
+                                            </div>
+                                            <Button appearance={"standard"}>
+                                                Change
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        {appearanceTabMotion.shouldRender && (
+                            <div className={styles.tab_content_card} style={appearanceTabMotion.animationStyle}>
+                                <div className={styles.setting_group}>
+                                    <div className={styles.setting_group_title}>Display</div>
+                                    <div className={styles.setting_group_item}>
+                                        <div className={styles.setting_item_content} onClick={() => handleDropdownClick("theme")}>
+                                            <Icon name={"sparkle"}></Icon>
+                                            <div className={styles.setting_item_desc_container}>
+                                                <div className={styles.setting_item_title}>Theme</div>
+                                                <div className={styles.setting_item_desc}>Custom the look and feel</div>
+                                            </div>
+                                            <Button appearance={"subtle"}>
+                                                {openedDropdown === "theme" ? <Icon name={"chevron_up"} size={20}></Icon> : <Icon name={"chevron_down"} size={20}></Icon>}
+                                            </Button>
+                                        </div>
+                                        <Collapse visible={openedDropdown === "theme"}>
+                                            <div className={styles.setting_item_dropdown}>
+                                                <div className={styles.theme_option_container}>
+                                                    <div className={`${styles.theme_option} ${formData.theme === "light" ? styles.active : ""}`} onClick={() => handleUpdate("theme", "light")}>
+                                                        <div className={styles.theme_image_container}>
+                                                            <Image src={"/images/theme_light.png"} alt={""} fill/>
+                                                        </div>
+                                                    </div>
+                                                    <div className={`${styles.theme_option} ${formData.theme === "dark" ? styles.active : ""}`} onClick={() => handleUpdate("theme", "dark")}>
+                                                        <div className={styles.theme_image_container}>
+                                                            <Image src={"/images/theme_dark.png"} alt={""} fill/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Collapse>
+                                    </div>
+                                    <div className={styles.setting_group_item}>
+                                        <div className={styles.setting_item_content}>
+                                            <Icon name={"local_language"}></Icon>
+                                            <div className={styles.setting_item_desc_container}>
+                                                <div className={styles.setting_item_title}>Language</div>
+                                                <div className={styles.setting_item_desc}>Select the display language</div>
+                                            </div>
+                                            <Select options={["English", "Vietnamese"]}></Select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
+            {updatePasswordCardMotion.shouldRender && (
+                createPortal(
+                    <div className={styles.update_password_card_container}>
+                        <UpdatePasswordCard onClose={() => setIsShowingUpdatePassword(false)} style={updatePasswordCardMotion.animationStyle}></UpdatePasswordCard>
+                    </div>,
+                    document.getElementById("modal-root") as HTMLElement
+                )
+            )}
         </ClientLayout>
     )
 }

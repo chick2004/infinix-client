@@ -33,6 +33,7 @@ export { default as ProfileCard } from './card/ProfileCard/ProfileCard';
 export { default as ProfileMediaGalleryCard } from './card/ProfileMediaGalleryCard/ProfileMediaGalleryCard';
 export { default as SuggestionUsersCard } from './card/SuggestionUsersCard/SuggestionUsersCard';
 export { default as TrendingTagsCard } from './card/TrendingTagsCard/TrendingTagsCard';
+export { default as UpdatePasswordCard } from './card/UpdatePasswordCard/UpdatePasswordCard';
 
 export { default as Collapse } from './motion/Collapse/Collapse';
 

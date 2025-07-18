@@ -1,26 +1,36 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import RadioProps from "./Radio.types";
 import styles from "./Radio.module.scss";
+import { useRadioGroup } from "@/hooks";
+
 
 export default function Radio({ style, className, ref, name, value = "", label = "", checked = false, onChange } : RadioProps) {
-
-    const [isChecked, setIsChecked] = useState(checked);
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        setIsChecked(event.target.checked);
-        onChange?.(value || "");
-    };
+    
+    const { selectedValue, setSelectedValue } = useRadioGroup(name);
 
     useEffect(() => {
-        setIsChecked(checked);
-    }, [checked]);
+        if (checked && !selectedValue) {
+            setSelectedValue(value);
+        }
+    }, [checked, value, selectedValue]);
+
+    const handleChange = () => {
+        setSelectedValue(value);
+        onChange?.(value);
+    };
 
     return (
         <label key={value} style={style} ref={ref} className={`${styles.radio} ${className}`}>
-            <input className={styles.radio_input} type="radio" name={name} value={value} checked={isChecked} onChange={handleChange}/>
+            <input 
+                className={styles.radio_input} 
+                type="radio" 
+                name={name} 
+                value={value} 
+                checked={selectedValue === value}
+                onChange={handleChange}
+            />
             <span>{label}</span>
         </label>
     );

@@ -40,6 +40,7 @@ export default function Page() {
             console.error("Error logging in:", error);
         },
         onSuccess: (data) => {
+            console.log("Login successful:", data);
             if (data.status === 200) {
                 refetchUser();
                 router.push("/home"); // push ngay sau khi setUser
@@ -67,7 +68,7 @@ export default function Page() {
         <div className={styles.page}>
             <div className={styles.container}>
                 
-            <form action="" className={styles.form}>
+            <div className={styles.form}>
                 <div>
                     <Image src="/images/logo_with_text.png" alt="" width={102} height={35}></Image>
                 </div>
@@ -107,7 +108,7 @@ export default function Page() {
                         Login    
                     </Button>}
                 </div>
-            </form>
+            </div>
         </div>
     </div>
     );

@@ -1,13 +1,10 @@
 import clsx from "clsx";
-import { useId } from "react";
 import React from "react";
 import { Icon } from "@/components";
 import FieldProps from "./Field.types";
 import styles from "./Field.module.scss";
 
-export default function Field({ style, className, ref, label, validation_state = "info", validation_message, children }: FieldProps) {
-
-    const id = useId();
+export default function Field({ className, validation_state, validation_message, ...props }: FieldProps) {
 
     const validation_icons = {
         success: <Icon name="checkmark_circle" size={16} type="filled" className={styles.success_color}/>,
@@ -16,7 +13,7 @@ export default function Field({ style, className, ref, label, validation_state =
         info: <Icon name="info" size={16} type="filled" className={styles.info_color}/>
     }
 
-    const validationIcon = validation_icons[validation_state];
+    const validationIcon = validation_state ? validation_icons[validation_state] : null;
 
     const root = clsx(
         styles.root,
@@ -24,15 +21,15 @@ export default function Field({ style, className, ref, label, validation_state =
     );
 
     return (
-        <div style={style} className={root} ref={ref}>
-            {label && <label className={styles.label} htmlFor={id}>{label}</label>}
-            {children && React.isValidElement(children) && React.cloneElement(children, { id } as React.Attributes)}
+        <label className={root} {...props}>
+            {props.label && <span className={styles.label}>{props.label}</span>}
+            {props.children}
             {validation_message && (
                 <p className={styles.validation_message}>
                     {validationIcon}
                     <span>{validation_message}</span>
                 </p>
             )}
-        </div>
+        </label>
     );
 }

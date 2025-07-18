@@ -15,7 +15,16 @@ $desktop: 1024px;
     .header_right {
         display: flex;
         justify-content: flex-end;
-        gap: 35px;
+        align-items: center;
+        gap: 25px;
+
+        .avatar_container {
+            img {
+                border-radius: 50%;
+                border: 1px solid var(--card-stroke-default);
+                object-fit: cover;
+            }
+        }
     }
     @media (max-width: $tablet) {
         grid-template-columns: 35px 1fr 1fr;
@@ -49,6 +58,15 @@ $desktop: 1024px;
     border: 1px solid var(--subtle-transparent);
 }
 
+.avatar_container {
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px;
+    cursor: pointer;
+}
+
 .header_right > a:hover, .header_right .notification_button > button:hover {
     background-color: var(--subtle-secondary);
     border-color: var(--subtle-secondary);
@@ -69,4 +87,37 @@ $desktop: 1024px;
     right: 0;
     z-index: 2;
     margin-top: 10px;
+}
+
+.avatar_flyout {
+    position: absolute;
+    top: calc(100% + 2px);
+    right: 0;
+    z-index: 2;
+    border-radius: 4px;
+    width: fit-content;
+    min-width: 128px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    .avatar_link {
+        text-decoration: none;
+        padding: 7px 11px;
+        border: 1px solid var(--subtle-transparent);
+        border-radius: 4px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        i {
+            color: var(--accent-default);
+        }
+
+        &:hover {
+            background-color: var(--subtle-secondary);
+            border-color: var(--subtle-secondary);
+        }
+    }
 }

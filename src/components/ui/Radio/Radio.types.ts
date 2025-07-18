@@ -6,11 +6,11 @@ export default interface RadioProps {
 
     ref?: React.Ref<HTMLLabelElement>;
 
-    name?: string;
+    name: string;
 
     label?: string;
 
-    value?: string;
+    value: string;
 
     checked?: boolean;
 

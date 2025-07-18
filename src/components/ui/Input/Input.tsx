@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { TextInput } from "./TextInput";
 import { PasswordInput } from "./PasswordInput";
 import { NumberInput } from "./NumberInput";
@@ -6,7 +7,7 @@ import { DateInput } from "./DateInput";
 
 import InputProps from "./Input.types";
 
-export default function Input({ type = "text", ...props }: InputProps) {
+export default memo(function Input({ type = "text", ...props }: InputProps) {
     switch (type) {
         case "password":
             return <PasswordInput {...props} />;
@@ -19,4 +20,4 @@ export default function Input({ type = "text", ...props }: InputProps) {
         default:
             return <TextInput {...props} />;
     }
-}
+})

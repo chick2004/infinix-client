@@ -1,11 +1,12 @@
 "use client";
-import { Textarea } from "@/components";
+import { Radio } from "@/components";
 import styles from "./page.module.css";
 
 export default function Home() {
     return (
         <div className={styles.page}>
-            <Textarea rows={3} style={{height: "100px"}}></Textarea>
+            <Radio name="a" value="b"></Radio>
+            <Radio name="a" value="c"></Radio>
         </div>
     );
 }
