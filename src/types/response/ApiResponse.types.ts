@@ -1,9 +1,11 @@
 export default interface ApiResponse<T> {
 
-    data: T;
+    data?: T;
 
-    message: string;
+    message?: string;
 
-    status: number;
+    status?: number;
+
+    errors?: Record<string, string[]>;
 
 }

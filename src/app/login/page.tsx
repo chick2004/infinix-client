@@ -43,10 +43,14 @@ export default function Page() {
             console.log("Login successful:", data);
             if (data.status === 200) {
                 refetchUser();
-                router.push("/home"); // push ngay sau khi setUser
+                router.push("/home");
             }
-            if (data.status === 400 || data.status === 401) {
-                setFormError({ email: "Email or password is incorrect", password: "Email or password is incorrect" });
+            if (data.errors?.email?.some((e: string) => e.includes("ERR_EMAIL_NOT_FOUND"))) {
+                setFormError({ ...formError, email: "Email not found" });
+            }
+
+            if (data.errors?.password?.some((e: string) => e.includes("ERR_INVALID_LOGIN"))) {
+                setFormError({ ...formError, email: "Invalid email or password", password: "Invalid email or password" });
             }
         }
     });
@@ -61,6 +65,19 @@ export default function Page() {
     }
 
     const handleSubmit = () => {
+        if (!formData.email) {
+            setFormError({ email: "Email is required" });
+            return;
+        }
+        if (!formData.password) {
+            setFormError({ password: "Password is required" });
+            return;
+        }
+        if (!/^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/.test(formData.email)) {
+            setFormError({ email: "Invalid email format" });
+            return;
+        }
+
         loginMutation.mutate(formData);
     }
 

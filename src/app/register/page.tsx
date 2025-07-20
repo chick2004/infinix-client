@@ -79,8 +79,6 @@ const EmailStep = ({formData, setFormData, onNextStep, onPreviousStep}: StepProp
 
     const [formError, setFormError] = useState<FormError>({});
 
-    //const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/verify-email", "POST");
-
     const mutateEmail = async (data: {email: string}) => {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/verify-email", requestInit("POST", data));
         if (!response.ok) {
@@ -98,11 +96,8 @@ const EmailStep = ({formData, setFormData, onNextStep, onPreviousStep}: StepProp
             if (data.status === 200) {
                 onNextStep?.();
             }
-            if (data.status === 400) {
-                setFormError({ email: "Email is already taken" });
-            }
-            if (data.status === 500) {
-                setFormError({ email: "An error occurred. Please try again" });
+            if (data.errors?.email?.some((e: string) => e.includes("ERR_EMAIL_ALREADY_EXISTS"))) {
+                setFormError({ email: "Email already exists" });
             }
         }
     });
@@ -164,7 +159,6 @@ const EmailStep = ({formData, setFormData, onNextStep, onPreviousStep}: StepProp
 const VerifyCodeStep = ({formData, setFormData, onNextStep, onPreviousStep}: StepProps) => {
 
     const [formError, setFormError] = useState<FormError>({});
-    //const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/verify-code", "POST");
 
     const mutateCode = async (data: {code: string, email: string}) => {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/verify-code", requestInit("POST", data));
@@ -183,11 +177,8 @@ const VerifyCodeStep = ({formData, setFormData, onNextStep, onPreviousStep}: Ste
             if (data.status === 200) {
                 onNextStep?.();
             }
-            if (data.status === 400) {
-                setFormError({ code: "Code is invalid" });
-            }
-            if (data.status === 500) {
-                setFormError({ code: "An error occurred. Please try again" });
+            if (data.errors?.code?.some((e: string) => e.includes("ERR_INVALID_CODE"))) {
+                setFormError({ code: "Invalid code" });
             }
         }
     });
@@ -249,7 +240,6 @@ const SetPasswordStep = ({formData, setFormData}: StepProps) => {
     const { refetchUser } = useAuth();
     
     const [formError, setFormError] = useState<FormError>({});
-    //const { data, loading, error, status, execute } = useRequest(process.env.NEXT_PUBLIC_API_URL + "/register", "POST");
     
     const mutateRegister = async (data: {email: string, password: string, code: string, display_name: string}) => {
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/register", requestInit("POST", data));
@@ -268,9 +258,6 @@ const SetPasswordStep = ({formData, setFormData}: StepProps) => {
             if (data.status === 200) {
                 refetchUser();
                 router.push("/home");
-            }
-            if (data.status === 400 || data.status === 500) {
-                setFormError({ password: "An error occurred. Please try again" });
             }
         }
     });

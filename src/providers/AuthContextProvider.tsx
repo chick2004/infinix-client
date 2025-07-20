@@ -44,20 +44,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
     const userQuery = useQuery({
         queryKey: [userQueryUrl],
         queryFn: queryUser,
-        refetchOnWindowFocus: false,
         retry: false,
-        enabled: false,
-        staleTime: 1000 * 60 * 5,
     });
 
     useEffect(() => {
-        if (userQuery.status === "success" && userQuery.data) {
+        if (userQuery.isSuccess) {
             setUser(userQuery.data.data);
         }
     }, [userQuery.status, userQuery.data]);
 
     useEffect(() => {
-        if (userQuery.status === "error" && userQuery.error) {
+        if (userQuery.isError) {
             if (!["/login", "/register"].includes(pathname)) {
                 router.push("/login");
             }

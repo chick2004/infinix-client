@@ -24,4 +24,6 @@ export default interface ApiPaginatedResponse<T> {
 
     message: string;
 
+    errors?: Record<string, string[]>;
+
 }
