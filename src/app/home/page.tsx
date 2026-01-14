@@ -143,9 +143,9 @@ export default function Page() {
                     <CreatePostCard></CreatePostCard>
                     {postQuery.isPending ? (
                         <>
-                            <Skeleton animation={"pulse"} style={{width: "100%", height: "128px", borderRadius: "4px"}}></Skeleton>
-                            <Skeleton animation={"pulse"} style={{width: "100%", height: "128px", borderRadius: "4px"}}></Skeleton>
-                            <Skeleton animation={"pulse"} style={{width: "100%", height: "128px", borderRadius: "4px"}}></Skeleton>
+                            <Skeleton animation={"pulse"} style={{width: "100%", height: "256px", borderRadius: "4px"}}></Skeleton>
+                            <Skeleton animation={"pulse"} style={{width: "100%", height: "256px", borderRadius: "4px"}}></Skeleton>
+                            <Skeleton animation={"pulse"} style={{width: "100%", height: "256px", borderRadius: "4px"}}></Skeleton>
                         </>
                     ) : (
                         // <div style={{ height: `${virtualizer.getTotalSize()}px`, width: '100%', position: 'relative' }}>

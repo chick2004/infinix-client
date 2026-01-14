@@ -5,6 +5,7 @@ import { useContext, createContext } from "react";
 export interface AuthContextType {
     user: User | null;
     refetchUser: () => void;
+    logout: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);

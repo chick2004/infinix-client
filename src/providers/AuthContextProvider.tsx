@@ -2,7 +2,7 @@
 import { useEffect, useState} from "react";
 import { AuthContext } from "@/hooks";
 import { requestInit } from "@/lib";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter, usePathname  } from "next/navigation";
 import { LoadingPage } from "@/components";
  
@@ -13,6 +13,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
 
     const router = useRouter();
     const pathname = usePathname();
+
+    const queryClient = useQueryClient();
 
     const initCookie = async () => {
         const response = await fetch(process.env.NEXT_PUBLIC_COOKIE_URL + "", requestInit("GET"));
@@ -47,6 +49,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
         retry: false,
     });
 
+    const mutateLogout = async () => {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/logout", requestInit("POST"));
+        if (!response.ok) {
+            throw new Error("Failed to logout");
+        }
+    }
+
+    const logoutMutation = useMutation({
+        mutationFn: mutateLogout,
+        onError: (error) => {
+            console.error("Error logging out:", error);
+        },
+        onSuccess: () => {
+            setUser(null);
+            queryClient.clear();
+        }
+    });
+
+    const handleLogout = () => {
+        logoutMutation.mutate();
+    };
+
     useEffect(() => {
         if (userQuery.isSuccess) {
             setUser(userQuery.data.data);
@@ -60,7 +84,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
             }
         }
     }, [userQuery.status, userQuery.error, pathname, router]);
-
 
     useEffect(() => {
         cookieMutation.mutate();
@@ -77,7 +100,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode}) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, refetchUser: userQuery.refetch }}>
+        <AuthContext.Provider value={{ user, refetchUser: userQuery.refetch, logout: handleLogout }}>
             {children}
         </AuthContext.Provider>
     );

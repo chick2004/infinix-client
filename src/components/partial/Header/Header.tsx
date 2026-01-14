@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, memo, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { useState, useCallback, memo, useRef } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useClickOutside, useAuth } from "@/hooks";
+import { useQueryClient } from "@tanstack/react-query";
 import { DropdownSearch, Icon, NotificationsCard, Layer, Flyout, Text } from "@/components";
 import styles from "./Header.module.scss";
 
@@ -15,7 +16,7 @@ export default memo(function Header() {
     const notificationsRef = useRef<HTMLDivElement>(null);
     useClickOutside(notificationsRef, () => setShowNotificationsCard(false));
     const pathname = usePathname();
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
 
     return (
         <Layer className={styles.header}>
@@ -59,10 +60,10 @@ export default memo(function Header() {
                                 <Icon name="person" size={20} type="regular" className={styles.avatar_icon}></Icon>
                                 <Text>Profile</Text>
                             </Link>
-                            <Link href="/logout" className={styles.avatar_link}>
+                            <div className={styles.avatar_link} onClick={logout}>
                                 <Icon name="person_arrow_left" size={20} type="regular" className={styles.avatar_icon}></Icon>
                                 <Text>Logout</Text>
-                            </Link>
+                            </div>
                         </Flyout>
                     )}
                 </div>
